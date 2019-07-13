@@ -3,6 +3,8 @@
 #include <toolbox/Date/DateParser.hpp>
 
 #include <string_view>
+#include <sstream>
+#include <iomanip>
 
 
 namespace Toolbox
@@ -23,7 +25,7 @@ namespace Toolbox
 
         constexpr Date() noexcept;
         constexpr Date(int totalDays) noexcept;
-        constexpr Date(int year, int month, int day) noexcept;
+        constexpr Date(int year, int month, int day) noexcept; 
         constexpr explicit Date(const std::string_view& str);
 
 
@@ -54,14 +56,26 @@ namespace Toolbox
         constexpr Date  operator++(int);  // Post Increment
         constexpr Date  operator--(int);  // Post Decrement
 
+
         /* ===== Misc Functions =========================================================================================== */
+
+        // Returns true of total number of days is 0, false otherwise
+        constexpr bool isNull() const;
 
         // Returns the day of the week, where 0=Monday, ..., 5=Satursday, 6=Sunday 
         constexpr int dayOfWeek() const;
+
+        // Returns true of the input year is a leap year, false otherwise
         static constexpr bool isLeapYear(unsigned int year) noexcept;
+        
+        // Returns the total number of days (28-31) for a given month
         static constexpr int daysInMonth(unsigned int year, unsigned int month) noexcept;
 
-    private:    
+        constexpr int toInt() const;
+        std::string toString() const;
+        friend std::ostream& operator<<(std::ostream& os, const Date& rhs);
+
+    protected:    
         int          m_totalDays;  // Total number of days since epoch (which is 1899-12-30)
         YearMonthDay m_ymd;        // Explicit year-month-day representation of the date  
 
@@ -178,20 +192,42 @@ namespace Toolbox
 
     /* ===== Misc Functions =========================================================================================== */
 
+    inline constexpr bool Date::isNull() const
+    {
+        return m_totalDays == 0;
+    }
+
     inline constexpr int Date::dayOfWeek() const
     {
         return (m_totalDays - 2) % 7;
     }
 
-    constexpr bool Date::isLeapYear(unsigned int year) noexcept
+    inline constexpr bool Date::isLeapYear(unsigned int year) noexcept
     {
         return  year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
     }
 
-    constexpr int Date::daysInMonth(unsigned int year, unsigned int month) noexcept
+    inline constexpr int Date::daysInMonth(unsigned int year, unsigned int month) noexcept
     {
         constexpr unsigned char a[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
         return month != 2 || !isLeapYear(year) ? a[month - 1] : 29;
+    }
+
+    inline constexpr int Date::toInt() const
+    {
+        return m_totalDays;
+    }
+
+    inline std::string Date::toString() const
+    {
+        std::ostringstream os;
+        os << *this;
+        return os.str();
+    }
+
+    std::ostream& operator<<(std::ostream& os, const Date& rhs)
+    {
+        return os << std::right << std::setfill('0') << rhs.m_ymd.year << '-' << std::setw(2) << rhs.m_ymd.month << '-' << std::setw(2) << rhs.m_ymd.day;
     }
 
 
