@@ -7,6 +7,15 @@ int main()
 {
     /* Since we evaluate to constexpr, all unit tests are performed at compile time */
 
+    static_assert(Date().isNull() == true);
+    static_assert(Date().toInt() == 0);
+    static_assert(Date(2029, 6, 21).toInt() == 47290);
+    static_assert(Date(2029, 6, 21).isNull() == false);
+
+    static_assert(Date(2029, 6, 21).year()  == 2029 && Date("2029-06-21").year()  == 2029);
+    static_assert(Date(2029, 6, 21).month() == 6    && Date("2029-06-21").month() == 6);
+    static_assert(Date(2029, 6, 21).day()   == 21   && Date("2029-06-21").day()   == 21);
+
     static_assert(Date(1899, 12, 30).totalDays() == Date().totalDays()  && Date().ymd()  == Date::YearMonthDay{1899, 12, 30});
     static_assert(Date(1899, 12, 30).totalDays() == Date(0).totalDays() && Date(0).ymd() == Date::YearMonthDay{1899, 12, 30});
     static_assert(Date(1899, 12, 31).totalDays() == Date(1).totalDays() && Date(1).ymd() == Date::YearMonthDay{1899, 12, 31});
