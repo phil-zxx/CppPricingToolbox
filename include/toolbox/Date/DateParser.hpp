@@ -1,5 +1,7 @@
 #pragma once
 
+#include <toolbox/Core/Misc.hpp>
+
 #include <string_view>
 
 
@@ -16,7 +18,6 @@ namespace Toolbox
         constexpr static void fromTimeStrToHourMinSec(const std::string_view& timeStr, int& hour, int& min, int& sec);
 
         constexpr static size_t findEither(const std::string_view& str, const char first, const char second);
-        constexpr static int svToInt(const std::string_view& sv);
     };
 
     // Inline Definitions
@@ -49,15 +50,15 @@ namespace Toolbox
     {
         if (dateStr.size() == 8)
         {
-            year  = svToInt(dateStr.substr(0, 4));
-            month = svToInt(dateStr.substr(4, 2));
-            day   = svToInt(dateStr.substr(6, 2));
+            year  = Misc::svToInt(dateStr.substr(0, 4));
+            month = Misc::svToInt(dateStr.substr(4, 2));
+            day   = Misc::svToInt(dateStr.substr(6, 2));
         }
         else if (dateStr.size() == 10)
         {
-            year  = svToInt(dateStr.substr(0, 4));
-            month = svToInt(dateStr.substr(5, 2));
-            day   = svToInt(dateStr.substr(8, 2));
+            year  = Misc::svToInt(dateStr.substr(0, 4));
+            month = Misc::svToInt(dateStr.substr(5, 2));
+            day   = Misc::svToInt(dateStr.substr(8, 2));
         }
         else
         {
@@ -69,15 +70,15 @@ namespace Toolbox
     {
         if (timeStr.size() == 5)
         {
-            hour = svToInt(timeStr.substr(0, 2));
-            min  = svToInt(timeStr.substr(3, 2));
+            hour = Misc::svToInt(timeStr.substr(0, 2));
+            min  = Misc::svToInt(timeStr.substr(3, 2));
             sec  = 0;
         }
         else if (timeStr.size() == 8)
         {
-            hour = svToInt(timeStr.substr(0, 2));
-            min  = svToInt(timeStr.substr(3, 2));
-            sec  = svToInt(timeStr.substr(6, 2));
+            hour = Misc::svToInt(timeStr.substr(0, 2));
+            min  = Misc::svToInt(timeStr.substr(3, 2));
+            sec  = Misc::svToInt(timeStr.substr(6, 2));
         }
         else
         {
@@ -91,33 +92,5 @@ namespace Toolbox
             return i;
         else
             return str.find(second);
-    }
-
-    inline constexpr int DateParser::svToInt(const std::string_view& sv)
-    {
-        const char* c = sv.data();      // c for current
-        const char* e = c + sv.size();  // e for end
-        
-        int sign = 1;
-        if (*c == '+' || *c == '-')
-        {
-            sign = 44 - *c;  // Gives +1 (for '+' = 43) or -1 (for '-' = 45)
-            ++c;
-        }
-
-        int num = 0;
-        while (c < e)
-        {
-            if ('0' <= *c && *c <= '9')
-            {
-                num *= 10;
-                num += *c - '0';
-            }
-            else
-                break;
-            ++c;
-        }
-
-        return sign * num;
     }
 }
