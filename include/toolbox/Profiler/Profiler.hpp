@@ -5,6 +5,7 @@
 #include <array>
 #include <chrono>
 #include <iomanip>
+#include <cmath>
 
 
 namespace Toolbox
@@ -94,7 +95,7 @@ namespace Toolbox
     {
         std::ostringstream os;
 
-        size_t bottom, top;
+        size_t bottom = 0, top = 63;
 
         for (bottom = 0; bottom < m_buckets.size(); ++bottom)
             if (m_buckets[bottom].trials > 0)
