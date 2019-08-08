@@ -12,8 +12,8 @@ namespace Toolbox
     class Date
     {
     public:
-        /* ===== Helper Struct =========================================================================================== */
-        
+        /* ===== Helper Struct ===== */
+
         struct YearMonthDay
         {
             int year, month, day;
@@ -21,15 +21,15 @@ namespace Toolbox
         };
 
 
-        /* ===== Constructors =========================================================================================== */
+        /* ===== Constructors ===== */
 
         constexpr Date() noexcept;
         constexpr Date(int totalDays) noexcept;
-        constexpr Date(int year, int month, int day) noexcept; 
+        constexpr Date(int year, int month, int day) noexcept;
         constexpr explicit Date(const std::string_view& str);
 
 
-        /* ===== Access Functions =========================================================================================== */
+        /* ===== Access Functions ===== */
 
         constexpr int year() const;
         constexpr int month() const;
@@ -38,7 +38,7 @@ namespace Toolbox
         constexpr const YearMonthDay& ymd() const;
 
 
-        /* ===== Operator Functions =========================================================================================== */
+        /* ===== Operator Functions ===== */
 
         constexpr bool operator==(const Date& rhs) const;
         constexpr bool operator!=(const Date& rhs) const;
@@ -46,28 +46,28 @@ namespace Toolbox
         constexpr bool operator<=(const Date& rhs) const;
         constexpr bool operator> (const Date& rhs) const;
         constexpr bool operator< (const Date& rhs) const;
-    
+
         constexpr Date& operator=(const Date& rhs);
         constexpr Date& operator+=(int x);
         constexpr Date& operator-=(int x);
-        
+
         constexpr Date& operator++();     // Pre Increment
         constexpr Date& operator--();     // Pre Decrement
         constexpr Date  operator++(int);  // Post Increment
         constexpr Date  operator--(int);  // Post Decrement
 
 
-        /* ===== Misc Functions =========================================================================================== */
+        /* ===== Misc Functions ===== */
 
         // Returns true of total number of days is 0, false otherwise
         constexpr bool isNull() const;
 
-        // Returns the day of the week, where 0=Monday, ..., 5=Satursday, 6=Sunday 
+        // Returns the day of the week, where 0=Monday, ..., 5=Satursday, 6=Sunday
         constexpr int dayOfWeek() const;
 
         // Returns true of the input year is a leap year, false otherwise
         static constexpr bool isLeapYear(unsigned int year) noexcept;
-        
+
         // Returns the total number of days (28-31) for a given month
         static constexpr int daysInMonth(unsigned int year, unsigned int month) noexcept;
 
@@ -75,44 +75,44 @@ namespace Toolbox
         std::string toString() const;
         friend std::ostream& operator<<(std::ostream& os, const Date& rhs);
 
-    protected:    
+    protected:
         int          m_totalDays;  // Total number of days since epoch (which is 1899-12-30)
-        YearMonthDay m_ymd;        // Explicit year-month-day representation of the date  
+        YearMonthDay m_ymd;        // Explicit year-month-day representation of the date
 
         static constexpr YearMonthDay fromTotalDaysToYearMonthDay(int totalDays) noexcept;
-        static constexpr int fromYearMonthDayToTotalDays(int year, int month, int day) noexcept;
+        static constexpr int          fromYearMonthDayToTotalDays(int year, int month, int day) noexcept;
     };
 
     // Inline Definitions
 
-    /* ===== Helper Struct =========================================================================================== */
-    
+    /* ===== Helper Struct ===== */
+
     inline constexpr bool Date::YearMonthDay::operator==(const Date::YearMonthDay& ymd) const
     {
         return year == ymd.year && month == ymd.month && day == ymd.day;
     }
-    
-    
-    /* ===== Constructors =========================================================================================== */
+
+
+    /* ===== Constructors ===== */
 
     inline constexpr Date::Date() noexcept
-        : m_totalDays(0), m_ymd{ 1899,12,30 } { }
-    
+        : m_totalDays(0), m_ymd{1899, 12, 30} { }
+
     inline constexpr Date::Date(int totalDays) noexcept
         : m_totalDays(totalDays), m_ymd(Date::fromTotalDaysToYearMonthDay(totalDays)) { }
 
     inline constexpr Date::Date(int year, int month, int day) noexcept
-        : m_totalDays(Date::fromYearMonthDayToTotalDays(year, month, day)), m_ymd{ year, month, day } { }
+        : m_totalDays(Date::fromYearMonthDayToTotalDays(year, month, day)), m_ymd{year, month, day} { }
 
     inline constexpr Date::Date(const std::string_view& str)
-        : m_totalDays(0), m_ymd{ 1899,12,30 }
+        : m_totalDays(0), m_ymd{1899, 12, 30}
     {
         DateParser::fromStrToYearMonthDay(str, m_ymd.year, m_ymd.month, m_ymd.day);
         m_totalDays = Date::fromYearMonthDayToTotalDays(m_ymd.year, m_ymd.month, m_ymd.day);
     }
 
 
-    /* ===== Access Functions =========================================================================================== */
+    /* ===== Access Functions ===== */
 
     inline constexpr int Date::year() const
     {
@@ -139,7 +139,7 @@ namespace Toolbox
         return m_ymd;
     }
 
-    /* ===== Operator Functions =========================================================================================== */
+    /* ===== Operator Functions ===== */
 
     inline constexpr bool Date::operator==(const Date& rhs) const { return this->m_totalDays == rhs.totalDays(); }
     inline constexpr bool Date::operator!=(const Date& rhs) const { return this->m_totalDays != rhs.totalDays(); }
@@ -189,8 +189,7 @@ namespace Toolbox
         return old;
     }
 
-
-    /* ===== Misc Functions =========================================================================================== */
+    /* ===== Misc Functions ===== */
 
     inline constexpr bool Date::isNull() const
     {
@@ -204,7 +203,7 @@ namespace Toolbox
 
     inline constexpr bool Date::isLeapYear(unsigned int year) noexcept
     {
-        return  year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+        return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
     }
 
     inline constexpr int Date::daysInMonth(unsigned int year, unsigned int month) noexcept
@@ -215,7 +214,7 @@ namespace Toolbox
 
     inline constexpr int Date::toInt() const
     {
-        return m_totalDays;
+        return m_totalDays; 
     }
 
     inline std::string Date::toString() const
@@ -230,12 +229,11 @@ namespace Toolbox
         return os << std::right << std::setfill('0') << rhs.m_ymd.year << '-' << std::setw(2) << rhs.m_ymd.month << '-' << std::setw(2) << rhs.m_ymd.day;
     }
 
-
-    /* ===== Private Functions =========================================================================================== */
+    /* ===== Private Functions ===== */
 
     inline constexpr Date::YearMonthDay Date::fromTotalDaysToYearMonthDay(int totalDays) noexcept
     {
-        YearMonthDay ymd{ 0,0,0 };
+        YearMonthDay ymd{0, 0, 0};
 
         // Modified Julian to DMY calculation with an addition of 2415019
         int l     = totalDays + 68'569 + 2'415'019;
@@ -251,19 +249,19 @@ namespace Toolbox
 
         return ymd;
     }
-    
+
     // Returns year/month/day triple in civil calendar
     // Preconditions:  z is number of days since 1970-01-01 and is in the range:
     //                   [numeric_limits<Int>::min(), numeric_limits<Int>::max()-719468].
     constexpr Date::YearMonthDay civil_from_days(int totalDays) noexcept
     {
-        Date::YearMonthDay ymd{ 0,0,0 };
+        Date::YearMonthDay ymd{0, 0, 0};
 
         totalDays += 719468 - 25569;
         const int era = (totalDays >= 0 ? totalDays : totalDays - 146096) / 146097;
         const int doe = totalDays - era * 146097;                                    // [0, 146096]
         const int yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;       // [0, 399]
-        const int y   = yoe + era * 400;                                             
+        const int y   = yoe + era * 400;
         const int doy = doe - (365 * yoe + yoe / 4 - yoe / 100);                     // [0, 365]
         const int mp  = (5 * doy + 2) / 153;                                         // [0, 11]
         ymd.day   = doy - (153 * mp + 2) / 5 + 1;                                    // [1, 31]
