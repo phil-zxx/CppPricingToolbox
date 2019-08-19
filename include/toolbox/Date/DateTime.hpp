@@ -165,7 +165,7 @@ namespace Toolbox
         return os.str();
     }
 
-    std::ostream& operator<<(std::ostream& os, const DateTime& rhs)
+    inline std::ostream& operator<<(std::ostream& os, const DateTime& rhs)
     {
         os << std::right << std::setfill('0') << rhs.year() << '-' << std::setw(2) << rhs.month() << '-' << std::setw(2) << rhs.day();
 
