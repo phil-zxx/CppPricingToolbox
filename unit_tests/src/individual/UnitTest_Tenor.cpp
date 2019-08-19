@@ -1,9 +1,11 @@
+#include <catch.hpp>
+
 #include <toolbox/Date/Tenor.hpp>
 
 using namespace Toolbox;
 
 
-int main()
+TEST_CASE("UnitTest_Tenor", "[UnitTest_Tenor]")
 {
     /* Since we evaluate to constexpr, all unit tests are performed at compile time */
 

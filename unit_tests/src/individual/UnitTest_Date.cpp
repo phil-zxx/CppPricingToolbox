@@ -1,9 +1,11 @@
+#include <catch.hpp>
+
 #include <toolbox/Date/Date.hpp>
 
 using namespace Toolbox;
 
 
-int main()
+TEST_CASE("UnitTest_Date", "[UnitTest_Date]")
 {
     /* Since we evaluate to constexpr, all unit tests are performed at compile time */
 
@@ -107,6 +109,4 @@ int main()
     static_assert(Date(1989,11,30).totalDays() == 32842 && Date(32842).ymd() == Date::YearMonthDay{1989,11,30});
     static_assert(Date(1989, 2, 2).totalDays() == 32541 && Date(32541).ymd() == Date::YearMonthDay{1989, 2, 2});
     static_assert(Date(1988, 4, 7).totalDays() == 32240 && Date(32240).ymd() == Date::YearMonthDay{1988, 4, 7});
-
-    return 0;
 }
