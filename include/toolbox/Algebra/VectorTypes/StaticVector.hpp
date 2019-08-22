@@ -26,14 +26,14 @@ namespace Toolbox
         constexpr explicit StaticVector(const Type& initValue) noexcept;
         constexpr explicit StaticVector(const Type(&array)[Size]) noexcept;
         constexpr explicit StaticVector(std::initializer_list<Type> list) noexcept;
-
-        constexpr StaticVector(const StaticVector& rhs) noexcept;
         
         template<class Type2>
         constexpr explicit StaticVector(const StaticVector<Type2, Size, TF>& rhs) noexcept;
 
+        constexpr StaticVector(const StaticVector& rhs) noexcept;
+
         template<class VT>
-        constexpr explicit StaticVector(const Vector<VT, TF>& rhs);
+        constexpr StaticVector(const Vector<VT, TF>& rhs);
 
 
         /* ========== Destructor ========== */
@@ -108,9 +108,6 @@ namespace Toolbox
     }
 
     template<class Type, size_t Size, bool TF>
-    inline constexpr StaticVector<Type, Size, TF>::StaticVector(const StaticVector& rhs) noexcept = default;
-
-    template<class Type, size_t Size, bool TF>
     template<class Type2>
     inline constexpr StaticVector<Type, Size, TF>::StaticVector(const StaticVector<Type2, Size, TF>& rhs)  noexcept
         : m_vector()
@@ -118,6 +115,9 @@ namespace Toolbox
         for (size_t i = 0; i < Size; ++i)
             m_vector[i] = rhs[i];
     }
+
+    template<class Type, size_t Size, bool TF>
+    inline constexpr StaticVector<Type, Size, TF>::StaticVector(const StaticVector& rhs) noexcept = default;
 
     template<class Type, size_t Size, bool TF>
     template<class VT>

@@ -22,17 +22,17 @@ namespace Toolbox
 
         DynamicVector() noexcept;
         explicit DynamicVector(size_t size) noexcept;
-        DynamicVector(size_t size, const Type& initValue) noexcept;
-        DynamicVector(std::initializer_list<Type> list) noexcept;
+        explicit DynamicVector(size_t size, const Type& initValue) noexcept;
+        explicit DynamicVector(std::initializer_list<Type> list) noexcept;
 
-        DynamicVector(const DynamicVector& rhs) noexcept;
-        DynamicVector(DynamicVector&& rhs) noexcept;
+        explicit DynamicVector(const DynamicVector& rhs) noexcept;
+        explicit DynamicVector(DynamicVector&& rhs) noexcept;
 
         template<size_t Size>
         explicit DynamicVector(const Type(&array)[Size]) noexcept;
 
         template<class VT>
-        explicit DynamicVector(const Vector<VT, TF>& rhs);
+        DynamicVector(const Vector<VT, TF>& rhs);
 
 
         /* ========== Destructor ========== */
@@ -149,7 +149,7 @@ namespace Toolbox
     inline DynamicVector<Type, TF>::DynamicVector(const Vector<VT, TF>& rhs)
     {
         for (size_t i = 0; i < m_size; ++i)
-            m_vector[i] = rhs[i];
+            m_vector[i] = (~rhs)[i];
     }
 
 
