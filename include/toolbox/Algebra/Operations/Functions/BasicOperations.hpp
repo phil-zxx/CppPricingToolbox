@@ -3,8 +3,8 @@
 #include <toolbox/Algebra/BaseTypes/Vector.hpp>
 #include <toolbox/Algebra/BaseTypes/IsIfTemplates.hpp>
 #include <toolbox/Algebra/Expressions/ExprVecMap.hpp>
-#include <toolbox/Algebra/Operations/OperationClassesUnary.hpp>
-#include <toolbox/Algebra/Operations/OperationClassesBinary.hpp>
+#include <toolbox/Algebra/Operations/Classes/UnaryOperation.hpp>
+#include <toolbox/Algebra/Operations/Classes/BinaryOperations.hpp>
 
 
 namespace Toolbox
