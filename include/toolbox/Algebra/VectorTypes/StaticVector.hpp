@@ -46,6 +46,16 @@ namespace Toolbox
         constexpr Type& operator[](size_t idx) noexcept;
         constexpr const Type& operator[](size_t idx) const noexcept;
 
+        Type* data()  noexcept;
+        Type* begin() noexcept;
+        Type* end()   noexcept;
+
+        const Type* data()   const noexcept;
+        const Type* begin()  const noexcept;
+        const Type* cbegin() const noexcept;
+        const Type* end()    const noexcept;
+        const Type* cend()   const noexcept;
+
 
         /* ========== Operator Functions ========== */
 
@@ -143,6 +153,54 @@ namespace Toolbox
     inline constexpr const Type& StaticVector<Type, Size, TF>::operator[](size_t idx) const noexcept
     {
         return m_vector[idx];
+    }
+
+    template<class Type, size_t Size, bool TF>
+    inline Type* StaticVector<Type, Size, TF>::data() noexcept
+    {
+        return m_vector;
+    }
+
+    template<class Type, size_t Size, bool TF>
+    inline Type* StaticVector<Type, Size, TF>::begin() noexcept
+    {
+        return m_vector;
+    }
+
+    template<class Type, size_t Size, bool TF>
+    inline Type* StaticVector<Type, Size, TF>::end() noexcept
+    {
+        return m_vector + Size;
+    }
+
+    template<class Type, size_t Size, bool TF>
+    inline const Type* StaticVector<Type, Size, TF>::data() const noexcept
+    {
+        return m_vector;
+    }
+
+    template<class Type, size_t Size, bool TF>
+    inline const Type* StaticVector<Type, Size, TF>::begin() const noexcept
+    {
+        return m_vector;
+    }
+
+    template<class Type, size_t Size, bool TF>
+    inline const Type* StaticVector<Type, Size, TF>::cbegin() const noexcept
+    {
+        return m_vector;
+    }
+
+    template<class Type, size_t Size, bool TF>
+    inline const Type* StaticVector<Type, Size, TF>::end() const noexcept
+    {
+        return m_vector + Size;
+    }
+
+    template<class Type, size_t Size, bool TF>
+    inline const Type* StaticVector<Type, Size, TF>::cend() const noexcept
+    {
+        return m_vector;
     }
 
 
