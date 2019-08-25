@@ -1,7 +1,7 @@
 #pragma once
 
-#include <toolbox/Algebra/BaseTypes/Vector.hpp>
-#include <toolbox/Algebra/BaseTypes/IsIfTemplates.hpp>
+#include <toolbox/Algebra/Core/Vector.hpp>
+#include <toolbox/Algebra/Core/IsIfTemplates.hpp>
 #include <toolbox/Algebra/Expressions/ExprVecMap.hpp>
 #include <toolbox/Algebra/Operations/Classes/UnaryOperation.hpp>
 #include <toolbox/Algebra/Operations/Classes/BinaryOperations.hpp>

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <toolbox/Algebra/BaseTypes/Vector.hpp>
-#include <toolbox/Algebra/BaseTypes/Assert.hpp>
+#include <toolbox/Algebra/Core/Vector.hpp>
+#include <toolbox/Algebra/Core/Assert.hpp>
 
 
 namespace Toolbox

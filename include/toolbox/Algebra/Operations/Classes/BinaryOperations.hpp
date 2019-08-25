@@ -1,6 +1,6 @@
 #pragma once
 
-#include <toolbox/Algebra/BaseTypes/Vector.hpp>
+#include <toolbox/Algebra/Core/Vector.hpp>
 #include <toolbox/Algebra/Expressions/ExprVecVecMap.hpp>
 
 
