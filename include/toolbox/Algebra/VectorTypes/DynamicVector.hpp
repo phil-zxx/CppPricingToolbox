@@ -1,6 +1,7 @@
 #pragma once
 
-#include <toolbox/Algebra/BaseTypes/Vector.hpp>
+#include <toolbox/Algebra/Core/Vector.hpp>
+#include <toolbox/Algebra/Core/Assert.hpp>
 
 
 namespace Toolbox
@@ -147,6 +148,7 @@ namespace Toolbox
     template<class Type, bool TF>
     template<class VT>
     inline DynamicVector<Type, TF>::DynamicVector(const Vector<VT, TF>& rhs)
+        : DynamicVector((~rhs).size())
     {
         for (size_t i = 0; i < m_size; ++i)
             m_vector[i] = (~rhs)[i];
@@ -292,9 +294,7 @@ namespace Toolbox
     inline DynamicVector<Type, TF>& DynamicVector<Type, TF>::operator+=(const Vector<VT, TF>& rhs)
     {
         const auto& rhsVec = ~rhs;
-
-        if (rhsVec.size() != m_size)
-            throw std::invalid_argument("Vectors are of different sizes");
+        TB_ASSERT(rhsVec.size() == m_size, "Input vector has the wrong size");
 
         for (size_t i = 0; i < m_size; ++i)
             m_vector[i] += rhsVec[i];
@@ -307,9 +307,7 @@ namespace Toolbox
     inline DynamicVector<Type, TF>& DynamicVector<Type, TF>::operator-=(const Vector<VT, TF>& rhs)
     {
         const auto& rhsVec = ~rhs;
-
-        if (rhsVec.size() != m_size)
-            throw std::invalid_argument("Vectors are of different sizes");
+        TB_ASSERT(rhsVec.size() == m_size, "Input vector has the wrong size");
 
         for (size_t i = 0; i < m_size; ++i)
             m_vector[i] -= rhsVec[i];
@@ -322,9 +320,7 @@ namespace Toolbox
     inline DynamicVector<Type, TF>& DynamicVector<Type, TF>::operator*=(const Vector<VT, TF>& rhs)
     {
         const auto& rhsVec = ~rhs;
-
-        if (rhsVec.size() != m_size)
-            throw std::invalid_argument("Vectors are of different sizes");
+        TB_ASSERT(rhsVec.size() == m_size, "Input vector has the wrong size");
 
         for (size_t i = 0; i < m_size; ++i)
             m_vector[i] *= rhsVec[i];
@@ -337,9 +333,7 @@ namespace Toolbox
     inline DynamicVector<Type, TF>& DynamicVector<Type, TF>::operator/=(const Vector<VT, TF>& rhs)
     {
         const auto& rhsVec = ~rhs;
-
-        if (rhsVec.size() != m_size)
-            throw std::invalid_argument("Vectors are of different sizes");
+        TB_ASSERT(rhsVec.size() == m_size, "Input vector has the wrong size");
 
         for (size_t i = 0; i < m_size; ++i)
             m_vector[i] /= rhsVec[i];

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <toolbox/Algebra/BaseTypes/Vector.hpp>
-#include <toolbox/Algebra/BaseTypes/Assert.hpp>
+#include <toolbox/Algebra/Core/Vector.hpp>
+#include <toolbox/Algebra/Core/Assert.hpp>
 
 
 namespace Toolbox
@@ -134,10 +134,11 @@ namespace Toolbox
     inline constexpr StaticVector<Type, Size, TF>::StaticVector(const Vector<VT, TF>& rhs)
         : m_vector()
     {
-        TB_ASSERT((~rhs).size() == Size, "Input vector is of a different size");
+        const auto& rhsVec = ~rhs;
+        TB_ASSERT(rhsVec.size() == Size, "Input vector is of a different size");
         
         for (size_t i = 0; i < Size; ++i)
-            m_vector[i] = (~rhs)[i];
+            m_vector[i] = rhsVec[i];
     }
 
 
@@ -236,9 +237,9 @@ namespace Toolbox
     template<class Type, size_t Size, bool TF>
     template<class VT> StaticVector<Type, Size, TF>& StaticVector<Type, Size, TF>::operator=(const Vector<VT, TF>& rhs)
     {
-        TB_ASSERT((~rhs).size() == N, "Input vector has the wrong size");
-
         const auto& rhsVec = ~rhs;
+        TB_ASSERT(rhsVec.size() == N, "Input vector has the wrong size");
+
         for (size_t i = 0; i < Size; ++i)
             m_vector[i] = rhsVec[i];
 
