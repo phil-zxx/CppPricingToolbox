@@ -6,7 +6,6 @@
 using namespace Toolbox;
 
 
-
 TEST_CASE("UnitTest_StaticVector", "[UnitTest_StaticVector]")
 {
     using VectorType = StaticVector<double, 5>;
@@ -34,4 +33,17 @@ TEST_CASE("UnitTest_StaticVector", "[UnitTest_StaticVector]")
     const VectorType vecTrue3{ { -75,   390, 260,  -24,  315 } };
     CHECK(expr3.size() == 5);
     CHECK(expr3 == vecTrue3);
+}
+
+TEST_CASE("UnitTest_DotProduct", "[UnitTest_DotProduct]")
+{
+    using VectorTypeS = StaticVector<int, 5>;
+    using VectorTypeD = DynamicVector<int>;
+
+    const VectorTypeS v1{ { 5, 4, 10, 6, -3 } };
+    const VectorTypeD v2{ { 2, 6, -4, 3, 12 } };
+
+    const auto inner = dot(v1, v2);
+
+    CHECK(inner == -24);
 }
