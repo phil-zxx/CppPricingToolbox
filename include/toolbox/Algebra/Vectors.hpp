@@ -4,3 +4,4 @@
 #include <toolbox/Algebra/VectorTypes/StaticVector.hpp>
 
 #include <toolbox/Algebra/Operations/Functions/BasicOperations.hpp>
+#include <toolbox/Algebra/Operations/Functions/AlgebraicOperations.hpp>
