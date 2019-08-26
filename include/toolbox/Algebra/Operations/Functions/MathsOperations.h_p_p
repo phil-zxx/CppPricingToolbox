@@ -1,0 +1,69 @@
+#pragma once
+
+/* ===== Assignment Operators ===== */
+void operator+=(const VectorMatrix& rhs);
+void operator-=(const VectorMatrix& rhs);
+void operator*=(const VectorMatrix& rhs);
+void operator/=(const VectorMatrix& rhs);
+void operator+=(const Scalar& rhs);
+void operator-=(const Scalar& rhs);
+void operator*=(const Scalar& rhs);
+void operator/=(const Scalar& rhs);
+
+/* ===== Unary Operators ===== */
+VectorMatrix operator-() const;
+
+/* ===== Binary Operators ===== */
+VectorMatrix operator+(const VectorMatrix& rhs) const;
+VectorMatrix operator-(const VectorMatrix& rhs) const;
+VectorMatrix operator*(const VectorMatrix& rhs) const;
+VectorMatrix operator/(const VectorMatrix& rhs) const;
+VectorMatrix operator+(const Scalar& rhs) const;
+VectorMatrix operator-(const Scalar& rhs) const;
+VectorMatrix operator*(const Scalar& rhs) const;
+VectorMatrix operator/(const Scalar& rhs) const;
+
+/* ===== Reverse Binary Operators ===== */
+VectorMatrix operator+(const Scalar& rhs, const VectorMatrix& rhs) const;
+VectorMatrix operator-(const Scalar& rhs, const VectorMatrix& rhs) const;
+VectorMatrix operator*(const Scalar& rhs, const VectorMatrix& rhs) const;
+VectorMatrix operator/(const Scalar& rhs, const VectorMatrix& rhs) const;
+
+/* ===== Min/Max Functions ===== */
+Scalar min() const;
+Scalar max() const;
+size_t maxIndex(const size_t& offset) const;
+Scalar absMin() const;
+Scalar absMax() const;
+Scalar sum() const;
+
+/* ===== Algebra Functions ===== */
+Scalar diagAbsMax() const;
+Scalar dot(const VectorMatrix& rhs) const;
+Scalar norm(const double& order = 2.) const;
+VectorMatrix abs() const;
+VectorMatrix transposed() const;
+VectorMatrix mult(const VectorMatrix& rhs) const;
+VectorMatrix multWithTransposed(const VectorMatrix& rhs) const;
+VectorMatrix multWithDiagonal(const Vector& rhs) const;
+void swapElements(const size_t& idx1, const size_t& idx2);
+void applyScalingToColumn(const size_t& colIdx, const Scalar& scaling);
+VectorMatrix reshape(const size_t& rowCount, const size_t& colCount) &&;
+
+/* ===== Iterator Functions ===== */
+const T* begin() const;
+const T* end() const;
+T* begin();
+T* end();
+
+/* ===== Misc Functions ===== */
+MatrixShape shape() const;
+size_t size() const;
+size_t getColCount() const;
+size_t getRowCount() const;
+bool isSquare() const;
+bool isSymmetric() const;
+static VectorMatrix getIdentity(const size_t& size);
+bool equals(const VectorMatrix& rhs, const T& eps) const;
+friend std::ostream& operator<<();
+std::string toString() const;
