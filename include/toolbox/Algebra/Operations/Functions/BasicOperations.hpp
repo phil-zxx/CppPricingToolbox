@@ -1,7 +1,7 @@
 #pragma once
 
 #include <toolbox/Algebra/Core/Vector.hpp>
-#include <toolbox/Algebra/Core/IsIfTemplates.hpp>
+#include <toolbox/Algebra/Core/IsTemplates.hpp>
 #include <toolbox/Algebra/Expressions/ExprVecMap.hpp>
 #include <toolbox/Algebra/Operations/Classes/UnaryOperation.hpp>
 #include <toolbox/Algebra/Operations/Classes/BinaryOperations.hpp>
@@ -11,28 +11,28 @@ namespace Toolbox
 {
     /* ========== Vector-Scalar Operations ==========*/
 
-    template<class VT, bool TF, class ST, EnableIf_t<IsNumeric_v<ST>>* = nullptr>
+    template<class VT, bool TF, class ST, std::enable_if_t<is_numeric_v<ST>>* = nullptr>
     constexpr decltype(auto) operator+(const Vector<VT, TF>& vector, ST scalar);
     
-    template<class ST, class VT, bool TF, EnableIf_t<IsNumeric_v<ST>>* = nullptr>
+    template<class ST, class VT, bool TF, std::enable_if_t<is_numeric_v<ST>>* = nullptr>
     constexpr decltype(auto) operator+(ST scalar, const Vector<VT, TF>& vector);
     
-    template<class VT, bool TF, class ST, EnableIf_t<IsNumeric_v<ST>>* = nullptr>
+    template<class VT, bool TF, class ST, std::enable_if_t<is_numeric_v<ST>>* = nullptr>
     constexpr decltype(auto) operator-(const Vector<VT, TF>& vector, ST scalar);
     
-    template<class ST, class VT, bool TF, EnableIf_t<IsNumeric_v<ST>>* = nullptr>
+    template<class ST, class VT, bool TF, std::enable_if_t<is_numeric_v<ST>>* = nullptr>
     constexpr decltype(auto) operator-(ST scalar, const Vector<VT, TF> & vector);
     
-    template<class VT, bool TF, class ST, EnableIf_t<IsNumeric_v<ST>>* = nullptr>
+    template<class VT, bool TF, class ST, std::enable_if_t<is_numeric_v<ST>>* = nullptr>
     constexpr decltype(auto) operator*(const Vector<VT, TF>& vector, ST scalar);
     
-    template<class ST, class VT, bool TF, EnableIf_t<IsNumeric_v<ST>>* = nullptr>
+    template<class ST, class VT, bool TF, std::enable_if_t<is_numeric_v<ST>>* = nullptr>
     constexpr decltype(auto) operator*(ST scalar, const Vector<VT, TF>& vector);
     
-    template<class VT, bool TF, class ST, EnableIf_t<IsNumeric_v<ST>>* = nullptr>
+    template<class VT, bool TF, class ST, std::enable_if_t<is_numeric_v<ST>>* = nullptr>
     constexpr decltype(auto) operator/(const Vector<VT, TF>& vector, ST scalar);
     
-    template<class ST, class VT, bool TF, EnableIf_t<IsNumeric_v<ST>>* = nullptr>
+    template<class ST, class VT, bool TF, std::enable_if_t<is_numeric_v<ST>>* = nullptr>
     constexpr decltype(auto) operator/(ST scalar, const Vector<VT, TF>& vector);
     
     
@@ -61,49 +61,49 @@ namespace Toolbox
 
     /* ========== Vec-Scalar Operations ==========*/
 
-    template<class VT, bool TF, class ST, EnableIf_t<IsNumeric_v<ST>>*>
+    template<class VT, bool TF, class ST, std::enable_if_t<is_numeric_v<ST>>*>
     inline constexpr decltype(auto) operator+(const Vector<VT, TF>& vector, ST scalar)
     {
         return ExprVecMap(vector, OperationUnaryAdd(scalar));
     }
 
-    template<class ST, class VT, bool TF, EnableIf_t<IsNumeric_v<ST>>*>
+    template<class ST, class VT, bool TF, std::enable_if_t<is_numeric_v<ST>>*>
     inline constexpr decltype(auto) operator+(ST scalar, const Vector<VT, TF>& vector)
     {
         return ExprVecMap(vector, OperationUnaryAdd(scalar));
     }
 
-    template<class VT, bool TF, class ST, EnableIf_t<IsNumeric_v<ST>>*>
+    template<class VT, bool TF, class ST, std::enable_if_t<is_numeric_v<ST>>*>
     inline constexpr decltype(auto) operator-(const Vector<VT, TF>& vector, ST scalar)
     {
         return ExprVecMap(vector, OperationUnarySubLhs(scalar));
     }
 
-    template<class ST, class VT, bool TF, EnableIf_t<IsNumeric_v<ST>>*>
+    template<class ST, class VT, bool TF, std::enable_if_t<is_numeric_v<ST>>*>
     inline constexpr decltype(auto) operator-(ST scalar, const Vector<VT, TF>& vector)
     {
         return ExprVecMap(vector, OperationUnarySubRhs(scalar));
     }
 
-    template<class VT, bool TF, class ST, EnableIf_t<IsNumeric_v<ST>>*>
+    template<class VT, bool TF, class ST, std::enable_if_t<is_numeric_v<ST>>*>
     inline constexpr decltype(auto) operator*(const Vector<VT, TF>& vector, ST scalar)
     {
         return ExprVecMap(vector, OperationUnaryMul(scalar));
     }
 
-    template<class ST, class VT, bool TF, EnableIf_t<IsNumeric_v<ST>>*>
+    template<class ST, class VT, bool TF, std::enable_if_t<is_numeric_v<ST>>*>
     inline constexpr decltype(auto) operator*(ST scalar, const Vector<VT, TF>& vector)
     {
         return ExprVecMap(vector, OperationUnaryMul(scalar));
     }
 
-    template<class VT, bool TF, class ST, EnableIf_t<IsNumeric_v<ST>>*>
+    template<class VT, bool TF, class ST, std::enable_if_t<is_numeric_v<ST>>*>
     inline constexpr decltype(auto) operator/(const Vector<VT, TF>& vector, ST scalar)
     {
         return ExprVecMap(vector, OperationUnaryDivLhs(scalar));
     }
 
-    template<class ST, class VT, bool TF, EnableIf_t<IsNumeric_v<ST>>*>
+    template<class ST, class VT, bool TF, std::enable_if_t<is_numeric_v<ST>>*>
     inline constexpr decltype(auto) operator/(ST scalar, const Vector<VT, TF>& vector)
     {
         return ExprVecMap(vector, OperationUnaryDivRhs(scalar));
