@@ -7,13 +7,13 @@ namespace Toolbox
 {
     /* ========== RemoveCVRef ==========*/
 
-    template<class T >
+    template<class T>
     struct RemoveCVRef
     {
         using Type = typename std::remove_cv<typename std::remove_reference<T>::type >::type;
     };
 
-    template<class T >
+    template<class T>
     using RemoveCVRef_t = typename RemoveCVRef<T>::Type;
 
 
