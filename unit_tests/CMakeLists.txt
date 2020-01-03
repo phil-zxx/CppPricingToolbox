@@ -11,4 +11,4 @@ endforeach()
 
 add_executable(${PROJECT_NAME} src/UnitTest_Main.cpp ${TOOLBOX_UNIT_TEST_SOURCE_FILES})
 target_include_directories(${PROJECT_NAME} PUBLIC ${TOOLBOX_ROOT_DIR}/include)
-target_include_directories(${PROJECT_NAME} PUBLIC ${TOOLBOX_ROOT_DIR}/external/catch2/include)
+target_include_directories(${PROJECT_NAME} PUBLIC ${TOOLBOX_ROOT_DIR}/external)
