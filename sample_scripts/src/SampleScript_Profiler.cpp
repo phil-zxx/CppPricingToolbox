@@ -1,4 +1,4 @@
-#include <toolbox/Profiler/Profiler.hpp>
+#include <toolbox/Debug/Profiler.hpp>
 
 using namespace Toolbox;
 
