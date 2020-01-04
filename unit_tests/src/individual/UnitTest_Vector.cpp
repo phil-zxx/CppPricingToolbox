@@ -1,6 +1,5 @@
 #include <toolbox/Algebra/Vectors.hpp>
 #include <catch2/catch.hpp>
-#include <iostream>
 
 using namespace Toolbox;
 
@@ -33,8 +32,8 @@ TEST_CASE("UnitTest_Vector_Expressions", "[UnitTest_Vector_Expressions]")
         const auto expr3 = vecS + 3;
 
         CHECK(std::string(typeid(expr1).name()) == "class Toolbox::DenseVector<int,10,0>");
-        CHECK(std::string(typeid(expr2).name()) == "class Toolbox::VectorExpr<struct Toolbox::Id<void>,class Toolbox::DenseVector<int,10,0>,void * __ptr64,1>");
-        CHECK(std::string(typeid(expr3).name()) == "class Toolbox::VectorExpr<struct Toolbox::Add,class Toolbox::DenseVector<int,10,0>,int,0>");
+        CHECK(std::string(typeid(expr2).name()) == "class Toolbox::VectorExpr<struct Toolbox::OperatorId<void>,class Toolbox::DenseVector<int,10,0>,void * __ptr64,1>");
+        CHECK(std::string(typeid(expr3).name()) == "class Toolbox::VectorExpr<struct Toolbox::OperatorAdd,class Toolbox::DenseVector<int,10,0>,int,0>");
     }
 
     SECTION("Test_MinMax")
@@ -123,7 +122,7 @@ TEST_CASE("UnitTest_Vector_Expressions", "[UnitTest_Vector_Expressions]")
         CHECK(expr3.transposeFlag == true);
     }
 
-    SECTION("Test_Expression1")
+    SECTION("Test_Expression2")
     {
         using VectorType = StaticVector<double, 5>;
 
