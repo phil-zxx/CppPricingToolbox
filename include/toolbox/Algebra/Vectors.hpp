@@ -1,7 +1,15 @@
 #pragma once
 
-#include <toolbox/Algebra/VectorTypes/DynamicVector.hpp>
-#include <toolbox/Algebra/VectorTypes/StaticVector.hpp>
+#include <toolbox/Algebra/Types/DenseVector.hpp>
+#include <toolbox/Algebra/Operators/BasicOperatorFunctions.hpp>
+#include <toolbox/Algebra/Operators/AlgebraicOperatorFunctions.hpp>
 
-#include <toolbox/Algebra/Operations/Functions/BasicOperations.hpp>
-#include <toolbox/Algebra/Operations/Functions/AlgebraicOperations.hpp>
+
+namespace Toolbox
+{
+    template<class Type, size_t Size, bool TF = false>
+    using StaticVector = DenseVector<Type, Size, TF>;
+
+    template<class Type, bool TF = false>
+    using DynamicVector = DenseVector<Type, DynamicSize, TF>;
+}
