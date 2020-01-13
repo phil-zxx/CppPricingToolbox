@@ -1,34 +1,49 @@
 #pragma once
 
+#define CPP_PRICING_TOOLBOX_ENABLE_ASSERT 1
+
+#include <cassert>
 #include <sstream>
 #include <string>
 
 
 namespace Toolbox
 {
+    
+
     class Error : public std::exception
     {
     public:
         Error(const std::string& file, long line, const std::string& functionName, const std::string& message)
             : m_message(Error::createMessage(file, line, functionName, message)) { }
         
-        const char* what() const noexcept
+        const char* what() const override
         {
-            return m_message;
+            return m_message.c_str();
         }
 
     private:
-        const char* m_message;
+        std::string m_message;
 
-        static const char* createMessage(const std::string& file, long line, const std::string& functionName, const std::string& message)
+        static std::string createMessage(const std::string& file, long line, const std::string& functionName, const std::string& message)
         {
             std::ostringstream os;
             os << "Error: " << functionName << ":\n  " << file << "(" << line << "): \n" << message;
-            return os.str().c_str();
+            return os.str();
         }
     };
 
+    bool TB_ASSERT_MESSAGE(const char* /* msg */)
+    {
+        return false;
+    }
 }
+
+#if CPP_PRICING_TOOLBOX_ENABLE_ASSERT
+    #define TB_ASSERT(expr, msg) assert((expr) || Toolbox::TB_ASSERT_MESSAGE(msg))
+#else
+    #define TB_ASSERT(expr, msg)
+#endif
 
 #define TB_ENSURE(condition,message) \
 if (!(condition)) { \
