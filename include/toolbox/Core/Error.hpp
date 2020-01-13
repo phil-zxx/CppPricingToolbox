@@ -9,8 +9,6 @@
 
 namespace Toolbox
 {
-    
-
     class Error : public std::exception
     {
     public:
