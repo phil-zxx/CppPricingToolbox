@@ -21,5 +21,23 @@ namespace Toolbox
         {
             return static_cast<const VectorType&>(*this);
         }
+
+        friend std::ostream& operator<<(std::ostream& os, const Vector<VT, TF>& rhs)
+        {
+            os << "{";
+        
+            const auto& vector = ~rhs;
+            for (size_t i = 0, size = vector.size(); i < size; ++i)
+                os << vector[i] << (i + 1 < size ? "," : "");
+        
+            return os << "}";
+        }
+
+        std::string toString() const
+        {
+            std::ostringstream os;
+            os << *this;
+            return os.str();
+        }
     };
 }

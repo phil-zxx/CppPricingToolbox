@@ -1,6 +1,7 @@
 #pragma once
 
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
+#include <toolbox/Core/Error.hpp>
 
 
 namespace Toolbox
@@ -83,11 +84,31 @@ namespace Toolbox
 
         constexpr const ElementType& operator[](size_t idx) const
         {
+            TB_ASSERT(idx < m_size, "Index out of bounds");
+            return this->m_data[idx];
+        }
+        
+        constexpr ElementType& operator[](size_t idx)
+        {
+            TB_ASSERT(idx < m_size, "Index out of bounds");
             return this->m_data[idx];
         }
 
-        constexpr ElementType& operator[](size_t idx)
+        constexpr const ElementType& at(size_t idx) const
         {
+            if (idx >= m_size)
+            {
+                TB_THROW("Index out of bounds");
+            }
+            return this->m_data[idx];
+        }
+        
+        constexpr ElementType& at(size_t idx)
+        {
+            if (idx >= m_size)
+            {
+                TB_THROW("Index out of bounds");
+            }
             return this->m_data[idx];
         }
 

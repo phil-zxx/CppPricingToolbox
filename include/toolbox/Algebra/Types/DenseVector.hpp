@@ -52,7 +52,27 @@ namespace Toolbox
             return m_storage;
         }
 
-        ElementType operator[](size_t idx)
+        const Type* begin() const
+        {
+            return m_storage.data();
+        }
+
+        const Type* end() const
+        {
+            return m_storage.data() + m_storage.size();
+        }
+
+        Type* begin()
+        {
+            return m_storage.data();
+        }
+
+        Type* end()
+        {
+            return m_storage.data() + m_storage.size();
+        }
+        
+        ElementType& operator[](size_t idx)
         {
             return m_storage[idx];
         }
@@ -60,6 +80,16 @@ namespace Toolbox
         const ElementType& operator[](size_t idx) const
         {
             return m_storage[idx];
+        }
+        
+        ElementType& at(size_t idx)
+        {
+            return m_storage.at(idx);
+        }
+
+        const ElementType& at(size_t idx) const
+        {
+            return m_storage.at(idx);
         }
 
         friend std::ostream& operator<<(std::ostream& os, const DenseVector& rhs)
