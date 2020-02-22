@@ -1,5 +1,6 @@
-#include <toolbox/Generic/Serialisation.hpp>
 #include <catch2/catch.hpp>
+
+#include <toolbox/Generic/Serialisation.hpp>
 
 using namespace Toolbox;
 
@@ -58,10 +59,10 @@ TEST_CASE("UnitTest_Serialisation_Ptr", "[UnitTest_Serialisation_Ptr]")
     ByteArchive ba;
 
     const auto in1 = new int();
-    const auto in2 = new int(34);
+    const int* in2 = new int(34);
     const int* in3 = nullptr;
     const auto in4 = std::unique_ptr<int>();
-    const auto in5 = std::make_unique<int>(150);
+    const auto in5 = std::make_unique<const int>(150);
     const auto in6 = std::make_shared<std::string>("test");
     const auto in7 = std::make_unique<const std::vector<std::string>>(3, "some");
     const auto in8 = new const SampleData(33, "test ptr", std::vector<int>{ 55,44,22,11,4,1,90 });
@@ -102,4 +103,37 @@ TEST_CASE("UnitTest_Serialisation_Ptr", "[UnitTest_Serialisation_Ptr]")
     CHECK(in9->a == out9->a);
     CHECK(in9->b == out9->b);
     CHECK(in9->c == out9->c);
+}
+
+
+TEST_CASE("UnitTest_Serialisation_Other", "[UnitTest_Serialisation_Other]")
+{
+    ByteArchive ba;
+
+    const auto in1 = std::optional<std::string>();
+    const auto in2 = std::optional<int>(5);
+    const auto in3 = std::variant<int, std::string, double>(24);
+    const auto in4 = std::variant<int, std::string, double>(25);
+    const auto in5 = std::variant<int, std::string, double>("test string");
+    const auto in6 = std::variant<int, std::string, double>(3.148);
+
+    ba.store(in1);
+    ba.store(in2);
+    ba.store(in3);
+    ba.store(in4);
+    ba.store(in5);
+    ba.store(in6);
+    
+    const auto out1 = ba.load<decltype(in1)>();
+    const auto out2 = ba.load<decltype(in2)>();
+    const auto out3 = ba.load<decltype(in3)>();
+    const auto out4 = ba.load<decltype(in4)>();
+    const auto out5 = ba.load<decltype(in5)>();
+    const auto out6 = ba.load<decltype(in6)>();
+
+    CHECK(in1 == out1);
+    CHECK(in2 == out2);
+    CHECK(in3 == out3);
+    CHECK(in4 == out4);
+    CHECK(in6 == out6);
 }

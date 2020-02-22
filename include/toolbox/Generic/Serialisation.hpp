@@ -6,6 +6,8 @@
 #include <array>
 #include <string>
 #include <map>
+#include <optional>
+#include <variant>
 
 
 namespace Toolbox
@@ -23,50 +25,69 @@ namespace Toolbox
     template<class T>
     using remove_cv_ref_t = typename std::remove_cv_t<typename std::remove_reference_t<T>>;
 
-    template<class, class = void>
-    struct has_begin : std::false_type { };
+    template<class, class = void> struct has_begin : std::false_type { };
+    template<class T> struct has_begin<T, std::void_t<decltype(*std::begin(std::declval<T>()))>> : std::true_type { };
+    template<class T> constexpr bool has_begin_v = has_begin<T>::value;
     
-    template<class T>
-    struct has_begin<T, std::void_t<decltype(*std::begin(std::declval<T>()))>> : std::true_type { };
-
-    template<class T>
-    constexpr bool has_begin_v = has_begin<T>::value;
+    template<class, class = void> struct is_tuple : std::false_type { };
+    template<class T> struct is_tuple<T, std::void_t<typename std::tuple_element_t<0,T>>> : std::true_type { };
+    template<class T> constexpr bool is_tuple_v = is_tuple<T>::value;
     
-    template<class, class = void>
-    struct is_tuple : std::false_type { };
+    template<class, class = void> struct is_std_map : std::false_type { };
+    template<class T> struct is_std_map<T, std::void_t<typename T::mapped_type>> : std::true_type { };
+    template<class T> constexpr bool is_std_map_v = is_std_map<T>::value;
     
-    template<class T>
-    struct is_tuple<T, std::void_t<typename std::tuple_element_t<0,T>>> : std::true_type { };
-
-    template<class T>
-    constexpr bool is_tuple_v = is_tuple<T>::value;
+    template<class, class = void> struct is_smart_ptr : std::false_type { };
+    template<class T> struct is_smart_ptr<T, std::void_t<typename T::element_type>> : std::true_type { };
+    template<class T> constexpr bool is_smart_ptr_v = is_smart_ptr<T>::value;
     
-    template<class, class = void>
-    struct is_std_map : std::false_type { };
+    template<class, class = void> struct is_optional : std::false_type { };
+    template<class T> struct is_optional<T, std::void_t<decltype(std::declval<T>().has_value())>> : std::true_type { };
+    template<class T> constexpr bool is_optional_v = is_optional<T>::value;
     
-    template<class T>
-    struct is_std_map<T, std::void_t<typename T::mapped_type>> : std::true_type { };
-
-    template<class T>
-    constexpr bool is_std_map_v = is_std_map<T>::value;
-    
-    template<class, class = void>
-    struct is_smart_ptr : std::false_type { };
-    
-    template<class T>
-    struct is_smart_ptr<T, std::void_t<typename T::element_type>> : std::true_type { };
-
-    template<class T>
-    constexpr bool is_smart_ptr_v = is_smart_ptr<T>::value;
+    template<class, class = void> struct is_variant : std::false_type { };
+    template<class T> struct is_variant<T, std::void_t<decltype(std::declval<T>().valueless_by_exception())>> : std::true_type { };
+    template<class T> constexpr bool is_variant_v = is_variant<T>::value;
 
 
     class ByteArchive
     {
+    private:
+        template<std::size_t...Is, class V>
+        auto storeVariant(const V& obj, std::index_sequence<Is...>)
+        {
+            store(obj.index());
+            ([&]() { 
+                if (Is == obj.index()) 
+                    store(std::get<Is>(obj)); }(), ...);
+        }
+        
+        template<std::size_t...Is, class V>
+        auto loadVariant(V& obj, std::index_sequence<Is...>)
+        {
+            const auto index = load<size_t>();
+            ([&]() { 
+                if (Is == index)
+                    obj = load<remove_cv_ref_t<decltype(std::get<Is>(obj))>>(); }(), ...);
+        }
+
     public:
+        template <class... _Types>
+        void store(const std::variant<_Types...>& obj)
+        {
+            storeVariant(obj, std::make_index_sequence<sizeof...(_Types)>{});
+        }
+        
+        template <class... _Types>
+        void load(std::variant<_Types...>& obj)
+        {
+            loadVariant(obj, std::make_index_sequence<sizeof...(_Types)>{});
+        }
+
         template <class T>
         void store(const T& obj)
         {
-            if constexpr (std::is_pointer_v<T>)
+            if constexpr (std::is_pointer_v<T> || is_optional_v<T>)
             {
                 store(static_cast<bool>(obj));
                 if (obj)
@@ -150,6 +171,11 @@ namespace Toolbox
             {
                 obj = std::move(T(load<typename T::element_type*>()));
             }
+            else if constexpr (is_optional_v<T>)
+            {
+                if (load<bool>())
+                    obj = load<T::value_type>();
+            }
             else
             {
                 static_assert(false, "Provided Template argument is not covered in load function");
@@ -172,12 +198,6 @@ namespace Toolbox
             
             if constexpr (std::is_pointer_v<T>)
             {
-                //T obj_{};
-                //auto obj00   = new std::remove_pointer_t<T>{};
-                //auto obj01   = new std::remove_pointer_t<T>();
-                //Tclean* obj1 = new Tclean{};
-                //auto obj2    = new Tclean();
-                //auto obj3    = new Tclean;
                 if (load<bool>())
                 {
                     if constexpr (std::is_default_constructible_v<Tclean>)
@@ -189,9 +209,6 @@ namespace Toolbox
                     else
                     {
                         return new Tclean(load<Tclean>());
-                        //auto obj = new Tclean;
-                        //load(*obj);
-                        //return obj;
                     }
                 }
                 return nullptr;
