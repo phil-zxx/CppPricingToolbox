@@ -1,6 +1,7 @@
 #pragma once
 
 #include <toolbox/Algebra/Types/Base/Vector.hpp>
+#include <toolbox/Algebra/Types/Base/Matrix.hpp>
 #include <type_traits>
 
 
@@ -47,6 +48,24 @@ namespace Toolbox
 
     template <class T>
     constexpr bool is_vector_v = is_vector<T>::value;
+
+
+    /* ========== is_matrix ========== */
+    template <class T>
+    struct is_matrix
+    {
+        using Tclean = typename remove_cv_ref_t<T>;
+
+        template <class MT, bool SO>
+        static std::true_type test(Matrix<MT, SO>*);
+
+        static std::false_type test(void*);
+
+        constexpr static bool value = decltype(test(std::declval<Tclean*>()))::value;
+    };
+
+    template <class T>
+    constexpr bool is_matrix_v = is_matrix<T>::value;
 
 
     /* ========== is_scalar ========== */
