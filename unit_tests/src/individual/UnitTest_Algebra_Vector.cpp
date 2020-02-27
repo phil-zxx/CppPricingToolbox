@@ -1,4 +1,4 @@
-#include <toolbox/Algebra/Vectors.hpp>
+#include <toolbox/Algebra/VectorMatrix.hpp>
 #include <catch2/catch.hpp>
 
 using namespace Toolbox;
@@ -12,12 +12,16 @@ TEST_CASE("UnitTest_Vector_BaseFunctions", "[UnitTest_Vector_BaseFunctions]")
     CHECK(vecS.capacity() == 10);
     CHECK(vecS.size()     == 3);
     CHECK(vecS[0]         == 0.);
-    CHECK(vecS[9]         == 0.);
+    CHECK(vecS[1]         == 0.);
+    CHECK(vecS.at(2)      == 0.);
+    CHECK_THROWS(vecS.at(3));
 
     CHECK(vecD.capacity() == 3);
     CHECK(vecD.size()     == 3);
     CHECK(vecD[0]         == 5);
-    CHECK(vecD[2]         == 5);
+    CHECK(vecD[1]         == 5);
+    CHECK(vecD.at(2)      == 5);
+    CHECK_THROWS(vecD.at(3));
 }
 
 TEST_CASE("UnitTest_Vector_Expressions", "[UnitTest_Vector_Expressions]")
