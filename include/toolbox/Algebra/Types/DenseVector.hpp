@@ -20,7 +20,7 @@ namespace Toolbox
             : m_storage(size) { }
 
         constexpr explicit DenseVector(size_t size, Type init)
-            : m_storage(size, init) { }
+            : m_storage(size, 1, init) { }
 
         DenseVector(std::initializer_list<Type> list)
             : m_storage(list) { }

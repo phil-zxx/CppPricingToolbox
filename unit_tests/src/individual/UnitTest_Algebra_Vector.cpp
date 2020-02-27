@@ -4,7 +4,7 @@
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Vector_BaseFunctions", "[UnitTest_Vector_BaseFunctions]")
+TEST_CASE("UnitTest_Vector_BaseFunctions")
 {
     const StaticVector<double, 10> vecS(3);
     const DynamicVector<int> vecD(3, 5);
@@ -24,7 +24,48 @@ TEST_CASE("UnitTest_Vector_BaseFunctions", "[UnitTest_Vector_BaseFunctions]")
     CHECK_THROWS(vecD.at(3));
 }
 
-TEST_CASE("UnitTest_Vector_Expressions", "[UnitTest_Vector_Expressions]")
+TEST_CASE("UnitTest_Vector_InitList")
+{
+    const StaticVector<double, 10> vecS{ 7,5,25,11 };
+    const DynamicVector<int> vecD{ 6,3,-3,6,-32,8,99 };
+
+    CHECK(vecS.capacity() == 10);
+    CHECK(vecS.size()     == 4);
+    CHECK(vecS[0]         == 7.);
+    CHECK(vecS[1]         == 5.);
+    CHECK(vecS[2]         == 25.);
+    CHECK(vecS.at(3)      == 11.);
+    CHECK_THROWS(vecS.at(4));
+    CHECK_THROWS(vecS.at(8));
+
+    CHECK(vecD.capacity() == 7);
+    CHECK(vecD.size()     == 7);
+    CHECK(vecD[0]         == 6);
+    CHECK(vecD[1]         == 3);
+    CHECK(vecD[2]         == -3);
+    CHECK(vecD[3]         == 6);
+    CHECK(vecD[4]         == -32);
+    CHECK(vecD[5]         == 8);
+    CHECK(vecD[6]         == 99);
+    CHECK_THROWS(vecD.at(7));
+    CHECK_THROWS(vecD.at(10));
+}
+
+TEST_CASE("UnitTest_Vector_Size")
+{
+    CHECK_NOTHROW(StaticVector<int, 3>(1));
+    CHECK_NOTHROW(StaticVector<int, 3>(2));
+    CHECK_NOTHROW(StaticVector<int, 3>(3));
+    CHECK_THROWS (StaticVector<int, 3>(4));
+    CHECK_THROWS (StaticVector<int, 10>(15));
+    CHECK_NOTHROW(StaticVector<int, 4>{3,4,5,6});
+    CHECK_THROWS (StaticVector<int, 4>{3,4,5,6,7});
+    
+    CHECK_NOTHROW(DynamicVector<int>{3,4,5,6});
+    CHECK_NOTHROW(DynamicVector<int>{3,4,5,6,7});
+}
+
+TEST_CASE("UnitTest_Vector_Expressions")
 {
     const StaticVector<int, 10> vecS = { 5,7,-9 };
     const DynamicVector<double> vecD = { -3,7,5 };
