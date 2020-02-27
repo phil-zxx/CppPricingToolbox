@@ -31,7 +31,7 @@ namespace Toolbox
         }
     };
 
-    bool TB_ASSERT_MESSAGE(const char* /* msg */)
+    inline bool TB_ASSERT_MESSAGE(const char* /* msg */)
     {
         return false;
     }
