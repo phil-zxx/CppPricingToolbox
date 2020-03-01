@@ -28,26 +28,14 @@ namespace Toolbox
     template<class, class = void> struct has_begin : std::false_type { };
     template<class T> struct has_begin<T, std::void_t<decltype(*std::begin(std::declval<T>()))>> : std::true_type { };
     template<class T> constexpr bool has_begin_v = has_begin<T>::value;
-    
-    template<class, class = void> struct is_tuple : std::false_type { };
-    template<class T> struct is_tuple<T, std::void_t<typename std::tuple_element_t<0,T>>> : std::true_type { };
-    template<class T> constexpr bool is_tuple_v = is_tuple<T>::value;
-    
-    template<class, class = void> struct is_std_map : std::false_type { };
-    template<class T> struct is_std_map<T, std::void_t<typename T::mapped_type>> : std::true_type { };
-    template<class T> constexpr bool is_std_map_v = is_std_map<T>::value;
-    
-    template<class, class = void> struct is_smart_ptr : std::false_type { };
-    template<class T> struct is_smart_ptr<T, std::void_t<typename T::element_type>> : std::true_type { };
-    template<class T> constexpr bool is_smart_ptr_v = is_smart_ptr<T>::value;
-    
-    template<class, class = void> struct is_optional : std::false_type { };
-    template<class T> struct is_optional<T, std::void_t<decltype(std::declval<T>().has_value())>> : std::true_type { };
-    template<class T> constexpr bool is_optional_v = is_optional<T>::value;
-    
-    template<class, class = void> struct is_variant : std::false_type { };
-    template<class T> struct is_variant<T, std::void_t<decltype(std::declval<T>().valueless_by_exception())>> : std::true_type { };
-    template<class T> constexpr bool is_variant_v = is_variant<T>::value;
+
+    template <class T, template <class...> class Template> constexpr bool is_instance_of_v = false;
+    template <template <class...> class Template, class... Args> constexpr bool is_instance_of_v<Template<Args...>, Template> = true;
+
+    template<class T> constexpr bool is_std_optional_v  = is_instance_of_v<T, std::optional>;
+    template<class T> constexpr bool is_std_tuple_v     = is_instance_of_v<T, std::tuple> || is_instance_of_v<T, std::pair>;
+    template<class T> constexpr bool is_std_map_v       = is_instance_of_v<T, std::map> || is_instance_of_v<T, std::unordered_map>;
+    template<class T> constexpr bool is_std_smart_ptr_v = is_instance_of_v<T, std::shared_ptr> || is_instance_of_v<T, std::unique_ptr>;
 
 
     class ByteArchive
@@ -87,7 +75,7 @@ namespace Toolbox
         template <class T>
         void store(const T& obj)
         {
-            if constexpr (std::is_pointer_v<T> || is_optional_v<T>)
+            if constexpr (std::is_pointer_v<T> || is_std_optional_v<T>)
             {
                 store(static_cast<bool>(obj));
                 if (obj)
@@ -108,7 +96,7 @@ namespace Toolbox
                 for (const auto& element : obj)
                     store(element);
             }
-            else if constexpr (is_tuple_v<T>)
+            else if constexpr (is_std_tuple_v<T>)
             {
                 std::apply([&](auto&&... val) { (store(val), ...); }, obj);
             }
@@ -116,7 +104,7 @@ namespace Toolbox
             {
                 store(obj.a, obj.b, obj.c);
             }
-            else if constexpr (is_smart_ptr_v<T>)
+            else if constexpr (is_std_smart_ptr_v<T>)
             {
                 store(obj.get());
             }
@@ -163,15 +151,15 @@ namespace Toolbox
                 for (size_t i = 0; i < size; ++i)
                     obj.insert(obj.end(), load<T::value_type>());
             }
-            else if constexpr (is_tuple_v<T>)
+            else if constexpr (is_std_tuple_v<T>)
             {
                 std::apply([&](auto&& ... val) {(load(val), ...); }, obj);
             }
-            else if constexpr (is_smart_ptr_v<T>)
+            else if constexpr (is_std_smart_ptr_v<T>)
             {
                 obj = std::move(T(load<typename T::element_type*>()));
             }
-            else if constexpr (is_optional_v<T>)
+            else if constexpr (is_std_optional_v<T>)
             {
                 if (load<bool>())
                     obj = load<T::value_type>();
