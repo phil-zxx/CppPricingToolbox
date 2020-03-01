@@ -11,7 +11,7 @@ namespace Toolbox
     {
     public:
         using ElementType = typename Type;
-        using StorageType = typename DenseStorage<Type, Size>;
+        using StorageType = typename DenseStorage<Type, Size, 1, false>;
 
         constexpr explicit DenseVector() noexcept
             : m_storage() { }

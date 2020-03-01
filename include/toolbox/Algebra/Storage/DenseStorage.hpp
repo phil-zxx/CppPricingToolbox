@@ -8,10 +8,11 @@ namespace Toolbox
 {
     constexpr size_t DynamicSize = static_cast<size_t>(-1);
 
-    template<class Type, size_t Size>
+    template<class Type, size_t R, size_t C, bool SO>
     class DenseStorage
     {
     private:
+        constexpr static size_t Size = std::conditional_t<R != DynamicSize && C != DynamicSize, std::integral_constant<size_t, R * C>, std::integral_constant<size_t, DynamicSize>>::value;
         constexpr static bool hasDynamicSize = (Size == DynamicSize);
 
     public:
@@ -19,14 +20,14 @@ namespace Toolbox
         using DataType    = typename std::conditional_t<hasDynamicSize, Type*, Type[hasDynamicSize ? 1 : Size]>;
 
         constexpr explicit DenseStorage() noexcept
-            : m_rows(0), m_cols(0), m_capacity(0), m_data()
+            : m_size(0), m_capacity(0), m_rows(0), m_cols(0), m_data()
         {
             if constexpr (!hasDynamicSize)
             {
                 m_capacity = Size;
             }
         }
-        
+
         constexpr explicit DenseStorage(size_t rowCount, size_t colCount)
             : DenseStorage()
         {
@@ -43,7 +44,7 @@ namespace Toolbox
         constexpr explicit DenseStorage(size_t size)
             : DenseStorage(size, 1) { }
 
-        DenseStorage(std::initializer_list<Type> list)
+        constexpr DenseStorage(std::initializer_list<Type> list)
             : DenseStorage(list.size(), 1)
         {
             size_t i = 0;
@@ -53,13 +54,23 @@ namespace Toolbox
                 ++i;
             }
         }
-        
-        DenseStorage(std::initializer_list<std::initializer_list<Type>> matrix)
-            : DenseStorage(matrix.size(), (matrix.size() > 0 ? matrix.begin()->size() : 0))
+
+        constexpr DenseStorage(std::initializer_list<std::initializer_list<Type>> matrix)
+            : DenseStorage()
         {
+            if constexpr (SO == false)
+                this->allocate(matrix.size(), matrix.size() > 0 ? matrix.begin()->size() : 0);
+            else
+                this->allocate(matrix.size() > 0 ? matrix.begin()->size() : 0, matrix.size());
+
             size_t i = 0;
             for (const auto& row : matrix)
             {
+                if constexpr (SO == false)
+                    TB_ENSURE(row.size() == m_cols, "Input matrix has rows of varying sizes (found " << row.size() << " and " << m_cols << ")");
+                else
+                    TB_ENSURE(row.size() == m_rows, "Input matrix has cols of varying sizes (found " << row.size() << " and " << m_cols << ")");
+
                 for (const auto& element : row)
                 {
                     m_data[i] = element;
@@ -73,21 +84,21 @@ namespace Toolbox
         {
             this->copyFrom(rhs);
         }
-        
+
         DenseStorage(DenseStorage&& rhs) noexcept
             : DenseStorage()
         {
             this->moveFrom(std::move(rhs));
         }
-        
+
         DenseStorage& operator=(const DenseStorage& rhs) noexcept
         {
             this->copyFrom(rhs);
             return *this;
         }
-        
-        template<class Type2, size_t Size2>
-        DenseStorage& operator=(const DenseStorage<Type2, Size2>& rhs) noexcept
+
+        template<class Type2, size_t R2, size_t C2, bool SO2>
+        DenseStorage& operator=(const DenseStorage<Type2, R2, C2, SO2>& rhs) noexcept
         {
             this->copyFrom(rhs);
             return *this;
@@ -104,7 +115,7 @@ namespace Toolbox
             TB_ASSERT(idx < size(), "Index is out of bounds");
             return this->m_data[idx];
         }
-        
+
         constexpr ElementType& operator[](size_t idx)
         {
             TB_ASSERT(idx < size(), "Index is out of bounds");
@@ -114,20 +125,20 @@ namespace Toolbox
         constexpr const ElementType& at(size_t idx) const
         {
             TB_ENSURE(idx < size(), "Index (" << idx << ") is out of bounds (size is only " << size() << ")");
-            
+
             return this->m_data[idx];
         }
-        
+
         constexpr ElementType& at(size_t idx)
         {
             TB_ENSURE(idx < size(), "Index (" << idx <<") is out of bounds (size is only " << size() << ")");
-            
+
             return this->m_data[idx];
         }
 
         constexpr size_t size() const
         {
-            return m_rows * m_cols;
+            return m_size;
         }
 
         constexpr size_t capacity() const
@@ -162,14 +173,14 @@ namespace Toolbox
         {
             return m_data;
         }
-        
+
         ~DenseStorage()
         {
             deallocate();
         }
 
-        template<class Type2, size_t Size2>
-        constexpr void copyFrom(const DenseStorage<Type2, Size2>& rhs)
+        template<class Type2, size_t R2, size_t C2, bool SO2>
+        constexpr void copyFrom(const DenseStorage<Type2, R2, C2, SO2>& rhs)
         {
             this->allocate(rhs.rowCount(), rhs.colCount());
 
@@ -179,7 +190,7 @@ namespace Toolbox
         template<class VT, class = std::enable_if_t<is_vector_v<VT>>>
         constexpr void copyFrom(const VT& rhs)
         {
-            this->allocate(rhs.size(), 1);
+            this->allocate(rhs.size());
 
             for (size_t i = 0, size = rhs.size(); i < size; ++i)
                 m_data[i] = rhs[i];
@@ -199,36 +210,39 @@ namespace Toolbox
                 std::move(rhs.data(), rhs.data() + rhs.size(), this->m_data);
             }
 
+            rhs.m_size     = 0;
             rhs.m_rows     = 0;
             rhs.m_cols     = 0;
             rhs.m_capacity = 0;
         }
 
-    protected:
-        size_t m_rows, m_cols, m_capacity;
-        DataType m_data;
-    
     private:
+        constexpr void allocate(size_t size)
+        {
+            this->allocate(size, 1);
+        }
+
         constexpr void allocate(size_t rowCount, size_t colCount)
         {
-            const size_t size = rowCount * colCount;
+            m_size = rowCount * colCount;
+            m_rows = rowCount;
+            m_cols = colCount;
 
             if constexpr (hasDynamicSize)
             {
-                if (size > m_capacity)
+                if (m_size > m_capacity)
                 {
                     deallocate();
-                    m_data     = new Type[size];
-                    m_capacity = size;
+                    m_capacity = m_size;
+                    m_data     = new Type[m_capacity];
                 }
             }
             else
             {
-                TB_ENSURE(size <= m_capacity, "Input size (" << size << ") for static-sized vector cannot be larger than its static size (" << m_capacity << ")");
+                TB_ENSURE(m_size <= m_capacity, "Input size ("        << m_size << " = " << m_rows << "x" << m_cols << ") for static-sized storage cannot be larger than its static capacity (" << m_capacity << ")");
+                TB_ENSURE(m_rows <= R,          "Input row count ("   << m_rows << ") for static-sized storage cannot be larger than its static row count (" << R << ")");
+                TB_ENSURE(m_cols <= C,          "Input column count(" << m_cols << ") for static-sized storage cannot be larger than its static column count (" << C << ")");
             }
-
-            m_rows = rowCount;
-            m_cols = colCount;
         }
 
         constexpr void deallocate()
@@ -239,5 +253,9 @@ namespace Toolbox
                     delete[] m_data;
             }
         }
+
+        size_t m_size, m_capacity;
+        size_t m_rows, m_cols;
+        DataType m_data;
     };
 }

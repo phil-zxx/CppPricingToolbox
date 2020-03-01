@@ -9,14 +9,11 @@ namespace Toolbox
     template<class Type, size_t R, size_t C, bool SO>
     class DenseMatrix : public Matrix<DenseMatrix<Type, R, C, SO>, SO>
     {
-    private:
-        static constexpr size_t MatrixSize = std::conditional_t<R != DynamicSize && C != DynamicSize,
-                                                std::integral_constant<size_t, R * C>,
-                                                std::integral_constant<size_t, DynamicSize>>::value;
+        static_assert(!((R == DynamicSize) ^ (C == DynamicSize)), "Matrix Dimensions R & C must be either fully dynamic or fully static");
 
     public:
         using ElementType = typename Type;
-        using StorageType = typename DenseStorage<Type, MatrixSize>;
+        using StorageType = typename DenseStorage<Type, R, C, SO>;
 
         constexpr explicit DenseMatrix() noexcept
             : m_storage() { }
@@ -28,8 +25,8 @@ namespace Toolbox
             : m_storage(rowCount, rowCount, init) { }
 
         DenseMatrix(std::initializer_list<std::initializer_list<Type>> matrix)
-            : m_storage(matrix) {} 
-        
+            : m_storage(matrix) { }
+
         template<class MT>
         constexpr DenseMatrix(const Matrix<MT, SO>& rhs)
             : m_storage((~rhs).rowCount(), (~rhs).colCount())
@@ -111,11 +108,11 @@ namespace Toolbox
         {
             if constexpr (SO == false)
             {
-                return m_storage[rowIdx * m_storage.colCount() + colIdx];
+                return m_storage[rowIdx * colCount() + colIdx];
             }
             else
             {
-                return m_storage[rowIdx * m_storage.rowCount() + colIdx];
+                return m_storage[rowIdx * rowCount() + colIdx];
             }
         }
 
