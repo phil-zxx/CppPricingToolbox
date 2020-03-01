@@ -1,6 +1,7 @@
 #pragma once
 
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
+#include <toolbox/Algebra/Storage/StorageShape.hpp>
 #include <toolbox/Core/Error.hpp>
 
 
@@ -9,7 +10,7 @@ namespace Toolbox
     constexpr size_t DynamicSize = static_cast<size_t>(-1);
 
     template<class Type, size_t R, size_t C, bool SO>
-    class DenseStorage
+    class DenseStorage : public StorageShape
     {
     private:
         constexpr static size_t Size = std::conditional_t<R != DynamicSize && C != DynamicSize, std::integral_constant<size_t, R * C>, std::integral_constant<size_t, DynamicSize>>::value;
@@ -20,7 +21,7 @@ namespace Toolbox
         using DataType    = typename std::conditional_t<hasDynamicSize, Type*, Type[hasDynamicSize ? 1 : Size]>;
 
         constexpr explicit DenseStorage() noexcept
-            : m_size(0), m_capacity(0), m_rows(0), m_cols(0), m_data()
+            : StorageShape(), m_size(0), m_capacity(0), m_data()
         {
             if constexpr (!hasDynamicSize)
             {
@@ -146,16 +147,6 @@ namespace Toolbox
             return m_capacity;
         }
 
-        constexpr size_t rowCount() const
-        {
-            return m_rows;
-        }
-
-        constexpr size_t colCount() const
-        {
-            return m_cols;
-        }
-
         friend std::ostream& operator<<(std::ostream& os, const DenseStorage& rhs)
         {
             os << "[ ";
@@ -255,7 +246,6 @@ namespace Toolbox
         }
 
         size_t m_size, m_capacity;
-        size_t m_rows, m_cols;
         DataType m_data;
     };
 }
