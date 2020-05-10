@@ -15,7 +15,7 @@ namespace Toolbox
         Error(const std::string& file, long line, const std::string& functionName, const std::string& message)
             : m_message(Error::createMessage(file, line, functionName, message)) { }
         
-        const char* what() const override
+        const char* what() const noexcept override
         {
             return m_message.c_str();
         }
