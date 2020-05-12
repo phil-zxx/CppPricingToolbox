@@ -5,16 +5,16 @@
 #include <cstdint>
 #include <sstream>
 #include <sstream>
-#include <compare>
 
 
 namespace Toolbox
 {
+    template<size_t n> constexpr int64_t pow10    = 10 * pow10<n - 1>;
+    template<>         constexpr int64_t pow10<0> =  1;
+
     template<size_t DP>  // DP = Decimal Places
     class Decimal
     {
-        template<size_t n> static constexpr int64_t pow10    = 10 * pow10<n - 1>;
-        template<>         static constexpr int64_t pow10<0> = 1;
         static constexpr int64_t pow10DP = pow10<DP>;
 
         constexpr int64_t round(double x)

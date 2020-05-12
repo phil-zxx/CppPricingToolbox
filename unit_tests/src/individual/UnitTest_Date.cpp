@@ -22,7 +22,7 @@ TEST_CASE("UnitTest_Date", "[UnitTest_Date]")
     static_assert(Date(1899, 12, 30).totalDays() == Date(0).totalDays() && Date(0).ymd() == Date::YearMonthDay{1899, 12, 30});
     static_assert(Date(1899, 12, 31).totalDays() == Date(1).totalDays() && Date(1).ymd() == Date::YearMonthDay{1899, 12, 31});
     static_assert(Date(1900,  1,  1).totalDays() == Date(2).totalDays() && Date(2).ymd() == Date::YearMonthDay{1900,  1,  1});
-    
+
     static_assert(Date(2029, 1, 1)++ == Date(2029, 1, 1));
     static_assert(Date(2029, 1, 2)-- == Date(2029, 1, 2));
     static_assert(++Date(2029, 1, 1) == Date(2029, 1, 2));

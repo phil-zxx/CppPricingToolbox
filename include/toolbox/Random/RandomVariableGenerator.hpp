@@ -1,6 +1,9 @@
 #pragma once
 
+#include <toolbox/Core/Typetraits.hpp>
+
 #include <random>
+#include <iostream>
 
 
 namespace Toolbox
@@ -9,7 +12,7 @@ namespace Toolbox
     class RandomVariableGenerator
     {
     public:
-        using ReturnType = decltype(std::declval<Distr>()(std::declval<Engine&>()));
+        using ReturnType   = decltype(std::declval<Distr>()(std::declval<Engine&>()));
         using Distribution = Distr;
 
         RandomVariableGenerator()
@@ -29,18 +32,18 @@ namespace Toolbox
             m_engine.seed(seed);
         }
 
-        const typename ReturnType& getNext()
+        const ReturnType& getNext()
         {
             m_last = m_distr(m_engine);
             return m_last;
         }
 
-        const typename ReturnType& getLast() const
+        const ReturnType& getLast() const
         {
             return m_last;
         }
 
-        const typename ReturnType& getAntithetic()
+        const ReturnType& getAntithetic()
         {
             if constexpr (std::is_same_v<Distr, std::uniform_int_distribution<>> || std::is_same_v<Distr, std::uniform_real_distribution<>>)
                 m_last = (m_distr.a() + m_distr.b()) - m_last;
@@ -49,7 +52,7 @@ namespace Toolbox
             else if constexpr (std::is_same_v<Distr, std::exponential_distribution<>>)
                 m_last = -std::log(1 - std::exp(-m_distr.lambda() * m_last)) / m_distr.lambda();
             else
-                static_assert(false, "Given distribution is not supported in antithetic calculation");
+                static_assert(false_template<Distr>::value, "Given distribution is not supported in antithetic calculation");
 
             return m_last;
         }

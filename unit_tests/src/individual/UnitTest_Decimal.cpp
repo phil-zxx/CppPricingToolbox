@@ -1,8 +1,6 @@
 #include <catch2/catch.hpp>
-#include <iostream>
 
 #include <toolbox/Core/Decimal.hpp>
-#include <toolbox/Core/decimal.h>
 
 using namespace Toolbox;
 

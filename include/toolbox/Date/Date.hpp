@@ -47,7 +47,6 @@ namespace Toolbox
         constexpr bool operator> (const Date& rhs) const;
         constexpr bool operator< (const Date& rhs) const;
 
-        constexpr Date& operator=(const Date& rhs);
         constexpr Date& operator+=(int x);
         constexpr Date& operator-=(int x);
 
@@ -147,13 +146,6 @@ namespace Toolbox
     inline constexpr bool Date::operator<=(const Date& rhs) const { return this->m_totalDays <= rhs.totalDays(); }
     inline constexpr bool Date::operator> (const Date& rhs) const { return this->m_totalDays >  rhs.totalDays(); }
     inline constexpr bool Date::operator< (const Date& rhs) const { return this->m_totalDays <  rhs.totalDays(); }
-
-    inline constexpr Date& Date::operator=(const Date& rhs)
-    {
-        this->m_totalDays = rhs.m_totalDays;
-        this->m_ymd       = rhs.m_ymd;
-        return *this;
-    }
 
     inline constexpr Date& Date::operator+=(int x)
     {

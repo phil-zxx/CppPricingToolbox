@@ -1,5 +1,7 @@
 #pragma once
 
+#include <toolbox/Core/Typetraits.hpp>
+
 #include <fstream>
 #include <cstddef>
 #include <vector>
@@ -8,6 +10,7 @@
 #include <map>
 #include <optional>
 #include <variant>
+#include <cstring>
 
 
 namespace Toolbox
@@ -110,8 +113,7 @@ namespace Toolbox
             }
             else
             {
-                static_assert(false, "Provided Template argument is not covered in save function");
-                throw;
+                static_assert(false_template<T>::value, "Provided Template argument is not covered in save function");
             }
         }
 
@@ -139,8 +141,8 @@ namespace Toolbox
 
                 for (size_t i = 0; i < size; ++i)
                 {
-                    auto key = load<T::key_type>();
-                    obj[std::move(key)] = load<T::mapped_type>();
+                    auto key = load<typename T::key_type>();
+                    obj[std::move(key)] = load<typename T::mapped_type>();
                 }
             }
             else if constexpr (has_begin_v<T>)
@@ -149,7 +151,7 @@ namespace Toolbox
                 obj.reserve(size);
 
                 for (size_t i = 0; i < size; ++i)
-                    obj.insert(obj.end(), load<T::value_type>());
+                    obj.insert(obj.end(), load<typename T::value_type>());
             }
             else if constexpr (is_std_tuple_v<T>)
             {
@@ -162,11 +164,11 @@ namespace Toolbox
             else if constexpr (is_std_optional_v<T>)
             {
                 if (load<bool>())
-                    obj = load<T::value_type>();
+                    obj = load<typename T::value_type>();
             }
             else
             {
-                static_assert(false, "Provided Template argument is not covered in load function");
+                static_assert(false_template<T>::value, "Provided Template argument is not covered in load function");
                 throw;
             }
         }
