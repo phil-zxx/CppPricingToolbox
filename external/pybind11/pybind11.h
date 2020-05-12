@@ -41,6 +41,7 @@
 #  endif
 #endif
 
+#define _hypot hypot
 #include "attr.h"
 #include "options.h"
 #include "detail/class.h"

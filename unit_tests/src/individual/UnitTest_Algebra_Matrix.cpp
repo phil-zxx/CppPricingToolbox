@@ -102,4 +102,7 @@ TEST_CASE("UnitTest_Matrix_Transpose")
 
     const auto expr1 = trans(mat1);
     const auto expr2 = trans(mat2);
+
+    CHECK(expr1.storageOrder == true);
+    CHECK(expr2.storageOrder == false);
 }

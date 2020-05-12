@@ -1,7 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/operators.h>
 
-#include <toolbox/Algebra/Vectors.hpp>
+#include <toolbox/Algebra/VectorMatrix.hpp>
 
 namespace py = pybind11;
 using namespace Toolbox;
