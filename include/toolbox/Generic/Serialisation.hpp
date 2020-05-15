@@ -8,6 +8,7 @@
 #include <array>
 #include <string>
 #include <map>
+#include <unordered_map>
 #include <optional>
 #include <variant>
 #include <cstring>

@@ -1,11 +1,10 @@
-#include <catch2/catch.hpp>
-
+#include <doctest/doctest.h>
 #include <toolbox/Date/Tenor.hpp>
 
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Tenor", "[UnitTest_Tenor]")
+TEST_CASE("UnitTest_Tenor")
 {
     /* Since we evaluate to constexpr, all unit tests are performed at compile time */
 

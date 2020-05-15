@@ -1,5 +1,5 @@
+#include <doctest/doctest.h>
 #include <toolbox/Algebra/VectorMatrix.hpp>
-#include <catch2/catch.hpp>
 
 using namespace Toolbox;
 
@@ -70,7 +70,7 @@ TEST_CASE("UnitTest_Vector_Expressions")
     const StaticVector<int, 10> vecS = { 5,7,-9 };
     const DynamicVector<double> vecD = { -3,7,5 };
 
-    SECTION("Test_Type")
+    SUBCASE("Test_Type")
     {
         const auto expr1 = vecS;
         const auto expr2 = trans(vecS);
@@ -81,7 +81,7 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(std::string(typeid(expr3).name()) == "class Toolbox::VectorExpr<struct Toolbox::OperatorAdd,class Toolbox::DenseVector<int,10,0>,int,0>");
     }
 
-    SECTION("Test_MinMax")
+    SUBCASE("Test_MinMax")
     {
         const auto minS = min(vecS);
         const auto minD = min(vecD);
@@ -112,7 +112,7 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(argMaxE == 1);
     }
 
-    SECTION("Test_Dot1")
+    SUBCASE("Test_Dot1")
     {
         const auto dotProductDbl   = dot(vecS, vecD);
         const auto dotProductInt   = dot(vecS, asType<int>(vecD));
@@ -130,7 +130,7 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(std::string(typeid(innerProductInt).name()) == "int");
     }
 
-    SECTION("Test_Dot2")
+    SUBCASE("Test_Dot2")
     {
         const StaticVector<int, 5> v1{ { 5, 4, 10, 6, -3 } };
         const DynamicVector<int>   v2{ { 2, 6, -4, 3, 12 } };
@@ -139,7 +139,7 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(dotProduct == -24);
     }
 
-    SECTION("Test_Sum_Product")
+    SUBCASE("Test_Sum_Product")
     {
         const auto prodResult1 = prod(StaticVector<int, 10>());
         const auto prodResult2 = prod(vecS);
@@ -152,7 +152,7 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(sumResult2  == 9);
     }
     
-    SECTION("Test_Expression1")
+    SUBCASE("Test_Expression1")
     {
         const auto expr1 = -(3 * vecS + 8 * asType<int>(vecD) - 3) / 2;
         const auto expr2 = trans(expr1);
@@ -167,7 +167,7 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(expr3.transposeFlag == true);
     }
 
-    SECTION("Test_Expression2")
+    SUBCASE("Test_Expression2")
     {
         using VectorType = StaticVector<double, 5>;
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cmath>
+#include <ostream>
+#include <iomanip>
 
 
 namespace Toolbox
@@ -19,8 +21,13 @@ namespace Toolbox
         {
             return !(*this == other);
         }
+        
+        friend std::ostream& operator<<(std::ostream& os, const ApproxValue& rhs)
+        {
+            return os << std::setprecision(static_cast<int>(1 + std::log10(1. / rhs.m_eps))) << rhs.m_value;
+        }
 
     private:
-        const m_value, m_eps;
+        const double m_value, m_eps;
     };
 }

@@ -1,11 +1,10 @@
-#include <catch2/catch.hpp>
-
+#include <doctest/doctest.h>
 #include <toolbox/Date/Date.hpp>
 
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Date", "[UnitTest_Date]")
+TEST_CASE("UnitTest_Date")
 {
     /* Since we evaluate to constexpr, all unit tests are performed at compile time */
 

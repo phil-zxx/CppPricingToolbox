@@ -1,3 +1,4 @@
+#include <doctest/doctest.h>
 #include <toolbox/Generic/CircularBuffer.hpp>
 
 using namespace Toolbox;
@@ -19,7 +20,7 @@ constexpr CircularBuffer<int, 4> create_buffer()
     return cb;
 }
 
-int func()
+TEST_CASE("UnitTest_CircularBuffer")
 {
     constexpr CircularBuffer<int, 4> cb = create_buffer();
 
@@ -28,6 +29,4 @@ int func()
     static_assert(cb[2] == 9);
     static_assert(cb[3] == 2);
     static_assert(cb.at(3) == 2);
-
-    return 0;
 }

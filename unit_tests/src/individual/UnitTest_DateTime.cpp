@@ -1,11 +1,10 @@
-#include <catch2/catch.hpp>
-
+#include <doctest/doctest.h>
 #include <toolbox/Date/DateTime.hpp>
 
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_DateTime", "[UnitTest_DateTime]")
+TEST_CASE("UnitTest_DateTime")
 {
     static_assert(DateTime().toInt() == 0);
     static_assert(DateTime(2029, 6, 21).toInt() == 47290);

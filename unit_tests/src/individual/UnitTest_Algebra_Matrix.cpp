@@ -1,5 +1,5 @@
+#include <doctest/doctest.h>
 #include <toolbox/Algebra/VectorMatrix.hpp>
-#include <catch2/catch.hpp>
 
 using namespace Toolbox;
 
@@ -86,13 +86,13 @@ TEST_CASE("UnitTest_Matrix_StorageOrder")
     CHECK(mat2(1, 1)      == 4.);
     CHECK(mat2(1, 2)      == 9.);
 
-    CHECK_NOTHROW(StaticMatrix<double, 3, 3, false>{ {3, 5, 2}, { 6,4,9 } });
-    CHECK_NOTHROW(StaticMatrix<double, 2, 3, false>{ {3, 5, 2}, { 6,4,9 } });
-    CHECK_THROWS (StaticMatrix<double, 3, 2, false>{ {3, 5, 2}, { 6,4,9 } });
+     CHECK_NOTHROW(StaticMatrix<double, 3, 3, false>{ {3, 5, 2}, { 6,4,9 } });
+     CHECK_NOTHROW(StaticMatrix<double, 2, 3, false>{ {3, 5, 2}, { 6,4,9 } });
+     CHECK_THROWS (StaticMatrix<double, 3, 2, false>{ {3, 5, 2}, { 6,4,9 } });
 
-    CHECK_NOTHROW(StaticMatrix<double, 3, 3, true>{ {3, 5, 2}, { 6,4,9 } });
-    CHECK_THROWS (StaticMatrix<double, 2, 3, true>{ {3, 5, 2}, { 6,4,9 } });
-    CHECK_NOTHROW(StaticMatrix<double, 3, 2, true>{ {3, 5, 2}, { 6,4,9 } });
+     CHECK_NOTHROW(StaticMatrix<double, 3, 3, true>{ {3, 5, 2}, { 6,4,9 } });
+     CHECK_THROWS (StaticMatrix<double, 2, 3, true>{ {3, 5, 2}, { 6,4,9 } });
+     CHECK_NOTHROW(StaticMatrix<double, 3, 2, true>{ {3, 5, 2}, { 6,4,9 } });
 }
 
 TEST_CASE("UnitTest_Matrix_Transpose")

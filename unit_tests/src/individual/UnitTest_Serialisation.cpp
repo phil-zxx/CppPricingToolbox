@@ -1,11 +1,10 @@
-#include <catch2/catch.hpp>
-
+#include <doctest/doctest.h>
 #include <toolbox/Generic/Serialisation.hpp>
 
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Serialisation_Base", "[UnitTest_Serialisation_Base]")
+TEST_CASE("UnitTest_Serialisation_Base")
 {
     ByteArchive ba;
 
@@ -54,7 +53,7 @@ TEST_CASE("UnitTest_Serialisation_Base", "[UnitTest_Serialisation_Base]")
     CHECK(in9 == out9);
 }
 
-TEST_CASE("UnitTest_Serialisation_Ptr", "[UnitTest_Serialisation_Ptr]")
+TEST_CASE("UnitTest_Serialisation_Ptr")
 {
     ByteArchive ba;
 
@@ -106,7 +105,7 @@ TEST_CASE("UnitTest_Serialisation_Ptr", "[UnitTest_Serialisation_Ptr]")
 }
 
 
-TEST_CASE("UnitTest_Serialisation_Other", "[UnitTest_Serialisation_Other]")
+TEST_CASE("UnitTest_Serialisation_Other")
 {
     ByteArchive ba;
 
