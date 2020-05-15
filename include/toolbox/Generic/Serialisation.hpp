@@ -1,7 +1,5 @@
 #pragma once
 
-#include <toolbox/Core/Typetraits.hpp>
-
 #include <fstream>
 #include <cstddef>
 #include <vector>
@@ -9,6 +7,7 @@
 #include <string>
 #include <map>
 #include <unordered_map>
+#include <memory>
 #include <optional>
 #include <variant>
 #include <cstring>
@@ -25,6 +24,9 @@ namespace Toolbox
         std::string b;
         std::vector<int> c;
     };
+
+    template<class... Args>
+    struct false_template : std::false_type { };
 
     template<class T>
     using remove_cv_ref_t = typename std::remove_cv_t<typename std::remove_reference_t<T>>;
@@ -170,7 +172,6 @@ namespace Toolbox
             else
             {
                 static_assert(false_template<T>::value, "Provided Template argument is not covered in load function");
-                throw;
             }
         }
 
@@ -216,7 +217,7 @@ namespace Toolbox
             }
             else
             {
-                throw;
+                static_assert(false_template<T>::value, "Provided Template argument is not covered in load function");
             }
         }
 
