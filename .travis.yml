@@ -2,20 +2,20 @@ language: cpp
 
 matrix:
   include:
-    - name: "Linux (Clang 10)"
+    - name: "Linux (Clang 9)"
       os: linux
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-trusty-8
-            - sourceline: 'deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-10 main'
+            - sourceline: 'deb https://apt.llvm.org/xenial/ llvm-toolchain-xenial-9 main'
               key_url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
           packages:
-            - clang-10
+            - clang-9
             - libstdc++-9-dev
       env:
-        - MATRIX_EVAL="CC=clang-10 && CXX=clang++-10"
+        - MATRIX_EVAL="CC=clang-9 && CXX=clang++-9"
     - name: "Linux (GCC 9)"
       os: linux
       addons:
