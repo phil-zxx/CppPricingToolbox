@@ -1,0 +1,42 @@
+language: cpp
+
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+            - llvm-toolchain-trusty-8
+          packages:
+            - clang-8
+            - libstdc++-8-dev
+      env:
+        - MATRIX_EVAL="CC=clang-8 && CXX=clang++-8"
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages: 
+            - g++-8
+      env:
+          - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
+
+before_install:
+    - eval "${MATRIX_EVAL}"
+    
+install:
+  # Download & install recent cmake
+  - |
+    if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
+      CMAKE_URL="http://www.cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz"
+      mkdir -p ${TRAVIS_BUILD_DIR}/cmake_3_14
+      travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C ${TRAVIS_BUILD_DIR}/cmake_3_14
+      export PATH=${TRAVIS_BUILD_DIR}/cmake_3_14/bin:${PATH}
+    fi
+      
+script:
+  - cmake --version
+  - cmake CMakeLists.txt
+  - make
