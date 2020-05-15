@@ -10,8 +10,8 @@ namespace Toolbox
     class DenseVector : public Vector<DenseVector<Type, Size, TF>, TF>
     {
     public:
-        using ElementType = typename Type;
-        using StorageType = typename DenseStorage<Type, Size, 1, false>;
+        using ElementType = Type;
+        using StorageType = DenseStorage<Type, Size, 1, false>;
 
         constexpr explicit DenseVector() noexcept
             : m_storage() { }
@@ -36,7 +36,7 @@ namespace Toolbox
         {
             return m_storage.size();
         }
-        
+
         size_t capacity() const
         {
             return m_storage.capacity();
@@ -71,7 +71,7 @@ namespace Toolbox
         {
             return m_storage.data() + m_storage.size();
         }
-        
+
         ElementType& operator[](size_t idx)
         {
             return m_storage[idx];
@@ -81,7 +81,7 @@ namespace Toolbox
         {
             return m_storage[idx];
         }
-        
+
         ElementType& at(size_t idx)
         {
             return m_storage.at(idx);

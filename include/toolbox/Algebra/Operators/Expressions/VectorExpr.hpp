@@ -11,13 +11,13 @@ namespace Toolbox
     class VectorExpr : public Vector<VectorExpr<OP, LHS, RHS, TF>, TF>, Expression
     {
     public:
+        constexpr static bool is_unary_expression_v = std::is_same_v<void*, RHS>;
+
         using OT_LHS = std::conditional_t<is_expression_v<LHS>, const LHS, const LHS&>;
-        using OT_RHS = std::conditional_t<is_expression_v<RHS>, const RHS, const RHS&>;
+        using OT_RHS = std::conditional_t<is_unary_expression_v, void*, std::conditional_t<is_expression_v<RHS>, const RHS, const RHS&>>;
         using ET_LHS = ElementType_t<LHS>;
         using ET_RHS = ElementType_t<RHS>;
-        using ElementType = typename OpResultType_t<OP, ET_LHS, ET_RHS>;
-
-        constexpr static bool is_unary_expression_v = std::is_same_v<void*, RHS>;
+        using ElementType = OpResultType_t<OP, ET_LHS, ET_RHS>;
 
         constexpr VectorExpr(const LHS& arg)
             : m_lhs(arg), m_rhs{}
@@ -54,7 +54,7 @@ namespace Toolbox
             else if constexpr (is_vector_v<RHS>)
                 return m_rhs.size();
             else
-                static_assert(false, "At least one input must be a vector");
+                static_assert(false_template<OP>::value, "At least one input must be a vector");
         }
 
     private:

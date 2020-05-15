@@ -1,16 +1,25 @@
 #pragma once
 
 #include <toolbox/Algebra/Operators/Expressions/SumExprBinary.hpp>
+#include <toolbox/Algebra/Operators/Expressions/MatrixExpr.hpp>
 #include <toolbox/Algebra/Operators/BasicOperatorClasses.hpp>
 
 
 namespace Toolbox
 {
-    template<class VT, class = std::enable_if_t<is_vector_v<VT>>>
-    decltype(auto) trans(const VT& arg)
+    template<class VMT, class = std::enable_if_t<is_unary_op_valid_v<VMT>>>
+    constexpr decltype(auto) trans(const VMT& arg)
     {
-        constexpr bool TF = !vector_transpose_flag_v<VT>;
-        return VectorExprUnary<OperatorId<>, VT, TF>(arg);
+        if constexpr (is_vector_v<VMT>)
+        {
+            constexpr bool TF = !vector_transpose_flag_v<VMT>;
+            return VectorExprUnary<OperatorId<>, VMT, TF>(arg);
+        }
+        else if constexpr (is_matrix_v<VMT>)
+        {
+            constexpr bool SO = !matrix_storage_order_flag_v<VMT>;
+            return MatrixExprUnary<OperatorId<>, VMT, SO>(arg);
+        }
     }
 
     template<class T, class VT, class = std::enable_if_t<is_vector_v<VT>>>

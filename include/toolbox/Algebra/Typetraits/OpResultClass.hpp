@@ -21,12 +21,27 @@ namespace Toolbox
     constexpr bool vector_transpose_flag_v = vector_transpose_flag<ARG>::value;
 
 
+    /* ========== vector_transpose_flag ========== */
+    template<class ARG>
+    struct matrix_storage_order_flag
+    {
+        template<class MT> constexpr static std::true_type test(Matrix<MT, true>*);
+        template<class MT> constexpr static std::false_type test(Matrix<MT, false>*);
+        constexpr static std::false_type test(void*);
+
+        constexpr static bool value = decltype(test(std::declval<ARG*>()))::value;
+    };
+
+    template<class ARG>
+    constexpr bool matrix_storage_order_flag_v = matrix_storage_order_flag<ARG>::value;
+
+
     /* ========== OpResultUnary ========== */
     template<class OP, class ARG>
     struct OpResultUnary
     {
-        using type = typename VectorExprUnary<OP, ARG, ARG::transposeFlag>;
-        
+        using type = VectorExprUnary<OP, ARG, ARG::transposeFlag>;
+
         static_assert(is_vector_v<ARG>, "In an unary operation, need input to be a vector type");
     };
 
@@ -44,7 +59,7 @@ namespace Toolbox
         constexpr static bool lhsTF = vector_transpose_flag_v<LHS>;
         constexpr static bool rhsTF = vector_transpose_flag_v<RHS>;
 
-        using type = typename VectorExprBinary<OP, LHS, RHS, TF>;
+        using type = VectorExprBinary<OP, LHS, RHS, TF>;
 
         static_assert(is_vector_v<LHS> || is_vector_v<RHS>,
             "In a binary operation, at least one argument must be a vector type");

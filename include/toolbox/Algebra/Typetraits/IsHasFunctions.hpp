@@ -36,7 +36,7 @@ namespace Toolbox
     template <class T>
     struct is_vector
     {
-        using Tclean = typename remove_cv_ref_t<T>;
+        using Tclean = remove_cv_ref_t<T>;
 
         template <class VT, bool TF>
         static std::true_type test(Vector<VT, TF>*);
@@ -54,7 +54,7 @@ namespace Toolbox
     template <class T>
     struct is_matrix
     {
-        using Tclean = typename remove_cv_ref_t<T>;
+        using Tclean = remove_cv_ref_t<T>;
 
         template <class MT, bool SO>
         static std::true_type test(Matrix<MT, SO>*);
@@ -81,10 +81,10 @@ namespace Toolbox
     /* ========== is_binary_op_valid & is_unary_op_valid ========== */
     template <class LHS, class RHS>
     constexpr bool is_binary_op_valid_v = is_vector_or_scalar_v<LHS> || is_vector_or_scalar_v<RHS>;
-    
+
     template <class RHS>
-    constexpr bool is_unary_op_valid_v = is_vector_v<RHS>;
-    
+    constexpr bool is_unary_op_valid_v = is_vector_v<RHS> || is_matrix_v<RHS>;
+
 
     /* ========== has_storage ========== */
     template<class, class = void>
@@ -95,4 +95,14 @@ namespace Toolbox
 
     template<class T>
     constexpr bool has_storage_v = has_storage<T>::value;
+
+
+    /* ========== dummy false type ========== */
+    template<class... Args>
+    struct false_template : std::false_type { };
+
+
+    /* ========== if ========== */
+    template<bool Test, class T, T val1, T val2>
+    constexpr T if_v = std::conditional_t<Test, std::integral_constant<T, val1>, std::integral_constant<T, val2>>::value;
 }

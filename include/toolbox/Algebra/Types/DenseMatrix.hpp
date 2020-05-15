@@ -12,8 +12,8 @@ namespace Toolbox
         static_assert(!((R == DynamicSize) ^ (C == DynamicSize)), "Matrix Dimensions R & C must be either fully dynamic or fully static");
 
     public:
-        using ElementType = typename Type;
-        using StorageType = typename DenseStorage<Type, R, C, SO>;
+        using ElementType = Type;
+        using StorageType = DenseStorage<Type, R, C, SO>;
 
         constexpr explicit DenseMatrix() noexcept
             : m_storage() { }

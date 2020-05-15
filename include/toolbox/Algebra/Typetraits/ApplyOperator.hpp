@@ -28,6 +28,6 @@ namespace Toolbox
         else if constexpr (!is_vector_v<LHS>&& is_vector_v<RHS>)
             return operation(lhs, rhs[i]);
         else
-            static_assert(false, "Need at least one input to be a vector");
+            static_assert(false_template<OP, LHS, RHS>::value, "Need at least one input to be a vector");
     }
 }
