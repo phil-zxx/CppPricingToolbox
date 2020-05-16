@@ -3,7 +3,6 @@
 #define CPP_PRICING_TOOLBOX_ENABLE_ASSERT 1
 
 #include <cassert>
-#include <sstream>
 #include <string>
 
 
@@ -20,14 +19,43 @@ namespace Toolbox
             return m_message.c_str();
         }
 
+        struct Msg
+        {
+            Msg() = default;
+
+           template<class T>
+            Msg& operator<<(T i)
+            {
+                m_str.append(std::to_string(i));
+                return *this;
+            }
+
+            Msg& operator<<(const char* msg)
+            {
+                m_str.append(msg);
+                return *this;
+            }
+            
+            Msg& operator<<(const std::string& msg)
+            {
+                m_str.append(msg);
+                return *this;
+            }
+
+            operator std::string() const
+            {
+                return m_str;
+            }
+
+            std::string m_str;
+        };
+
     private:
         std::string m_message;
 
         static std::string createMessage(const std::string& file, long line, const std::string& functionName, const std::string& message)
         {
-            std::ostringstream os;
-            os << "Error: " << functionName << ":\n  " << file << "(" << line << "): \n" << message;
-            return os.str();
+            return Error::Msg() << "Error: " << functionName << ":\n  " << file << "(" << line << "): \n" << message;
         }
     };
 
@@ -45,9 +73,7 @@ namespace Toolbox
 
 #define TB_ENSURE(condition,message) \
 if (!(condition)) { \
-    std::ostringstream __os__; \
-    __os__ << message; \
-    throw Toolbox::Error(__FILE__, __LINE__, __func__, __os__.str()); \
+    throw Toolbox::Error(__FILE__, __LINE__, __func__, Error::Msg() << message); \
  } else 
 
 #define TB_ENSURE_QUICK(condition,message) \

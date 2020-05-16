@@ -19,10 +19,10 @@ namespace Toolbox
             : m_storage() { }
 
         constexpr explicit DenseMatrix(size_t rowCount, size_t colCount)
-            : m_storage(rowCount, rowCount) { }
+            : m_storage(rowCount, colCount) { }
 
         constexpr explicit DenseMatrix(size_t rowCount, size_t colCount, Type init)
-            : m_storage(rowCount, rowCount, init) { }
+            : m_storage(rowCount, colCount, init) { }
 
         DenseMatrix(std::initializer_list<std::initializer_list<Type>> matrix)
             : m_storage(matrix) { }
