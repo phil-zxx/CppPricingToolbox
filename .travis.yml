@@ -2,7 +2,7 @@ language: cpp
 
 matrix:
   include:
-    - name: "Linux (Clang 9)"
+    - name: "Linux (Clang 10)"
       os: linux
       addons:
         apt:
