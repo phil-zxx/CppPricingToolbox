@@ -14,13 +14,13 @@ namespace Toolbox
         constexpr static bool is_unary_expression_v = std::is_same_v<void*, RHS>;
 
         using OT_LHS = std::conditional_t<is_expression_or_scalar_v<LHS>, const LHS, const LHS&>;
-        using OT_RHS = std::conditional_t<is_expression_or_scalar_v<RHS>, const RHS, const RHS&>;
+        using OT_RHS = std::conditional_t<is_expression_or_scalar_v<RHS> || is_unary_expression_v, const RHS, const RHS&>;
         using ET_LHS = ElementType_t<LHS>;
         using ET_RHS = ElementType_t<RHS>;
         using ElementType = OpResultType_t<OP, ET_LHS, ET_RHS>;
 
         constexpr VectorExpr(const LHS& arg)
-            : m_lhs(arg), m_rhs{}
+            : m_lhs(arg), m_rhs(nullptr)
         {
             static_assert(is_unary_expression_v, "Operator is not unary, need to provide two inputs");
         }
