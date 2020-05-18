@@ -74,11 +74,6 @@ namespace Toolbox
 #define TB_ENSURE(condition,message) \
 if (!(condition)) { \
     throw Toolbox::Error(__FILE__, __LINE__, __func__, Error::Msg() << message); \
- } else 
-
-#define TB_ENSURE_QUICK(condition,message) \
-if (!(condition)) { \
-    throw Toolbox::Error(__FILE__, __LINE__, __func__, message); \
- } else 
+ } else
 
 #define TB_THROW(message) TB_ENSURE(false, message)
