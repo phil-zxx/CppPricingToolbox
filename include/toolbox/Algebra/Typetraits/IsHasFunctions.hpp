@@ -78,6 +78,11 @@ namespace Toolbox
     constexpr bool is_vector_or_scalar_v = is_vector_v<T> || is_scalar_v<T>;
 
 
+    /* ========== is_expression_or_scalar ========== */
+    template <class T>
+    constexpr bool is_expression_or_scalar_v = is_expression_v<T> || is_scalar_v<T>;
+
+
     /* ========== is_binary_op_valid & is_unary_op_valid ========== */
     template <class LHS, class RHS>
     constexpr bool is_binary_op_valid_v = is_vector_or_scalar_v<LHS> || is_vector_or_scalar_v<RHS>;

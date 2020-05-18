@@ -13,8 +13,8 @@ namespace Toolbox
     public:
         constexpr static bool is_unary_expression_v = std::is_same_v<void*, RHS>;
 
-        using OT_LHS = std::conditional_t<is_expression_v<LHS>, const LHS, const LHS&>;
-        using OT_RHS = std::conditional_t<is_unary_expression_v, void*, std::conditional_t<is_expression_v<RHS>, const RHS, const RHS&>>;
+        using OT_LHS = std::conditional_t<is_expression_or_scalar_v<LHS>, const LHS, const LHS&>;
+        using OT_RHS = std::conditional_t<is_expression_or_scalar_v<RHS>, const RHS, const RHS&>;
         using ET_LHS = ElementType_t<LHS>;
         using ET_RHS = ElementType_t<RHS>;
         using ElementType = OpResultType_t<OP, ET_LHS, ET_RHS>;

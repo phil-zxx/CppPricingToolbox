@@ -21,7 +21,7 @@ namespace Toolbox
     constexpr bool vector_transpose_flag_v = vector_transpose_flag<ARG>::value;
 
 
-    /* ========== vector_transpose_flag ========== */
+    /* ========== matrix_storage_order_flag ========== */
     template<class ARG>
     struct matrix_storage_order_flag
     {
