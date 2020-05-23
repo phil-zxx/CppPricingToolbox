@@ -13,14 +13,14 @@ namespace Toolbox
     public:
         constexpr static bool is_unary_expression_v = std::is_same_v<void*, RHS>;
 
-        using OT_LHS      = std::conditional_t<is_expression_v<LHS>, const LHS, const LHS&>;
-        using OT_RHS      = std::conditional_t<is_unary_expression_v, void*, std::conditional_t<is_expression_v<RHS>, const RHS, const RHS&>>;
+        using OT_LHS      = std::conditional_t<is_expression_or_scalar_v<LHS>, const LHS, const LHS&>;
+        using OT_RHS      = std::conditional_t<is_expression_or_scalar_v<RHS> || is_unary_expression_v, const RHS, const RHS&>;
         using ET_LHS      = ElementType_t<LHS>;
         using ET_RHS      = ElementType_t<RHS>;
         using ElementType = OpResultType_t<OP, ET_LHS, ET_RHS>;
 
         constexpr MatrixExpr(const LHS& arg)
-            : m_lhs(arg), m_rhs{}
+            : m_lhs(arg), m_rhs(nullptr)
         {
             static_assert(is_unary_expression_v, "Operator is not unary, need to provide two inputs");
         }
@@ -39,12 +39,18 @@ namespace Toolbox
 
         constexpr auto operator[](size_t i) const
         {
-            if constexpr(MatrixExpr::is_unary_expression_v)
+            if constexpr(is_unary_expression_v)
                 return apply_unary<OP, LHS>(m_lhs, i);
             else
-            {
                 return apply_binary<OP, LHS, RHS>(m_lhs, m_rhs, i);
-            }
+        }
+        
+        constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx) const
+        {
+            if constexpr (is_unary_expression_v)
+                return apply_unary<OP, LHS>(m_lhs, rowIdx, colIdx);
+            else
+                return apply_binary<OP, LHS, RHS>(m_lhs, m_rhs, rowIdx, colIdx);
         }
 
         constexpr size_t size() const
@@ -53,6 +59,26 @@ namespace Toolbox
                 return m_lhs.size();
             else if constexpr (is_matrix_v<RHS>)
                 return m_rhs.size();
+            else
+                static_assert(false_template<OP>::value, "At least one input must be a matrix");
+        }
+
+        constexpr size_t rowCount() const
+        {
+            if constexpr (is_matrix_v<LHS>)
+                return m_lhs.rowCount();
+            else if constexpr (is_matrix_v<RHS>)
+                return m_rhs.rowCount();
+            else
+                static_assert(false_template<OP>::value, "At least one input must be a matrix");
+        }
+
+        constexpr size_t colCount() const
+        {
+            if constexpr (is_matrix_v<LHS>)
+                return m_lhs.colCount();
+            else if constexpr (is_matrix_v<RHS>)
+                return m_rhs.colCount();
             else
                 static_assert(false_template<OP>::value, "At least one input must be a matrix");
         }

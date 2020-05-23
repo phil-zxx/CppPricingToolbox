@@ -1,6 +1,6 @@
 #pragma once
 
-#include <toolbox/Algebra/Operators/Expressions/VectorExpr.hpp>
+#include <toolbox/Algebra/Operators/Expressions/MatrixExpr.hpp>
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
 
 
@@ -40,9 +40,9 @@ namespace Toolbox
     template<class OP, class ARG>
     struct OpResultUnary
     {
-        using type = VectorExprUnary<OP, ARG, ARG::transposeFlag>;
+        using type = MatrixExprUnary<OP, ARG, ARG::storageOrder>;
 
-        static_assert(is_vector_v<ARG>, "In an unary operation, need input to be a vector type");
+        static_assert(is_matrix_v<ARG>, "In an unary operation, need input to be a matrix type");
     };
 
     template<class OP, class ARG>
@@ -50,21 +50,22 @@ namespace Toolbox
 
 
     /* ========== OpResultBinary ========== */
-    template<class OP, class LHS, class RHS, bool ElementWise = true>
+    template<class OP, class LHS, class RHS>
     struct OpResultBinary
     {
-        using Combined = std::conditional_t<is_vector_v<LHS>, LHS, RHS>;
+        using Combined = std::conditional_t<is_matrix_v<LHS>, LHS, RHS>;
 
-        constexpr static bool TF    = vector_transpose_flag_v<Combined>;
-        constexpr static bool lhsTF = vector_transpose_flag_v<LHS>;
-        constexpr static bool rhsTF = vector_transpose_flag_v<RHS>;
+        constexpr static bool SO    = matrix_storage_order_flag_v<Combined>;
+        constexpr static bool lhsSO = matrix_storage_order_flag_v<LHS>;
+        constexpr static bool rhsSO = matrix_storage_order_flag_v<RHS>;
 
-        using type = VectorExprBinary<OP, LHS, RHS, TF>;
+        using type = MatrixExprBinary<OP, LHS, RHS, SO>;
 
-        static_assert(is_vector_v<LHS> || is_vector_v<RHS>,
-            "In a binary operation, at least one argument must be a vector type");
-        static_assert(!(ElementWise && is_vector_v<LHS> && is_vector_v<RHS> && lhsTF != rhsTF),
-            "In an elementwise-binary operation, both vectors must have same transpose flag");
+        static_assert(is_matrix_v<LHS> || is_matrix_v<RHS>,
+            "In an binary operation, at least one argument must be a matrix type");
+
+        static_assert(!(is_matrix_v<LHS> && is_matrix_v<RHS> && lhsSO != rhsSO),
+            "In an binary operation, both matrices must have same storage-order flag");
     };
 
     template<class OP, class LHS, class RHS>

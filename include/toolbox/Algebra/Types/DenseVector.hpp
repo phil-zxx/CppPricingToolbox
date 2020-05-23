@@ -1,117 +1,38 @@
 #pragma once
 
-#include <toolbox/Algebra/Types/Base/Vector.hpp>
-#include <toolbox/Algebra/Storage/DenseStorage.hpp>
+#include <toolbox/Algebra/Types/DenseMatrix.hpp>
 
 
 namespace Toolbox
 {
     template<class Type, size_t Size, bool TF>
-    class DenseVector : public Vector<DenseVector<Type, Size, TF>, TF>
+    class DenseVector : public DenseMatrix<Type, if_v<Size == DynamicSize, size_t, Size, TF ? 1 : Size>, if_v<Size == DynamicSize, size_t, Size, TF ? Size : 1>, TF>
     {
+        using BaseType = DenseMatrix<Type, if_v<Size == DynamicSize, size_t, Size, TF ? 1 : Size>, if_v<Size == DynamicSize, size_t, Size, TF ? Size : 1>, TF>;
     public:
-        using ElementType = Type;
-        using StorageType = DenseStorage<Type, Size, 1, false>;
-
         constexpr explicit DenseVector() noexcept
-            : m_storage() { }
+            : BaseType() { }
 
         constexpr explicit DenseVector(size_t size)
-            : m_storage(size) { }
+            : BaseType(TF ? 1 : size, TF ? size : 1) { }
 
         constexpr explicit DenseVector(size_t size, Type init)
-            : m_storage(size, 1, init) { }
+            : BaseType(TF ? 1 : size, TF ? size : 1, init) { }
 
         DenseVector(std::initializer_list<Type> list)
-            : m_storage(list) { }
-
-        template<class VT>
-        constexpr DenseVector(const Vector<VT, TF>& rhs)
-            : m_storage((~rhs).size())
+            : BaseType(TF ? 1 : list.size(), TF ? list.size() : 1)
         {
-            *this = ~rhs;
+            std::copy(list.begin(), list.end(), m_data);
         }
 
-        size_t size() const
+        template<class MT, bool SO>
+        constexpr DenseVector(const Matrix<MT, SO>& rhs)
+            : BaseType(TF ? 1 : (~rhs).size(), TF ? (~rhs).size() : 1)
         {
-            return m_storage.size();
-        }
+            if ((~rhs).rowCount() != 1 && (~rhs).colCount() != 1)
+                throw("DenseVector can only takes matrix objects which have vector shape (rows=1 or cols=1)");
 
-        size_t capacity() const
-        {
-            return m_storage.capacity();
+            this->copyFrom(~rhs);
         }
-
-        const StorageType& storage() const
-        {
-            return m_storage;
-        }
-
-        StorageType& storage()
-        {
-            return m_storage;
-        }
-
-        const Type* begin() const
-        {
-            return m_storage.data();
-        }
-
-        const Type* end() const
-        {
-            return m_storage.data() + m_storage.size();
-        }
-
-        Type* begin()
-        {
-            return m_storage.data();
-        }
-
-        Type* end()
-        {
-            return m_storage.data() + m_storage.size();
-        }
-
-        ElementType& operator[](size_t idx)
-        {
-            return m_storage[idx];
-        }
-
-        const ElementType& operator[](size_t idx) const
-        {
-            return m_storage[idx];
-        }
-
-        ElementType& at(size_t idx)
-        {
-            return m_storage.at(idx);
-        }
-
-        const ElementType& at(size_t idx) const
-        {
-            return m_storage.at(idx);
-        }
-
-        friend std::ostream& operator<<(std::ostream& os, const DenseVector& rhs)
-        {
-            return os << rhs.m_storage;
-        }
-
-        template<class VT>
-        DenseVector& operator=(const Vector<VT, TF>& rhs)
-        {
-            if constexpr (has_storage_v<VT>)
-            {
-                m_storage.copyFrom((~rhs).storage());
-            }
-            else
-            {
-                m_storage.copyFrom(~rhs);
-            }
-            return *this;
-        }
-
-    protected:
-        StorageType m_storage;
     };
 }

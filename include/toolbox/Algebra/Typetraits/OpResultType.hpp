@@ -18,6 +18,6 @@ namespace Toolbox
         using type = decltype(OP{}(std::declval<ARG>()));
     };
 
-    template<class OP, class LHS, class RHS>
+    template<class OP, class LHS, class RHS = void*>
     using OpResultType_t = typename OpResultType<OP, LHS, RHS>::type;
 }

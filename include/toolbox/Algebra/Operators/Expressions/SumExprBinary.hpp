@@ -5,7 +5,7 @@
 
 namespace Toolbox
 {
-    template <class OP, class LHS, class RHS, class = std::enable_if_t<is_vector_v<LHS> && is_vector_v<RHS>>>
+    template <class OP, class LHS, class RHS, class = std::enable_if_t<is_matrix_v<LHS> && is_matrix_v<RHS>>>
     struct SumExprBinary
     {
         constexpr static decltype(auto) evaluate(const LHS& lhs, const RHS& rhs)
