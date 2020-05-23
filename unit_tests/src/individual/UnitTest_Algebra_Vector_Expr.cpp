@@ -32,47 +32,6 @@ TEST_CASE("UnitTest_Vector_BaseFunctions")
     CHECK_THROWS(vecD.at(3));
 }
 
-TEST_CASE("UnitTest_Vector_InitList")
-{
-    const StaticVector<double, 10> vecS{ 7,5,25,11 };
-    const DynamicVector<int> vecD{ 6,3,-3,6,-32,8,99 };
-
-    CHECK(vecS.capacity() == 10);
-    CHECK(vecS.size()     == 4);
-    CHECK(vecS[0]         == 7.);
-    CHECK(vecS[1]         == 5.);
-    CHECK(vecS[2]         == 25.);
-    CHECK(vecS.at(3)      == 11.);
-    CHECK_THROWS(vecS.at(4));
-    CHECK_THROWS(vecS.at(8));
-
-    CHECK(vecD.capacity() == 7);
-    CHECK(vecD.size()     == 7);
-    CHECK(vecD[0]         == 6);
-    CHECK(vecD[1]         == 3);
-    CHECK(vecD[2]         == -3);
-    CHECK(vecD[3]         == 6);
-    CHECK(vecD[4]         == -32);
-    CHECK(vecD[5]         == 8);
-    CHECK(vecD[6]         == 99);
-    CHECK_THROWS(vecD.at(7));
-    CHECK_THROWS(vecD.at(10));
-}
-
-TEST_CASE("UnitTest_Vector_Size")
-{
-    CHECK_NOTHROW(StaticVector<int, 3>(1));
-    CHECK_NOTHROW(StaticVector<int, 3>(2));
-    CHECK_NOTHROW(StaticVector<int, 3>(3));
-    CHECK_THROWS (StaticVector<int, 3>(4));
-    CHECK_THROWS (StaticVector<int, 10>(15));
-    CHECK_NOTHROW(StaticVector<int, 4>{3,4,5,6});
-    CHECK_THROWS (StaticVector<int, 4>{3,4,5,6,7});
-    
-    CHECK_NOTHROW(DynamicVector<int>{3,4,5,6});
-    CHECK_NOTHROW(DynamicVector<int>{3,4,5,6,7});
-}
-
 TEST_CASE("UnitTest_Vector_Expressions")
 {
     const StaticVector<int, 10> vecS = { 5,7,-9 };
@@ -85,8 +44,8 @@ TEST_CASE("UnitTest_Vector_Expressions")
         const auto expr3 = vecS + 3;
 
         CHECK(std::string(typeid(expr1).name()) == "class Toolbox::DenseVector<int,10,0>");
-        CHECK(std::string(typeid(expr2).name()) == "class Toolbox::VectorExpr<struct Toolbox::OperatorId<void>,class Toolbox::DenseVector<int,10,0>,void * __ptr64,1>");
-        CHECK(std::string(typeid(expr3).name()) == "class Toolbox::VectorExpr<struct Toolbox::OperatorAdd,class Toolbox::DenseVector<int,10,0>,int,0>");
+        CHECK(std::string(typeid(expr2).name()) == "class Toolbox::MatrixExprTrans<struct Toolbox::OperatorId<void>,class Toolbox::DenseVector<int,10,0>,1>");
+        CHECK(std::string(typeid(expr3).name()) == "class Toolbox::MatrixExpr<struct Toolbox::OperatorAdd,class Toolbox::DenseVector<int,10,0>,int,0>");
     }
 
     SUBCASE("Test_MinMax")
@@ -126,12 +85,12 @@ TEST_CASE("UnitTest_Vector_Expressions")
         const auto dotProductInt   = dot(vecS, asType<int>(vecD));
         const auto innerProductDbl = innerProduct(trans(vecS), vecD);
         const auto innerProductInt = innerProduct(trans(vecS), asType<int>(vecD));
-        
+
         CHECK(dotProductDbl   == -11);
         CHECK(dotProductInt   == -11);
         CHECK(innerProductDbl == -11);
         CHECK(innerProductInt == -11);
-        
+
         CHECK(std::string(typeid(dotProductDbl).name())   == "double");
         CHECK(std::string(typeid(dotProductInt).name())   == "int");
         CHECK(std::string(typeid(innerProductDbl).name()) == "double");
@@ -169,18 +128,31 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(expr1[0] ==   6); CHECK(expr2[0] ==   6); CHECK(expr3[0] ==   6);
         CHECK(expr1[1] == -37); CHECK(expr2[1] == -37); CHECK(expr3[1] == -37);
         CHECK(expr1[2] ==  -5); CHECK(expr2[2] ==  -5); CHECK(expr3[2] ==  -5);
-        
-        CHECK(expr1.transposeFlag == false);
-        CHECK(expr2.transposeFlag == true);
-        CHECK(expr3.transposeFlag == true);
+
+        CHECK(expr1.rowCount() == 3);
+        CHECK(expr1.colCount() == 1);
+        CHECK(expr1.size()     == 3);
+        CHECK(expr1(0, 0) ==   6);
+        CHECK(expr1(1, 0) == -37);
+        CHECK(expr1(2, 0) ==  -5);
+        CHECK_NOTHROW(expr1(1, 0));
+        CHECK_THROWS (expr1(0, 1));
+
+        CHECK(expr2.rowCount() == 1);
+        CHECK(expr2.colCount() == 3);
+        CHECK(expr2.size()     == 3);
+
+        CHECK(expr3.rowCount() == 1);
+        CHECK(expr3.colCount() == 3);
+        CHECK(expr3.size()     == 3);
     }
 
     SUBCASE("Test_Expression2")
     {
         using VectorType = StaticVector<double, 5>;
 
-        const VectorType v1{ { 5, 3, 2, 6, 9 } };
-        const VectorType v2{ { 7, 2, 9, 5, 1 } };
+        const VectorType v1 = { 5, 3, 2, 6, 9 };
+        const VectorType v2 = { 7, 2, 9, 5, 1 };
 
         CHECK(v1[0] == 5);
         CHECK(v1[1] == 3);
@@ -189,19 +161,19 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(v1[4] == 9);
 
         const VectorType expr1 = v1 + v2;
-        const VectorType vecTrue1{ {12, 5, 11, 11, 10} };
+        const VectorType vecTrue1 = {12, 5, 11, 11, 10};
         CHECK(expr1.size() == 5);
         CHECK(expr1 == vecTrue1);
         CHECK(!(expr1 != vecTrue1));
 
         const auto expr2 = 4 * ((-v1 + v2 / 8.) * 10 - v1);
-        const VectorType vecTrue2{ { -185, -122, -43, -239, -391 } };
+        const VectorType vecTrue2 = { -185, -122, -43, -239, -391 };
         CHECK(expr2.size() == 5);
-        CHECK(expr2 == vecTrue2);
+        CHECK((expr2 == vecTrue2));
         CHECK(!(expr2 != vecTrue2));
 
         const auto expr3 = (-v1 * v2 / 2. + (v1 - 5.) / v2 - v1) * 30 + 600;
-        const VectorType vecTrue3{ { -75, 390, 260, -24, 315 } };
+        const VectorType vecTrue3 = { -75, 390, 260, -24, 315 };
         CHECK(expr3.size() == 5);
         CHECK(expr3 == vecTrue3);
         CHECK(!(expr3 != vecTrue3));
