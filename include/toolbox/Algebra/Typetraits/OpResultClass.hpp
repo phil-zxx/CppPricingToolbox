@@ -6,21 +6,6 @@
 
 namespace Toolbox
 {
-    /* ========== vector_transpose_flag ========== */
-    template<class ARG>
-    struct vector_transpose_flag
-    {
-        template<class VT> constexpr static std::true_type test(Vector<VT, true>*);
-        template<class VT> constexpr static std::false_type test(Vector<VT, false>*);
-        constexpr static std::false_type test(void*);
-
-        constexpr static bool value = decltype(test(std::declval<ARG*>()))::value;
-    };
-
-    template<class ARG>
-    constexpr bool vector_transpose_flag_v = vector_transpose_flag<ARG>::value;
-
-
     /* ========== matrix_storage_order_flag ========== */
     template<class ARG>
     struct matrix_storage_order_flag

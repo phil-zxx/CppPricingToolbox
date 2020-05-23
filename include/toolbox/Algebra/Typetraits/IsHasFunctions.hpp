@@ -1,6 +1,5 @@
 #pragma once
 
-#include <toolbox/Algebra/Types/Base/Vector.hpp>
 #include <toolbox/Algebra/Types/Base/Matrix.hpp>
 #include <type_traits>
 
@@ -32,24 +31,6 @@ namespace Toolbox
     constexpr bool is_instance_of_v<Template<Args...>, Template> = true;
 
 
-    /* ========== is_vector ========== */
-    template <class T>
-    struct is_vector
-    {
-        using Tclean = remove_cv_ref_t<T>;
-
-        template <class VT, bool TF>
-        static std::true_type test(Vector<VT, TF>*);
-
-        static std::false_type test(void*);
-
-        constexpr static bool value = decltype(test(std::declval<Tclean*>()))::value;
-    };
-
-    template <class T>
-    constexpr bool is_vector_v = is_vector<T>::value;
-
-
     /* ========== is_matrix ========== */
     template <class T>
     struct is_matrix
@@ -73,22 +54,14 @@ namespace Toolbox
     constexpr bool is_scalar_v = std::is_arithmetic_v<T> && !is_boolean_v<T>;
 
 
-    /* ========== is_vector_or_scalar ========== */
-    template <class T>
-    constexpr bool is_vector_or_scalar_v = is_vector_v<T> || is_scalar_v<T>;
-
-
     /* ========== is_expression_or_scalar ========== */
     template <class T>
     constexpr bool is_expression_or_scalar_v = is_expression_v<T> || is_scalar_v<T>;
 
 
-    /* ========== is_binary_op_valid & is_unary_op_valid ========== */
+    /* ========== is_binary_op_valid ========== */
     template <class LHS, class RHS>
-    constexpr bool is_binary_op_valid_v = is_vector_or_scalar_v<LHS> || is_vector_or_scalar_v<RHS>;
-
-    template <class RHS>
-    constexpr bool is_unary_op_valid_v = is_vector_v<RHS> || is_matrix_v<RHS>;
+    constexpr bool is_binary_op_valid_v = is_matrix_v<LHS> || is_matrix_v<RHS>;
 
 
     /* ========== has_storage ========== */

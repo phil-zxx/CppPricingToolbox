@@ -27,7 +27,7 @@ namespace Toolbox
 
         template<class MT, bool SO>
         constexpr DenseVector(const Matrix<MT, SO>& rhs)
-            : BaseType(TF ? 1 : (~rhs).size(), TF ? (~rhs).size() : 1)
+            : BaseType((~rhs).rowCount(), (~rhs).colCount())
         {
             if ((~rhs).rowCount() != 1 && (~rhs).colCount() != 1)
                 throw("DenseVector can only takes matrix objects which have vector shape (rows=1 or cols=1)");
