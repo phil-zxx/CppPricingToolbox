@@ -37,7 +37,7 @@ namespace Toolbox
             static_assert(!is_unary_expression_v, "Operator is not binary, need to provide one input only");
         }
 
-        constexpr auto operator[](size_t i) const
+        constexpr decltype(auto) operator[](size_t i) const
         {
             if constexpr(is_unary_expression_v)
                 return apply_unary<OP, LHS>(m_lhs, i);
