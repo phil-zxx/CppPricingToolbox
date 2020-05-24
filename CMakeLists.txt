@@ -3,6 +3,13 @@ cmake_minimum_required (VERSION 3.13)
 project(CppPricingToolbox CXX)
 set(CMAKE_CXX_STANDARD 17)
 
+execute_process(COMMAND "python" "external/format_checker/script.py"
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+                OUTPUT_VARIABLE git_out)
+if(git_out MATCHES "ERROR")
+    message(FATAL_ERROR ${git_out})
+endif()
+
 if (MSVC)
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
         string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
