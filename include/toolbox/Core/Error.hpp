@@ -13,7 +13,7 @@ namespace Toolbox
     public:
         Error(const std::string& file, long line, const std::string& functionName, const std::string& message)
             : m_message(Error::createMessage(file, line, functionName, message)) { }
-        
+
         const char* what() const noexcept override
         {
             return m_message.c_str();
@@ -35,7 +35,7 @@ namespace Toolbox
                 m_str.append(msg);
                 return *this;
             }
-            
+
             Msg& operator<<(const std::string& msg)
             {
                 m_str.append(msg);

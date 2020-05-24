@@ -97,7 +97,7 @@ namespace Toolbox
         m_count = Misc::svToInt(tenorStr.substr(0, tenorStr.size() - 1));
         m_unit  = Enum::fromChar<TenorUnit>(tenorStr.back());
     }
-    
+
     inline constexpr TenorElement& TenorElement::reduce()
     {
         if (m_count != 0)
@@ -113,7 +113,7 @@ namespace Toolbox
                 m_unit = TenorUnit::Y;
             }
         }
-        
+
         return *this;
     }
 }

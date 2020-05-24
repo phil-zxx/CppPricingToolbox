@@ -30,7 +30,7 @@ namespace Toolbox
 
         DateParser::fromDateStrToYearMonthDay(str.substr(0, i), year, month, day);
     }
-    
+
     inline constexpr void DateParser::fromStrToYearMonthDayHourMinSec(const std::string_view& str, int& year, int& month, int& day, int& hour, int& min, int& sec)
     {
         // Find index which divides date & time part, should it exist

@@ -15,7 +15,7 @@ TEST_CASE("UnitTest_Decimal")
     static_assert(d1 - d2 ==   -5554.778);
     static_assert(d1 * d2 == 8381901.289);
     static_assert(d1 / d2 ==       0.182);
-    
+
     static_assert(!(d1 + d2 !=    8023.912));
     static_assert(!(d1 - d2 !=   -5554.778));
     static_assert(!(d1 * d2 != 8381901.289));

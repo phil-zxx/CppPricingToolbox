@@ -206,7 +206,7 @@ namespace Toolbox
 
     inline constexpr int Date::toInt() const
     {
-        return m_totalDays; 
+        return m_totalDays;
     }
 
     inline std::string Date::toString() const

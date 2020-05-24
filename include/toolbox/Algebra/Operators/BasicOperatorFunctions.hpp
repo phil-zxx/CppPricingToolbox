@@ -41,7 +41,7 @@ namespace Toolbox
     {
         if (lhs.rowCount() != rhs.rowCount() || lhs.colCount() != rhs.colCount())
             return false;
-    
+
         constexpr bool SO1 = matrix_storage_order_flag_v<MT1>;
         constexpr bool SO2 = matrix_storage_order_flag_v<MT2>;
 
@@ -60,7 +60,7 @@ namespace Toolbox
                     if (lhs(iRow, iCol) != rhs(iRow, iCol))
                         return false;
         }
-    
+
         return true;
     }
 

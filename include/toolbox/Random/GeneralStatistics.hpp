@@ -51,7 +51,7 @@ public:
         const size_t N = sampleSize();
         if (N <= 1)
             return 0;
-        
+
         const double s2 = std::accumulate(m_samples.begin(), m_samples.end(), 0.0, [mu = mean()](double s, double x) { return s + (x - mu) * (x - mu); });
         return s2 * N / (N - 1.0);
     }

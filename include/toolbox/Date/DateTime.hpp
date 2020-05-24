@@ -73,7 +73,7 @@ namespace Toolbox
 
     inline constexpr DateTime::DateTime(int year, int month, int day, int hour, int minute, int second) noexcept
         : Date(year, month, day), m_totalNanos(fromHhMmSsNnToTotalNanos(hour, minute, second, 0)) { }
-    
+
     inline constexpr DateTime::DateTime(const std::string_view& str)
         : Date(), m_totalNanos(0)
     {
@@ -126,7 +126,7 @@ namespace Toolbox
     inline constexpr bool DateTime::operator<=(const DateTime& rhs) const { return this->totalDays() <= rhs.totalDays(); }
     inline constexpr bool DateTime::operator> (const DateTime& rhs) const { return this->totalDays() > rhs.totalDays(); }
     inline constexpr bool DateTime::operator< (const DateTime& rhs) const { return this->totalDays() < rhs.totalDays(); }
-    
+
     inline constexpr DateTime& DateTime::operator=(const DateTime& rhs)
     {
         this->m_totalDays  = rhs.m_totalDays;
@@ -157,7 +157,7 @@ namespace Toolbox
     {
         return static_cast<double>(toInt()) + static_cast<double>(m_totalNanos) / nanosPerDay;
     }
-    
+
     inline std::string DateTime::toString() const
     {
         std::ostringstream os;

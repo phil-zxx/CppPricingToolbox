@@ -51,16 +51,16 @@ namespace Toolbox
         auto storeVariant(const V& obj, std::index_sequence<Is...>)
         {
             store(obj.index());
-            ([&]() { 
-                if (Is == obj.index()) 
+            ([&]() {
+                if (Is == obj.index())
                     store(std::get<Is>(obj)); }(), ...);
         }
-        
+
         template<std::size_t...Is, class V>
         auto loadVariant(V& obj, std::index_sequence<Is...>)
         {
             const auto index = load<size_t>();
-            ([&]() { 
+            ([&]() {
                 if (Is == index)
                     obj = load<remove_cv_ref_t<decltype(std::get<Is>(obj))>>(); }(), ...);
         }
@@ -71,7 +71,7 @@ namespace Toolbox
         {
             storeVariant(obj, std::make_index_sequence<sizeof...(_Types)>{});
         }
-        
+
         template <class... _Types>
         void load(std::variant<_Types...>& obj)
         {
@@ -187,7 +187,7 @@ namespace Toolbox
         T load()
         {
             using Tclean = remove_cv_ref_t<std::remove_pointer_t<T>>;
-            
+
             if constexpr (std::is_pointer_v<T>)
             {
                 if (load<bool>())

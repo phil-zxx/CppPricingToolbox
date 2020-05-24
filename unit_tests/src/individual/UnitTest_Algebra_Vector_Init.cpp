@@ -217,7 +217,7 @@ TEST_CASE("UnitTest_Vector_InitialisationValidity")
     CHECK_THROWS (StaticVector<int, 10>(15));
     CHECK_NOTHROW(StaticVector<int, 4>{3,4,5,6});
     CHECK_THROWS (StaticVector<int, 4>{3,4,5,6,7});
-    
+
     CHECK_NOTHROW(DynamicVector<int>{3,4,5,6});
     CHECK_NOTHROW(DynamicVector<int>{3,4,5,6,7});
 }

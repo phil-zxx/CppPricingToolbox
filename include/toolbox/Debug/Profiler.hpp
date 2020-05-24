@@ -44,7 +44,7 @@ namespace Toolbox
         m_buckets.fill({ 0,0 });
         m_lastTime = getNanos();
     }
-    
+
     inline void Profiler::reset()
     {
         *this = Profiler();
@@ -67,7 +67,7 @@ namespace Toolbox
         const size_t bucketIdx = static_cast<size_t>(std::log2(diffTime));
         m_buckets[bucketIdx].time += diffTime;
         ++m_buckets[bucketIdx].trials;
-        
+
         m_timeTotal += diffTime;
         ++m_trialsTotal;
     }
@@ -100,7 +100,7 @@ namespace Toolbox
         for (bottom = 0; bottom < m_buckets.size(); ++bottom)
             if (m_buckets[bottom].trials > 0)
                 break;
-        
+
         for (size_t i = bottom; i < m_buckets.size(); ++i)
             if (m_buckets[i].trials > 0)
                 top = i;
@@ -111,7 +111,7 @@ namespace Toolbox
             "\tMean       = " << nanosToPrettyString(m_timeTotal / (1 > m_trialsTotal ? 1 : m_trialsTotal)) << std::endl <<
             "\tMax        = " << nanosToPrettyString(m_maxTime) << std::endl <<
             "\tTotal Time = " << nanosToPrettyString(m_timeTotal) << std::endl;
-        
+
         if (withDistribution)
         {
             os << std::endl << "\t" << std::setw(14) << "Range |" << std::setw(11) << "Count |" << std::setw(11) << "Count %" <<
@@ -126,7 +126,7 @@ namespace Toolbox
                 os << "\t" << std::setw(4) << x / divisor << "-" << std::setw(4) << 2 * x / divisor << " " << unit << " | " <<
                     std::setw(8) << m_buckets[i].trials << " | " <<
                     std::setw(7) << std::fixed << std::setprecision(1) << m_buckets[i].trials * 100. / m_trialsTotal << "%\n";
-                
+
                 x = x * 2;
             }
         }
@@ -147,8 +147,8 @@ namespace Toolbox
         const uint64_t msec = (nanos % 1'000'000'000) /     1'000'000;
         const uint64_t usec = (nanos %     1'000'000) /         1'000;
         const uint64_t nsec = (nanos %         1'000);
-        os << std::setw(10) << nanos << " ns (= " << 
-            std::setw(3) << sec << " sec, " << 
+        os << std::setw(10) << nanos << " ns (= " <<
+            std::setw(3) << sec << " sec, " <<
             std::setw(3) << msec << " ms, " <<
             std::setw(3) << usec << " us, " <<
             std::setw(3) << nsec << " ns)";

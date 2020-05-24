@@ -26,7 +26,7 @@ TEST_CASE("UnitTest_Date")
     static_assert(Date(2029, 1, 2)-- == Date(2029, 1, 2));
     static_assert(++Date(2029, 1, 1) == Date(2029, 1, 2));
     static_assert(--Date(2029, 1, 2) == Date(2029, 1, 1));
-    
+
     static_assert(Date(2029, 1, 1) != Date(2029, 1, 2));
     static_assert(Date(2029, 1, 2) >= Date(2029, 1, 2));
     static_assert(Date(2029, 1, 2) >= Date(2029, 1, 1));
@@ -42,14 +42,14 @@ TEST_CASE("UnitTest_Date")
     static_assert(Date(2024,10,11).dayOfWeek() == 4);
     static_assert(Date(2024,12,21).dayOfWeek() == 5);
     static_assert(Date(2025, 3, 2).dayOfWeek() == 6);
-    
+
     constexpr Date a1("2029-06-21"); static_assert(a1.totalDays() == 47290 && a1.ymd() == Date::YearMonthDay{ 2029, 6,21 });
     constexpr Date a2("2028-08-24"); static_assert(a2.totalDays() == 46989 && a2.ymd() == Date::YearMonthDay{ 2028, 8,24 });
     constexpr Date a3("2027-10-28"); static_assert(a3.totalDays() == 46688 && a3.ymd() == Date::YearMonthDay{ 2027,10,28 });
     constexpr Date a4("2026-12-31"); static_assert(a4.totalDays() == 46387 && a4.ymd() == Date::YearMonthDay{ 2026,12,31 });
     constexpr Date a5("2026-03-05"); static_assert(a5.totalDays() == 46086 && a5.ymd() == Date::YearMonthDay{ 2026, 3, 5 });
     constexpr Date a6("2025-05-08"); static_assert(a6.totalDays() == 45785 && a6.ymd() == Date::YearMonthDay{ 2025, 5, 8 });
-    
+
     constexpr Date b1("20290621"); static_assert(b1.totalDays() == 47290 && b1.ymd() == Date::YearMonthDay{ 2029, 6,21 });
     constexpr Date b2("20280824"); static_assert(b2.totalDays() == 46989 && b2.ymd() == Date::YearMonthDay{ 2028, 8,24 });
     constexpr Date b3("20271028"); static_assert(b3.totalDays() == 46688 && b3.ymd() == Date::YearMonthDay{ 2027,10,28 });

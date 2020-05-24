@@ -26,7 +26,7 @@ namespace Toolbox
         }
 
         constexpr MatrixExpr(const LHS& lhs, const RHS& rhs)
-            : m_lhs(lhs), m_rhs(rhs) 
+            : m_lhs(lhs), m_rhs(rhs)
         {
             if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
             {
@@ -44,7 +44,7 @@ namespace Toolbox
             else
                 return apply_binary<OP, LHS, RHS>(m_lhs, m_rhs, i);
         }
-        
+
         constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx) const
         {
             if constexpr (is_unary_expression_v)

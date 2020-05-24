@@ -11,12 +11,12 @@ namespace Toolbox
         constexpr static decltype(auto) evaluate(const LHS& lhs, const RHS& rhs)
         {
             constexpr OP pairwiseOperation;
-            
+
             if (lhs.size() != rhs.size())
                 throw("Vector sizes do not match");
 
-            using ET1 = typename LHS::ElementType;
-            using ET2 = typename RHS::ElementType;
+            using ET1    = typename LHS::ElementType;
+            using ET2    = typename RHS::ElementType;
             using OpType = OpResultType_t<OP, ET1, ET2>;
 
             const size_t N = lhs.size();

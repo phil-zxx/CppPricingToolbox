@@ -56,7 +56,7 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(minS == -9);
         CHECK(minD == -3);
         CHECK(minE == 6);
-        
+
         const auto maxS = max(vecS);
         const auto maxD = max(vecD);
         const auto maxE = max(vecS + 3 * abs(vecD));
@@ -112,7 +112,7 @@ TEST_CASE("UnitTest_Vector_Expressions")
         const auto prodResult2 = prod(vecS);
         const auto sumResult1  = sum(DynamicVector<int>());
         const auto sumResult2  = sum(vecD);
-        
+
         CHECK(prodResult1 == 1);
         CHECK(sumResult1  == 0);
         CHECK(prodResult2 == -315);

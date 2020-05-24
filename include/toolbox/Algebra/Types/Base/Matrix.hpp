@@ -16,7 +16,7 @@ namespace Toolbox
         {
             return static_cast<MatrixType&>(*this);
         }
-        
+
         constexpr const MatrixType& operator~() const noexcept
         {
             return static_cast<const MatrixType&>(*this);

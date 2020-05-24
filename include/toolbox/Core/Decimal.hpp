@@ -28,7 +28,7 @@ namespace Toolbox
 
         constexpr explicit Decimal(int64_t value) noexcept
             : m_value(value * pow10DP) { }
-        
+
         constexpr Decimal(double value) noexcept
             : m_value(static_cast<int64_t>(round(value * pow10DP))) { }
 
@@ -51,7 +51,7 @@ namespace Toolbox
         {
             return Decimal(this->m_value / static_cast<double>(rhs.m_value));
         }
-        
+
         constexpr bool operator==(const Decimal& rhs) const
         {
             return this->m_value == rhs.m_value;
@@ -65,17 +65,17 @@ namespace Toolbox
         {
             return this->m_value < rhs.m_value;
         }
-        
+
         constexpr bool operator<=(const Decimal& rhs) const
         {
             return this->m_value <= rhs.m_value;
         }
-        
+
         constexpr bool operator>(const Decimal& rhs) const
         {
             return this->m_value > rhs.m_value;
         }
-        
+
         constexpr bool operator>=(const Decimal& rhs) const
         {
             return this->m_value >= rhs.m_value;

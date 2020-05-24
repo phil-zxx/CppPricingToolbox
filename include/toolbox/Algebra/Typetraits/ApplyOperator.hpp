@@ -13,7 +13,7 @@ namespace Toolbox
 
         return operation(lhs[idx]);
     }
-    
+
     template<class OP, class LHS>
     decltype(auto) apply_unary(const LHS& lhs, size_t rowIdx, size_t colIdx)
     {

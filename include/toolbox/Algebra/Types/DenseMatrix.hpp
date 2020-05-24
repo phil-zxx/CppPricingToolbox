@@ -136,7 +136,7 @@ namespace Toolbox
             else
                 return m_data[colIdx * rowCount() + rowIdx];
         }
-        
+
         constexpr ElementType& operator()(size_t rowIdx, size_t colIdx)
         {
             TB_ENSURE(rowIdx < m_rows, "Row index ("    << rowIdx << ") is out of bounds (only have " << m_rows << " rows)");

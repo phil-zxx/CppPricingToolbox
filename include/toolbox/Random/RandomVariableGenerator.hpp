@@ -20,7 +20,7 @@ namespace Toolbox
 
         explicit RandomVariableGenerator(const Distr& distr)
             : m_last(), m_distr(distr) { }
-        
+
         explicit RandomVariableGenerator(size_t seed)
             : m_last(), m_distr(), m_engine(seed) { }
 
