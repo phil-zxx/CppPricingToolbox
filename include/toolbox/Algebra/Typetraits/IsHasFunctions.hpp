@@ -1,6 +1,6 @@
 #pragma once
 
-#include <toolbox/Algebra/Types/Base/Matrix.hpp>
+#include <toolbox/Algebra/Types/Matrix.hpp>
 #include <type_traits>
 
 
