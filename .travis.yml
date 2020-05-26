@@ -76,7 +76,7 @@ script:
     fi
   - |
     if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
-      cmake CMakeLists.txt
+      cmake ..
       make
     fi
   - |
