@@ -3,35 +3,6 @@
 
 using namespace Toolbox;
 
-
-TEST_CASE("UnitTest_Vector_BaseFunctions")
-{
-    const StaticVector<double, 10> vecS1(3), vecS2(3, 7);
-    const DynamicVector<int> vecD(3, 5);
-
-    CHECK(vecS1.capacity() == 10);
-    CHECK(vecS1.size()     == 3);
-    CHECK(vecS1.capacity() == vecS2.capacity());
-    CHECK(vecS1.size()     == vecS2.size());
-    CHECK(vecS1[0]         == 0.);
-    CHECK(vecS1[1]         == 0.);
-    CHECK(vecS1[2]         == 0.);
-    CHECK(vecS2[0]         == 7.);
-    CHECK(vecS2[1]         == 7.);
-    CHECK(vecS2[2]         == 7.);
-    CHECK(vecS1.at(2)      == 0.);
-    CHECK(vecS2.at(2)      == 7.);
-    CHECK_THROWS(vecS1.at(3));
-    CHECK_THROWS(vecS2.at(3));
-
-    CHECK(vecD.capacity() == 3);
-    CHECK(vecD.size()     == 3);
-    CHECK(vecD[0]         == 5);
-    CHECK(vecD[1]         == 5);
-    CHECK(vecD.at(2)      == 5);
-    CHECK_THROWS(vecD.at(3));
-}
-
 TEST_CASE("UnitTest_Vector_Expressions")
 {
     const StaticVector<int, 10> vecS = { 5,7,-9 };
@@ -124,6 +95,7 @@ TEST_CASE("UnitTest_Vector_Expressions")
         const auto expr1 = -(3 * vecS + 8 * asType<int>(vecD) - 3) / 2;
         const auto expr2 = trans(expr1);
         const DynamicVector<int, true> expr3(expr2);
+        const DynamicVector<int, true> expr4(trans(expr2));
 
         CHECK(expr1[0] ==   6); CHECK(expr2[0] ==   6); CHECK(expr3[0] ==   6);
         CHECK(expr1[1] == -37); CHECK(expr2[1] == -37); CHECK(expr3[1] == -37);
@@ -132,19 +104,38 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(expr1.rowCount() == 3);
         CHECK(expr1.colCount() == 1);
         CHECK(expr1.size()     == 3);
-        CHECK(expr1(0, 0) ==   6);
-        CHECK(expr1(1, 0) == -37);
-        CHECK(expr1(2, 0) ==  -5);
+        CHECK(expr1(0, 0)      == 6);
+        CHECK(expr1(1, 0)      == -37);
+        CHECK(expr1(2, 0)      == -5);
         CHECK_NOTHROW(expr1(1, 0));
         CHECK_THROWS (expr1(0, 1));
 
         CHECK(expr2.rowCount() == 1);
         CHECK(expr2.colCount() == 3);
         CHECK(expr2.size()     == 3);
+        CHECK(expr2(0, 0)      == 6);
+        CHECK(expr2(0, 1)      == -37);
+        CHECK(expr2(0, 2)      == -5);
+        CHECK_NOTHROW(expr2(0, 1));
+        CHECK_THROWS (expr2(1, 0));
 
         CHECK(expr3.rowCount() == 1);
         CHECK(expr3.colCount() == 3);
         CHECK(expr3.size()     == 3);
+        CHECK(expr3(0, 0)      == 6);
+        CHECK(expr3(0, 1)      == -37);
+        CHECK(expr3(0, 2)      == -5);
+        CHECK_NOTHROW(expr3(0, 1));
+        CHECK_THROWS (expr3(1, 0));
+
+        CHECK(expr4.rowCount() == 3);
+        CHECK(expr4.colCount() == 1);
+        CHECK(expr4.size()     == 3);
+        CHECK(expr4(0, 0)      == 6);
+        CHECK(expr4(1, 0)      == -37);
+        CHECK(expr4(2, 0)      == -5);
+        CHECK_NOTHROW(expr4(1, 0));
+        CHECK_THROWS (expr4(0, 1));
     }
 
     SUBCASE("Test_Expression2")
