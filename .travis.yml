@@ -58,13 +58,17 @@ install:
     fi
 
 script:
+  - mkdir my_build
+  - cd my_build
   - |
     if [[ "${CODE_COVERAGE}" = "true" ]]; then
-      cmake -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage" -DCMAKE_BUILD_TYPE=Debug .
+      cmake -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage" -DCMAKE_BUILD_TYPE=Debug ..
       make
-      ./build/Debug_x86_64/UnitTests
+      ./../build/Debug_x86_64/UnitTests
 
       lcov -d . -c -o coverage.info                                      # parse coverage data
+      lcov -r coverage.info "/usr*"        -o coverage.info
+      lcov -r coverage.info "*/external/*" -o coverage.info
       coveralls-lcov --repo-token=${COVERALLS_REPO_TOKEN} coverage.info  # upload results
 
       # do not continue with other build configurations after that
@@ -72,14 +76,11 @@ script:
     fi
   - |
     if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
-      cmake --version
       cmake CMakeLists.txt
       make
     fi
   - |
     if [[ ${TRAVIS_OS_NAME} == "windows" ]]; then
-       mkdir build
-       cd build
        cmake .. -G "Visual Studio 15 2017 Win64"
        cmake --build .
     fi
