@@ -1,6 +1,7 @@
 #pragma once
 
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
+#include <toolbox/Algebra/Types/MatrixShape.hpp>
 #include <toolbox/Core/Error.hpp>
 
 
@@ -21,7 +22,7 @@ namespace Toolbox
         using DataType    = typename std::conditional_t<hasDynamicSize, Type*, Type[hasDynamicSize ? 1 : internalSize]>;
 
         constexpr explicit DenseMatrix() noexcept
-            : m_rows(0), m_cols(0), m_size(0), m_capacity(0), m_data()
+            : m_shape(0, 0), m_size(0), m_capacity(0), m_data()
         {
             if constexpr (!hasDynamicSize)
                 m_capacity = internalSize;
@@ -52,9 +53,9 @@ namespace Toolbox
             for (const auto& row : matrix)
             {
                 if constexpr (SO == false)
-                    TB_ENSURE(row.size() == m_cols, "Input matrix has rows of varying sizes (found " << row.size() << " and " << m_cols << ")");
+                    TB_ENSURE(row.size() == m_shape.cols, "Input matrix has rows of varying sizes (found " << row.size() << " and " << m_shape.cols << ")");
                 else
-                    TB_ENSURE(row.size() == m_rows, "Input matrix has cols of varying sizes (found " << row.size() << " and " << m_cols << ")");
+                    TB_ENSURE(row.size() == m_shape.rows, "Input matrix has cols of varying sizes (found " << row.size() << " and " << m_shape.cols << ")");
 
                 for (const auto& element : row)
                 {
@@ -128,8 +129,8 @@ namespace Toolbox
 
         constexpr const ElementType& operator()(size_t rowIdx, size_t colIdx) const
         {
-            TB_ENSURE(rowIdx < m_rows, "Row index ("    << rowIdx << ") is out of bounds (only have " << m_rows << " rows)");
-            TB_ENSURE(colIdx < m_cols, "Column index (" << colIdx << ") is out of bounds (only have " << m_cols << " columns)");
+            TB_ENSURE(rowIdx < m_shape.rows, "Row index ("    << rowIdx << ") is out of bounds (only have " << m_shape.rows << " rows)");
+            TB_ENSURE(colIdx < m_shape.cols, "Column index (" << colIdx << ") is out of bounds (only have " << m_shape.cols << " columns)");
 
             if constexpr (SO == false)
                 return m_data[rowIdx * colCount() + colIdx];
@@ -139,8 +140,8 @@ namespace Toolbox
 
         constexpr ElementType& operator()(size_t rowIdx, size_t colIdx)
         {
-            TB_ENSURE(rowIdx < m_rows, "Row index ("    << rowIdx << ") is out of bounds (only have " << m_rows << " rows)");
-            TB_ENSURE(colIdx < m_cols, "Column index (" << colIdx << ") is out of bounds (only have " << m_cols << " columns)");
+            TB_ENSURE(rowIdx < m_shape.rows, "Row index ("    << rowIdx << ") is out of bounds (only have " << m_shape.rows << " rows)");
+            TB_ENSURE(colIdx < m_shape.cols, "Column index (" << colIdx << ") is out of bounds (only have " << m_shape.cols << " columns)");
 
             if constexpr (SO == false)
                 return m_data[rowIdx * colCount() + colIdx];
@@ -148,14 +149,19 @@ namespace Toolbox
                 return m_data[colIdx * rowCount() + rowIdx];
             }
 
+        constexpr MatrixShape shape() const
+        {
+            return m_shape;
+        }
+        
         constexpr size_t rowCount() const
         {
-            return m_rows;
+            return m_shape.rows;
         }
 
         constexpr size_t colCount() const
         {
-            return m_cols;
+            return m_shape.cols;
         }
 
         constexpr size_t size() const
@@ -234,10 +240,10 @@ namespace Toolbox
                 std::move(rhs.data(), rhs.data() + rhs.size(), this->m_data);
             }
 
-            rhs.m_size     = 0;
-            rhs.m_rows     = 0;
-            rhs.m_cols     = 0;
-            rhs.m_capacity = 0;
+            rhs.m_size       = 0;
+            rhs.m_shape.rows = 0;
+            rhs.m_shape.cols = 0;
+            rhs.m_capacity   = 0;
         }
 
     protected:
@@ -248,9 +254,9 @@ namespace Toolbox
 
         constexpr void allocate(size_t rowCount, size_t colCount)
         {
-            m_size = rowCount * colCount;
-            m_rows = rowCount;
-            m_cols = colCount;
+            m_size       = rowCount * colCount;
+            m_shape.rows = rowCount;
+            m_shape.cols = colCount;
 
             if constexpr (hasDynamicSize)
             {
@@ -263,9 +269,9 @@ namespace Toolbox
             }
             else
             {
-                TB_ENSURE(m_size <= m_capacity, "Input size ("        << m_size << " = " << m_rows << "x" << m_cols << ") for static-sized storage cannot be larger than its static capacity (" << m_capacity << ")");
-                TB_ENSURE(m_rows <= R,          "Input row count ("   << m_rows << ") for static-sized storage cannot be larger than its static row count (" << R << ")");
-                TB_ENSURE(m_cols <= C,          "Input column count(" << m_cols << ") for static-sized storage cannot be larger than its static column count (" << C << ")");
+                TB_ENSURE(m_size       <= m_capacity, "Input size ("        << m_size << " = " << m_shape.rows << "x" << m_shape.cols << ") for static-sized storage cannot be larger than its static capacity (" << m_capacity << ")");
+                TB_ENSURE(m_shape.rows <= R,          "Input row count ("   << m_shape.rows << ") for static-sized storage cannot be larger than its static row count (" << R << ")");
+                TB_ENSURE(m_shape.cols <= C,          "Input column count(" << m_shape.cols << ") for static-sized storage cannot be larger than its static column count (" << C << ")");
             }
         }
 
@@ -278,7 +284,7 @@ namespace Toolbox
             }
         }
 
-        size_t m_rows, m_cols;
+        MatrixShape m_shape;
         size_t m_size, m_capacity;
         DataType m_data;
     };

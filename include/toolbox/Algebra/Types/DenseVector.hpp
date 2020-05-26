@@ -26,14 +26,14 @@ namespace Toolbox
             std::copy(list.begin(), list.end(), this->m_data);
         }
 
-        template<class MT, bool SO>
-        constexpr DenseVector(const Matrix<MT, SO>& rhs)
-            : BaseType((~rhs).rowCount(), (~rhs).colCount())
+        template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
+        constexpr DenseVector(const MT& rhs)
+            : BaseType(rhs.rowCount(), rhs.colCount())
         {
-            if ((~rhs).rowCount() != 1 && (~rhs).colCount() != 1)
-                throw("DenseVector can only takes matrix objects which have vector shape (rows=1 or cols=1)");
+            if (rhs.rowCount() != 1 && rhs.colCount() != 1)
+                throw("DenseVector constructor can only take matrix objects which have vector shape (rows=1 or cols=1)");
 
-            this->copyFrom(~rhs);
+            this->copyFrom(rhs);
         }
     };
 }

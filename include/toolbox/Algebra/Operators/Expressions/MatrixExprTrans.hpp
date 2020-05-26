@@ -25,7 +25,7 @@ namespace Toolbox
 
         constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx) const
         {
-            return apply_unary(m_mat, colIdx, rowIdx);  // (rowIdx, colIdx) are swapped to (colIdx, rowIdx) as this is transposed
+            return apply_unary<OP, MT>(m_mat, colIdx, rowIdx);  // (rowIdx, colIdx) are swapped to (colIdx, rowIdx) as this is transposed
         }
 
         constexpr size_t size() const
