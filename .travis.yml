@@ -22,7 +22,7 @@ matrix:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-          packages: 
+          packages:
             - g++-9
       env:
           - MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
@@ -33,12 +33,20 @@ matrix:
     - name: "Code Coverage"
       os: linux
       compiler: gcc
-      env: 
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-9
+            - lcov
+      env:
+        - MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
         - CODE_COVERAGE=true
 
 before_install:
     - eval "${MATRIX_EVAL}"
-    - if [[ "${CODE_COVERAGE}" == "true" ]]; then pip install --user cpp-coveralls ; fi
+    - if [[ "${CODE_COVERAGE}" == "true" ]]; then gem install coveralls-lcov ; fi
 
 install:
   - |
@@ -52,7 +60,19 @@ install:
 script:
   - |
     if [[ "${CODE_COVERAGE}" = "true" ]]; then
-      ./configure --enable-gcov && make && make check
+      cmake -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage -std=c++0x" -DCMAKE_BUILD_TYPE=Debug . || exit 1
+      make -k -j2 || exit 1
+      ctest -j2 --output-on-failure || exit 1
+
+      lcov -d . -c -o coverage.info                                      # parse coverage data
+      lcov -r coverage.info "/usr*"                     -o coverage.info # remove data for system headers
+      lcov -r coverage.info "$(readlink -f examples)/*" -o coverage.info # remove data for .cpp files
+      lcov -r coverage.info "$(readlink -f scripts)/*"  -o coverage.info # remove data for .cpp files
+      lcov -l coverage.info                                              # just list a short summary of the results
+      coveralls-lcov --repo-token=${COVERALLS_REPO_TOKEN} coverage.info  # upload results
+
+      # do not continue with other build configurations after that
+      exit
     fi
   - |
     if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
