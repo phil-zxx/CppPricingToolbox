@@ -50,7 +50,7 @@ install:
     fi
 
 script:
- - |
+  - |
     if [[ "${CODE_COVERAGE}" = "true" ]]; then
       ./configure --enable-gcov && make && make check
     fi
