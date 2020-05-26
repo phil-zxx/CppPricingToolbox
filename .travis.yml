@@ -30,9 +30,15 @@ matrix:
       os: windows
       language: cpp
       env: VS17=true
+    - name: "Code Coverage"
+      os: linux
+      compiler: gcc
+      env: 
+        - CODE_COVERAGE=true
 
 before_install:
     - eval "${MATRIX_EVAL}"
+    - if [[ "${CODE_COVERAGE}" == "true" ]]; then pip install --user cpp-coveralls ; fi
 
 install:
   - |
@@ -44,6 +50,10 @@ install:
     fi
 
 script:
+ - |
+    if [[ "${CODE_COVERAGE}" = "true" ]]; then
+      ./configure --enable-gcov && make && make check
+    fi
   - |
     if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
       cmake --version
