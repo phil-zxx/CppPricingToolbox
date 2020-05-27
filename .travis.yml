@@ -30,23 +30,9 @@ matrix:
       os: windows
       language: cpp
       env: VS17=true
-    - name: "Code Coverage"
-      os: linux
-      compiler: gcc
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-          packages:
-            - g++-9
-            - lcov
-      env:
-        - MATRIX_EVAL="CC=gcc-9 && CXX=g++-9"
-        - CODE_COVERAGE=true
 
 before_install:
     - eval "${MATRIX_EVAL}"
-    - if [[ "${CODE_COVERAGE}" == "true" ]]; then gem install coveralls-lcov ; fi
 
 install:
   - |
@@ -60,20 +46,6 @@ install:
 script:
   - mkdir my_build
   - cd my_build
-  - |
-    if [[ "${CODE_COVERAGE}" = "true" ]]; then
-      cmake -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage" -DCMAKE_BUILD_TYPE=Debug ..
-      make
-      ./../build/Debug_x86_64/UnitTests
-
-      lcov -d . -c -o coverage.info                                      # parse coverage data
-      lcov -r coverage.info "/usr*"        -o coverage.info
-      lcov -r coverage.info "*/external/*" -o coverage.info
-      coveralls-lcov --repo-token=${COVERALLS_REPO_TOKEN} coverage.info  # upload results
-
-      # do not continue with other build configurations after that
-      exit
-    fi
   - |
     if [[ ${TRAVIS_OS_NAME} == "linux" ]]; then
       cmake ..
