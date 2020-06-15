@@ -106,3 +106,20 @@ TEST_CASE("UnitTest_Matrix_Transpose")
     CHECK(expr1.storageOrder == true);
     CHECK(expr2.storageOrder == false);
 }
+
+TEST_CASE("UnitTest_Matrix_Identity")
+{
+    const auto mat = DynamicMatrix<int>::createIdMatrix(4);
+
+    CHECK(mat.size()     == 16);
+    CHECK(mat.colCount() == 4);
+    CHECK(mat.rowCount() == 4);
+
+    for (size_t iRow = 0; iRow < 4; ++iRow)
+    {
+        for (size_t iCol = 0; iCol < 4; ++iCol)
+        {
+            CHECK(mat(iRow, iCol) == (iRow == iCol ? 1 : 0));
+        }
+    }
+}

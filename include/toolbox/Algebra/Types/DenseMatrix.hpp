@@ -149,7 +149,7 @@ namespace Toolbox
                 return m_data[colIdx * rowCount() + rowIdx];
             }
 
-        constexpr MatrixShape shape() const
+        constexpr const MatrixShape& shape() const
         {
             return m_shape;
         }
@@ -244,6 +244,19 @@ namespace Toolbox
             rhs.m_shape.rows = 0;
             rhs.m_shape.cols = 0;
             rhs.m_capacity   = 0;
+        }
+
+        static DenseMatrix createIdMatrix(const size_t& size)
+        {
+            return DenseMatrix::createIdMatrix(size, size);
+        }
+
+        static DenseMatrix createIdMatrix(const size_t& rowSize, const size_t& colSize)
+        {
+            DenseMatrix result(rowSize, colSize, 0);
+            for (size_t i = 0, size = rowSize < colSize ? rowSize : colSize; i < size; ++i)
+                result(i, i) = 1;
+            return result;
         }
 
     protected:

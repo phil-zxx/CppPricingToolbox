@@ -1,6 +1,7 @@
 #pragma once
 
 #include <toolbox/Algebra/Types/DenseMatrix.hpp>
+#include <toolbox/Core/Error.hpp>
 
 
 namespace Toolbox
@@ -30,8 +31,7 @@ namespace Toolbox
         constexpr DenseVector(const MT& rhs)
             : BaseType(rhs.rowCount(), rhs.colCount())
         {
-            if (rhs.rowCount() != 1 && rhs.colCount() != 1)
-                throw("DenseVector constructor can only take matrix objects which have vector shape (rows=1 or cols=1)");
+            TB_ENSURE(rhs.rowCount() == 1 || rhs.colCount() == 1, "DenseVector constructor can only take matrix objects which have vector shape (rows=1 or cols=1)");
 
             this->copyFrom(rhs);
         }
