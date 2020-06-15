@@ -1,7 +1,7 @@
 import glob
 
 if __name__ == '__main__':
-    arr =  [file_name for ext in ['**.hpp', '**.cpp','**.py','**CMakeLists.txt'] for file_name in glob.glob('**/'+ext, recursive=True)]
+    arr =  [file_name for ext in ['**.hpp', '**.cpp','**.py','**CMakeLists.txt'] for file_name in glob.glob('**/'+ext, recursive=True) if file_name[0:8] != 'external']
     for file_name in arr:
         write_new_file = False
         with open(file_name, 'r') as f:
