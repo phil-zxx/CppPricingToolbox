@@ -153,7 +153,7 @@ namespace Toolbox
         {
             return m_shape;
         }
-        
+
         constexpr size_t rowCount() const
         {
             return m_shape.rows;

@@ -50,6 +50,21 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(argMaxE == 1);
     }
 
+    SUBCASE("Test_MinMax_Throw")
+    {
+        DynamicVector<double> v1, v2(3, 99);
+
+        CHECK_THROWS(min(v1));
+        CHECK_THROWS(max(v1));
+        CHECK_THROWS(argMin(v1));
+        CHECK_THROWS(argMax(v1));
+
+        CHECK_NOTHROW(min(v2));
+        CHECK_NOTHROW(max(v2));
+        CHECK_NOTHROW(argMin(v2));
+        CHECK_NOTHROW(argMax(v2));
+    }
+
     SUBCASE("Test_Dot1")
     {
         const auto dotProductDbl   = dot(vecS, vecD);
