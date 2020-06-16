@@ -24,13 +24,13 @@ namespace Toolbox
 
         friend std::ostream& operator<<(std::ostream& os, const Matrix<MT, SO>& rhs)
         {
-            os << "[ ";
+            os << "[";
             for (size_t iRow = 0, rowCount = (~rhs).rowCount(); iRow < rowCount; ++iRow)
             {
                 os << "[ ";
                 for (size_t iCol = 0, colCount = (~rhs).colCount(); iCol < colCount; ++iCol)
                     os << (~rhs)(iRow, iCol) << " ";
-                os << "]" << (iRow + 1 < rowCount ? "," : "") << "\n";
+                os << "]" << (iRow + 1 < rowCount ? ",\n" : "");
             }
             return os << "]";
         }
