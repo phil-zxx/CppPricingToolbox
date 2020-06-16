@@ -3,6 +3,7 @@
 #include <toolbox/Algebra/Types/DenseVector.hpp>
 #include <toolbox/Algebra/Types/DenseMatrix.hpp>
 #include <toolbox/Algebra/Operators/BasicOperatorFunctions.hpp>
+#include <toolbox/Algebra/Operators/ExtraOperatorFunctions.hpp>
 #include <toolbox/Algebra/Operators/AlgebraicOperatorFunctions.hpp>
 
 

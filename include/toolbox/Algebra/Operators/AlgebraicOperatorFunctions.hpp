@@ -44,6 +44,20 @@ namespace Toolbox
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
+    decltype(auto) squared(const MT& arg)
+    {
+        constexpr bool SO = matrix_storage_order_flag_v<MT>;
+        return MatrixExprUnary<OperatorSquared, MT, SO>(arg);
+    }
+
+    template<class MT, class ST, class = std::enable_if_t<is_matrix_v<MT>>>
+    decltype(auto) power(const MT& arg, const ST& n)
+    {
+        constexpr bool SO = matrix_storage_order_flag_v<MT>;
+        return MatrixExprBinary<OperatorPower, MT, ST, SO>(arg, n);
+    }
+
+    template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) min(const MT& arg)
     {
         if (arg.size() == 0)

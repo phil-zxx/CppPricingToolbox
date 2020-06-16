@@ -87,4 +87,22 @@ namespace Toolbox
             return std::cbrt(arg);
         }
     };
+
+    struct OperatorSquared
+    {
+        template<class Type>
+        constexpr auto operator()(Type arg) const noexcept
+        {
+            return arg * arg;
+        }
+    };
+
+    struct OperatorPower
+    {
+        template<class Type1, class Type2>
+        constexpr auto operator()(Type1 arg, Type2 n) const noexcept
+        {
+            return std::pow(arg, n);
+        }
+    };
 }
