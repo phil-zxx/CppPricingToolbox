@@ -28,8 +28,7 @@ namespace Toolbox
         if (lhs.rowCount() != rhs.rowCount() || lhs.colCount() != rhs.colCount())
             return false;
 
-        constexpr bool haveSameSO      = matrix_storage_order_flag_v<MT1> == matrix_storage_order_flag_v<MT2>;
-        constexpr bool isFloatingPoint = std::is_floating_point_v<MT1::ElementType> || std::is_floating_point_v<MT2::ElementType>;
+        constexpr bool haveSameSO = matrix_storage_order_flag_v<MT1> == matrix_storage_order_flag_v<MT2>;
 
         if constexpr (haveSameSO)
         {

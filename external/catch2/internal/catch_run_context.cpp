@@ -380,7 +380,6 @@ namespace Catch {
         // We need to register a handler for signals/structured exceptions
         // before running the tests themselves, or the binary can crash
         // without failed test being reported.
-        FatalConditionHandler _;
         m_activeTestCase->invoke();
     }
 
