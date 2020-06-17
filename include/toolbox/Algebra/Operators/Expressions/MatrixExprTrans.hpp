@@ -33,6 +33,11 @@ namespace Toolbox
             return m_mat.size();
         }
 
+        constexpr MatrixShape shape() const
+        {
+            return m_mat.shape().transposed();
+        }
+
         constexpr size_t rowCount() const
         {
             return m_mat.colCount();  // rowCount() is changed to colCount() as this is transposed

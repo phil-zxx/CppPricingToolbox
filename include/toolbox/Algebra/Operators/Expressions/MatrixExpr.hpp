@@ -63,6 +63,16 @@ namespace Toolbox
                 static_assert(false_template<OP>::value, "At least one input must be a matrix");
         }
 
+        constexpr const MatrixShape& shape() const
+        {
+            if constexpr (is_matrix_v<LHS>)
+                return m_lhs.shape();
+            else if constexpr (is_matrix_v<RHS>)
+                return m_rhs.shape();
+            else
+                static_assert(false_template<OP>::value, "At least one input must be a matrix");
+        }
+
         constexpr size_t rowCount() const
         {
             if constexpr (is_matrix_v<LHS>)

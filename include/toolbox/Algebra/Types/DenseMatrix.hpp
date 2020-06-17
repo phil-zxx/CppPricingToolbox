@@ -147,7 +147,63 @@ namespace Toolbox
                 return m_data[rowIdx * colCount() + colIdx];
             else
                 return m_data[colIdx * rowCount() + rowIdx];
-            }
+        }
+
+        void operator+=(const DenseMatrix& rhs)
+        {
+            TB_ENSURE(this->shape() == rhs.shape(), "Cannot apply += when this & rhs have different shapes");
+
+            for (size_t i = 0, size = this->size(); i < size; ++i)
+                m_data[i] += rhs[i];
+        }
+
+        void operator+=(const ElementType& rhs)
+        {
+            for (size_t i = 0, size = this->size(); i < size; ++i)
+                m_data[i] += rhs;
+        }
+
+        void operator-=(const DenseMatrix& rhs)
+        {
+            TB_ENSURE(this->shape() == rhs.shape(), "Cannot apply += when this & rhs have different shapes");
+
+            for (size_t i = 0, size = this->size(); i < size; ++i)
+                m_data[i] -= rhs[i];
+        }
+
+        void operator-=(const ElementType& rhs)
+        {
+            for (size_t i = 0, size = this->size(); i < size; ++i)
+                m_data[i] -= rhs;
+        }
+
+        void operator*=(const DenseMatrix& rhs)
+        {
+            TB_ENSURE(this->shape() == rhs.shape(), "Cannot apply += when this & rhs have different shapes");
+
+            for (size_t i = 0, size = this->size(); i < size; ++i)
+                m_data[i] *= rhs[i];
+        }
+
+        void operator*=(const ElementType& rhs)
+        {
+            for (size_t i = 0, size = this->size(); i < size; ++i)
+                m_data[i] *= rhs;
+        }
+
+        void operator/=(const DenseMatrix& rhs)
+        {
+            TB_ENSURE(this->shape() == rhs.shape(), "Cannot apply += when this & rhs have different shapes");
+
+            for (size_t i = 0, size = this->size(); i < size; ++i)
+                m_data[i] /= rhs[i];
+        }
+
+        void operator/=(const ElementType& rhs)
+        {
+            for (size_t i = 0, size = this->size(); i < size; ++i)
+                m_data[i] /= rhs;
+        }
 
         constexpr const MatrixShape& shape() const
         {
@@ -209,8 +265,8 @@ namespace Toolbox
             deallocate();
         }
 
-        template<class Type2, size_t R2, size_t C2, bool SO2>
-        constexpr void copyFrom(const DenseMatrix<Type2, R2, C2, SO2>& rhs)
+        template<class Type2, size_t R2, size_t C2>
+        constexpr void copyFrom(const DenseMatrix<Type2, R2, C2, SO>& rhs)
         {
             this->allocate(rhs.rowCount(), rhs.colCount());
 
@@ -222,8 +278,21 @@ namespace Toolbox
         {
             this->allocate(rhs.rowCount(), rhs.colCount());
 
-            for (size_t i = 0, size = rhs.size(); i < size; ++i)
-                m_data[i] = rhs[i];
+            constexpr bool haveSameSO = (SO == matrix_storage_order_flag_v<MT>);
+
+            if constexpr (haveSameSO)
+            {
+                for (size_t i = 0, size = rhs.size(); i < size; ++i)
+                    m_data[i] = rhs[i];
+            }
+            else
+            {
+                for (size_t iRow = 0, rowCount = rhs.rowCount(); iRow < rowCount; ++iRow)
+                {
+                    for (size_t iCol = 0, colCount = rhs.colCount(); iCol < colCount; ++iCol)
+                        (*this)(iRow, iCol) = rhs(iRow, iCol);
+                }
+            }
         }
 
         constexpr void moveFrom(DenseMatrix&& rhs)
