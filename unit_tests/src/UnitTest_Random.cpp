@@ -1,8 +1,7 @@
-#include <catch2/catch_test_macros.hpp>
+#include <doctest/doctest.h>
 #include <toolbox/Core/ApproxValue.hpp>
 #include <toolbox/Random/RandomVariableGenerator.hpp>
 #include <toolbox/Random/MonteCarloEngine.hpp>
-#include <iostream>
 
 
 using namespace Toolbox;

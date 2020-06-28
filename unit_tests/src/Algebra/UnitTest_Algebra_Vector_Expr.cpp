@@ -1,14 +1,15 @@
-#include <catch2/catch_test_macros.hpp>
+#include <doctest/doctest.h>
 #include <toolbox/Algebra/VectorMatrix.hpp>
 
 using namespace Toolbox;
+
 
 TEST_CASE("UnitTest_Vector_Expressions")
 {
     const StaticVector<int, 10> vecS = { 5,7,-9 };
     const DynamicVector<double> vecD = { -3,7,5 };
 
-    SECTION("Test_Type")
+    SUBCASE("Test_Type")
     {
         const auto expr1 = vecS;
         const auto expr2 = trans(vecS);
@@ -19,7 +20,7 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(std::string(typeid(expr3).name()) == "class Toolbox::MatrixExpr<struct Toolbox::OperatorAdd,class Toolbox::DenseVector<int,10,0>,int,0>");
     }
 
-    SECTION("Test_Expression1")
+    SUBCASE("Test_Expression1")
     {
         const auto expr1 = -(3 * vecS + 8 * asType<int>(vecD) - 3) / 2;
         const auto expr2 = trans(expr1);
@@ -67,7 +68,7 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK_THROWS (expr4(0, 1));
     }
 
-    SECTION("Test_Expression2")
+    SUBCASE("Test_Expression2")
     {
         using VectorType = StaticVector<double, 5>;
 

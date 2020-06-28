@@ -1,4 +1,4 @@
-#include <catch2/catch_test_macros.hpp>
+#include <doctest/doctest.h>
 #include <toolbox/Date/Date.hpp>
 
 using namespace Toolbox;

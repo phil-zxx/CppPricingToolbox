@@ -1,7 +1,8 @@
-#include <catch2/catch_test_macros.hpp>
+#include <doctest/doctest.h>
 #include <toolbox/Algebra/VectorMatrix.hpp>
 
 using namespace Toolbox;
+
 
 TEST_CASE("UnitTest_Vector_AlgebraicOp_MinMax")
 {
