@@ -9,15 +9,15 @@ namespace Toolbox
     namespace detail
     {
         template<class T, class U, bool isFloatingPoint = std::is_floating_point_v<T> || std::is_floating_point_v<U>>
-        bool isApproxNotEqual(const T& lhs, const U& rhs)
+        bool isApproxEqual(const T& lhs, const U& rhs)
         {
             if constexpr (isFloatingPoint)
             {
-                return std::abs(lhs - rhs) > 1.e-14;
+                return std::abs(lhs - rhs) < 1.e-13;
             }
             else
             {
-                return lhs != rhs;
+                return lhs == rhs;
             }
         }
     }
@@ -34,7 +34,7 @@ namespace Toolbox
         {
             for (size_t i = 0, size = lhs.size(); i < size; ++i)
             {
-                if (detail::isApproxNotEqual(lhs[i], rhs[i]))
+                if (detail::isApproxEqual(lhs[i], rhs[i]) == false)
                     return false;
             }
         }
@@ -44,7 +44,7 @@ namespace Toolbox
             {
                 for (size_t iCol = 0, colCount = rhs.colCount(); iCol < colCount; ++iCol)
                 {
-                    if (detail::isApproxNotEqual(lhs(iRow, iCol), rhs(iRow, iCol)))
+                    if (detail::isApproxEqual(lhs(iRow, iCol), rhs(iRow, iCol)) == false)
                         return false;
                 }
             }
@@ -76,7 +76,7 @@ namespace Toolbox
         {
             for (size_t j = i + 1; j < n; ++j)
             {
-                if (detail::isApproxNotEqual(arg(i, j), arg(j, i)))
+                if (detail::isApproxEqual(arg(i, j), arg(j, i)) == false)
                     return false;
             }
         }

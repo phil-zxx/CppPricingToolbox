@@ -23,11 +23,9 @@ namespace Toolbox
     template<class OP, class LHS, class RHS>
     struct OpResultBinary
     {
-        using Combined = std::conditional_t<is_matrix_v<LHS>, LHS, RHS>;
-
-        constexpr static bool SO    = matrix_storage_order_flag_v<Combined>;
         constexpr static bool lhsSO = matrix_storage_order_flag_v<LHS>;
         constexpr static bool rhsSO = matrix_storage_order_flag_v<RHS>;
+        constexpr static bool SO    = if_v<is_matrix_v<LHS>, bool, lhsSO, rhsSO>;
 
         using type = MatrixExprBinary<OP, LHS, RHS, SO>;
 

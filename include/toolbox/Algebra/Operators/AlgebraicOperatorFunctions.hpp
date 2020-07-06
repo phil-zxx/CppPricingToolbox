@@ -1,7 +1,7 @@
 #pragma once
 
+#include <toolbox/Algebra/Typetraits/OpResultClass.hpp>
 #include <toolbox/Algebra/Operators/Expressions/SumExprBinary.hpp>
-#include <toolbox/Algebra/Operators/Expressions/MatrixExpr.hpp>
 #include <toolbox/Algebra/Operators/Expressions/MatrixExprTrans.hpp>
 #include <toolbox/Algebra/Operators/BasicOperatorClasses.hpp>
 
@@ -18,43 +18,37 @@ namespace Toolbox
     template<class T, class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) asType(const MT& arg)
     {
-        constexpr bool SO = matrix_storage_order_flag_v<MT>;
-        return MatrixExprUnary<OperatorId<T>, MT, SO>(arg);
+        return OpResultUnary_t<OperatorId<T>, MT>(arg);
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) abs(const MT& arg)
     {
-        constexpr bool SO = matrix_storage_order_flag_v<MT>;
-        return MatrixExprUnary<OperatorAbs, MT, SO>(arg);
+        return OpResultUnary_t<OperatorAbs, MT>(arg);
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) sqrt(const MT& arg)
     {
-        constexpr bool SO = matrix_storage_order_flag_v<MT>;
-        return MatrixExprUnary<OperatorSqrt, MT, SO>(arg);
+        return OpResultUnary_t<OperatorSqrt, MT>(arg);
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) cbrt(const MT& arg)
     {
-        constexpr bool SO = matrix_storage_order_flag_v<MT>;
-        return MatrixExprUnary<OperatorCbrt, MT, SO>(arg);
+        return OpResultUnary_t<OperatorCbrt, MT>(arg);
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) squared(const MT& arg)
     {
-        constexpr bool SO = matrix_storage_order_flag_v<MT>;
-        return MatrixExprUnary<OperatorSquared, MT, SO>(arg);
+        return OpResultUnary_t<OperatorSquared, MT>(arg);
     }
 
     template<class MT, class ST, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) power(const MT& arg, const ST& n)
     {
-        constexpr bool SO = matrix_storage_order_flag_v<MT>;
-        return MatrixExprBinary<OperatorPower, MT, ST, SO>(arg, n);
+        return OpResultBinary_t<OperatorPower, MT, ST>(arg, n);
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
