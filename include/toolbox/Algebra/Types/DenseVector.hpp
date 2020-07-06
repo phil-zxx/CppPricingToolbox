@@ -24,7 +24,7 @@ namespace Toolbox
         DenseVector(std::initializer_list<Type> list)
             : BaseType(TF ? 1 : list.size(), TF ? list.size() : 1)
         {
-            std::copy(list.begin(), list.end(), this->m_data);
+            std::copy(list.begin(), list.end(), this->data());
         }
 
         template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>

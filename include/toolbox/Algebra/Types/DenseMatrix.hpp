@@ -13,6 +13,7 @@ namespace Toolbox
     class DenseMatrix : public Matrix<DenseMatrix<Type, R, C, SO>, SO>
     {
         static_assert(!((R == DynamicSize) ^ (C == DynamicSize)), "Matrix Dimensions R & C must be either fully dynamic or fully static");
+        static_assert(R > 0 && C > 0, "Matrix Dimensions R & C must be greater than 0");
         constexpr static size_t internalSize = std::conditional_t<R != DynamicSize && C != DynamicSize, std::integral_constant<size_t, R * C>, std::integral_constant<size_t, DynamicSize>>::value;
 
     public:
@@ -328,7 +329,7 @@ namespace Toolbox
             return result;
         }
 
-    protected:
+    private:
         constexpr void allocate(size_t size)
         {
             this->allocate(size, 1);
