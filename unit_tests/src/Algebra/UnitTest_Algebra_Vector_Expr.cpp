@@ -16,8 +16,8 @@ TEST_CASE("UnitTest_Vector_Expressions")
         const auto expr3 = vecS + 3;
 
         CHECK(std::string(typeid(expr1).name()) == "class Toolbox::DenseVector<int,10,0>");
-        CHECK(std::string(typeid(expr2).name()) == "class Toolbox::MatrixExprTrans<struct Toolbox::OperatorId<void>,class Toolbox::DenseVector<int,10,0>,1>");
-        CHECK(std::string(typeid(expr3).name()) == "class Toolbox::MatrixExpr<struct Toolbox::OperatorAdd,class Toolbox::DenseVector<int,10,0>,int,0>");
+        CHECK(std::string(typeid(expr2).name()) == "class Toolbox::MatrixExprTrans<struct Toolbox::OperationId<void>,class Toolbox::DenseVector<int,10,0>,1>");
+        CHECK(std::string(typeid(expr3).name()) == "class Toolbox::MatrixExpr<struct Toolbox::OperationAdd,class Toolbox::DenseVector<int,10,0>,int,0>");
     }
 
     SUBCASE("Test_Expression1")
