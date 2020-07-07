@@ -5,53 +5,8 @@
 
 namespace Toolbox
 {
-    struct OperatorAdd
-    {
-        template<class Type1, class Type2>
-        constexpr auto operator()(Type1 lhs, Type2 rhs) const noexcept
-        {
-            return lhs + rhs;
-        }
-    };
-
-    struct OperatorSub
-    {
-        template<class Type1, class Type2>
-        constexpr auto operator()(Type1 lhs, Type2 rhs) const noexcept
-        {
-            return lhs - rhs;
-        }
-    };
-
-    struct OperatorMul
-    {
-        template<class Type1, class Type2>
-        constexpr auto operator()(Type1 lhs, Type2 rhs) const noexcept
-        {
-            return lhs * rhs;
-        }
-    };
-
-    struct OperatorDiv
-    {
-        template<class Type1, class Type2>
-        constexpr auto operator()(Type1 lhs, Type2 rhs) const noexcept
-        {
-            return lhs / rhs;
-        }
-    };
-
-    struct OperatorNeg
-    {
-        template<class Type>
-        constexpr auto operator()(Type arg) const noexcept
-        {
-            return -arg;
-        }
-    };
-
     template<class TypeOut = void>
-    struct OperatorId
+    struct OperationId
     {
         template<class TypeIn>
         constexpr auto operator()(TypeIn arg) const noexcept
@@ -63,7 +18,7 @@ namespace Toolbox
         }
     };
 
-    struct OperatorAbs
+    struct OperationAbs
     {
         template<class Type>
         constexpr auto operator()(Type arg) const noexcept
@@ -72,7 +27,7 @@ namespace Toolbox
         }
     };
 
-    struct OperatorSqrt
+    struct OperationSqrt
     {
         template<class Type>
         constexpr auto operator()(Type arg) const noexcept
@@ -81,7 +36,7 @@ namespace Toolbox
         }
     };
 
-    struct OperatorCbrt
+    struct OperationCbrt
     {
         template<class Type>
         constexpr auto operator()(Type arg) const noexcept
@@ -90,7 +45,7 @@ namespace Toolbox
         }
     };
 
-    struct OperatorSquared
+    struct OperationSquared
     {
         template<class Type>
         constexpr auto operator()(Type arg) const noexcept
@@ -99,7 +54,7 @@ namespace Toolbox
         }
     };
 
-    struct OperatorPower
+    struct OperationPower
     {
         template<class Type1, class Type2>
         constexpr auto operator()(Type1 arg, Type2 n) const noexcept

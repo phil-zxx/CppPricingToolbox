@@ -2,9 +2,15 @@
 
 #include <toolbox/Algebra/Types/DenseVector.hpp>
 #include <toolbox/Algebra/Types/DenseMatrix.hpp>
-#include <toolbox/Algebra/Operators/BasicOperatorFunctions.hpp>
-#include <toolbox/Algebra/Operators/ExtraOperatorFunctions.hpp>
-#include <toolbox/Algebra/Operators/AlgebraicOperatorFunctions.hpp>
+
+#include <toolbox/Algebra/Operators/ArithmeticOperators.hpp>
+#include <toolbox/Algebra/Operators/EqualityOperators.hpp>
+
+#include <toolbox/Algebra/Functions/AlgebraicExpr.hpp>
+#include <toolbox/Algebra/Functions/DotInnerProduct.hpp>
+#include <toolbox/Algebra/Functions/IsSquareSymmetric.hpp>
+#include <toolbox/Algebra/Functions/MinMax.hpp>
+#include <toolbox/Algebra/Functions/SumProd.hpp>
 
 
 namespace Toolbox

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <toolbox/Algebra/Operators/Expressions/MatrixExpr.hpp>
+#include <toolbox/Algebra/Expressions/MatrixExpr.hpp>
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
 
 

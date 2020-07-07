@@ -9,16 +9,16 @@ TEST_CASE("UnitTest_Vector_AlgebraicOp_MinMax")
     const StaticVector<int, 10> vecS = { 5,7,-9 };
     const DynamicVector<double> vecD = { -3,7,5 };
 
-    const auto minS = min(vecS);
-    const auto minD = min(vecD);
-    const auto minE = min(vecS + 3 * abs(vecD));
+    const auto minS = minEl(vecS);
+    const auto minD = minEl(vecD);
+    const auto minE = minEl(vecS + 3 * abs(vecD));
     CHECK(minS == -9);
     CHECK(minD == -3);
     CHECK(minE ==  6);
 
-    const auto maxS = max(vecS);
-    const auto maxD = max(vecD);
-    const auto maxE = max(vecS + 3 * abs(vecD));
+    const auto maxS = maxEl(vecS);
+    const auto maxD = maxEl(vecD);
+    const auto maxE = maxEl(vecS + 3 * abs(vecD));
     CHECK(maxS ==  7);
     CHECK(maxD ==  7);
     CHECK(maxE == 28);
@@ -39,13 +39,13 @@ TEST_CASE("UnitTest_Vector_AlgebraicOp_MinMax")
 
     DynamicVector<double> v1, v2(3, 99);
 
-    CHECK_THROWS(min(v1));
-    CHECK_THROWS(max(v1));
+    CHECK_THROWS(minEl(v1));
+    CHECK_THROWS(maxEl(v1));
     CHECK_THROWS(argMin(v1));
     CHECK_THROWS(argMax(v1));
 
-    CHECK_NOTHROW(min(v2));
-    CHECK_NOTHROW(max(v2));
+    CHECK_NOTHROW(minEl(v2));
+    CHECK_NOTHROW(maxEl(v2));
     CHECK_NOTHROW(argMin(v2));
     CHECK_NOTHROW(argMax(v2));
 }
