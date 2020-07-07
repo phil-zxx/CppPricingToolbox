@@ -3,6 +3,8 @@
 #include <toolbox/Algebra/Types/DenseMatrix.hpp>
 #include <toolbox/Core/Error.hpp>
 
+#include <vector>
+
 
 namespace Toolbox
 {
@@ -21,6 +23,12 @@ namespace Toolbox
         constexpr explicit DenseVector(size_t size, Type init)
             : BaseType(TF ? 1 : size, TF ? size : 1, init) { }
 
+        DenseVector(const std::vector<Type>& vec)
+            : BaseType(TF ? 1 : vec.size(), TF ? vec.size() : 1)
+        {
+            std::copy(vec.begin(), vec.end(), this->data());
+        }
+
         DenseVector(std::initializer_list<Type> list)
             : BaseType(TF ? 1 : list.size(), TF ? list.size() : 1)
         {
@@ -34,6 +42,11 @@ namespace Toolbox
             TB_ENSURE(rhs.rowCount() == 1 || rhs.colCount() == 1, "DenseVector constructor can only take matrix objects which have vector shape (rows=1 or cols=1)");
 
             this->copyFrom(rhs);
+        }
+
+        operator std::vector<Type>() const
+        {
+            return std::vector<Type>(this->begin(), this->end());
         }
     };
 }
