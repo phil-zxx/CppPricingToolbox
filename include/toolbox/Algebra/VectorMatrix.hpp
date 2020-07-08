@@ -6,7 +6,8 @@
 #include <toolbox/Algebra/Operators/ArithmeticOperators.hpp>
 #include <toolbox/Algebra/Operators/EqualityOperators.hpp>
 
-#include <toolbox/Algebra/Functions/AlgebraicExpr.hpp>
+#include <toolbox/Algebra/Functions/Expr/Algebraic.hpp>
+#include <toolbox/Algebra/Functions/Expr/RowColDiag.hpp>
 #include <toolbox/Algebra/Functions/DotInnerProduct.hpp>
 #include <toolbox/Algebra/Functions/IsSquareSymmetric.hpp>
 #include <toolbox/Algebra/Functions/MinMax.hpp>
