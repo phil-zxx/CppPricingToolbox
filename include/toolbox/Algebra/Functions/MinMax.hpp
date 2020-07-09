@@ -11,14 +11,14 @@ namespace Toolbox
         if (arg.size() == 0)
             throw("Cannot use min function on an empty matrix");
 
-        auto min = arg[0];
+        auto minElTemp = arg[0];
         for (size_t i = 1, size = arg.size(); i < size; ++i)
         {
-            if (arg[i] < min)
-                min = arg[i];
+            if (arg[i] < minElTemp)
+                minElTemp = arg[i];
         }
 
-        return min;
+        return minElTemp;
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
@@ -33,24 +33,45 @@ namespace Toolbox
         if (arg.size() == 0)
             throw("Cannot use argMin function on an empty matrix");
 
-        auto min   = arg[0];
-        size_t idx = 0;
+        auto minElTemp = arg[0];
+        size_t minIdx  = 0;
 
         for (size_t i = 1, size = arg.size(); i < size; ++i)
         {
-            if (arg[i] < min)
+            if (arg[i] < minElTemp)
             {
-                min = arg[i];
-                idx = i;
+                minElTemp = arg[i];
+                minIdx    = i;
             }
         }
 
-        return idx;
+        return minIdx;
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     size_t argMax(const MT& arg)
     {
         return argMin(-arg);
+    }
+
+    template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
+    size_t argMaxFrom(const MT& arg, const size_t& offset)
+    {
+        if (arg.size() <= offset)
+            throw("Cannot use argMaxFrom function on an empty matrix");
+
+        auto maxElTemp = arg[offset];
+        size_t maxIdx  = offset;
+
+        for (size_t i = 1 + offset, size = arg.size(); i < size; ++i)
+        {
+            if (arg[i] > maxElTemp)
+            {
+                maxElTemp = arg[i];
+                maxIdx    = i;
+            }
+        }
+
+        return maxIdx;
     }
 }

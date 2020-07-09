@@ -37,6 +37,20 @@ TEST_CASE("UnitTest_Vector_AlgebraicOp_MinMax")
     CHECK(argMaxD == 1);
     CHECK(argMaxE == 1);
 
+    const auto argMax0 = argMaxFrom(vecS + 3 * abs(vecD), 0);
+    const auto argMax1 = argMaxFrom(vecS + 3 * abs(vecD), 1);
+    const auto argMax2 = argMaxFrom(vecS + 3 * abs(vecD), 2);
+    CHECK(argMax0 == 1);
+    CHECK(argMax1 == 1);
+    CHECK(argMax2 == 2);
+
+    const auto argMax3 = argMaxFrom(vecS - 5 * abs(vecD), 0);
+    const auto argMax4 = argMaxFrom(vecS - 5 * abs(vecD), 1);
+    const auto argMax5 = argMaxFrom(vecS - 5 * abs(vecD), 2);
+    CHECK(argMax3 == 0);
+    CHECK(argMax4 == 1);
+    CHECK(argMax5 == 2);
+
     DynamicVector<double> v1, v2(3, 99);
 
     CHECK_THROWS(minEl(v1));
