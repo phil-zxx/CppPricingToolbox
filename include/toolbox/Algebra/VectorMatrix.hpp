@@ -24,9 +24,9 @@ namespace Toolbox
     template<class Type, bool TF = false>
     using DynamicVector = DenseVector<Type, DynamicSize, TF>;
 
-    template<class Type, size_t Rows, size_t Cols, bool SO = false>
-    using StaticMatrix = DenseMatrix<Type, Rows, Cols, SO>;
+    template<class Type, size_t Rows, size_t Cols>
+    using StaticMatrix = DenseMatrix<Type, Rows, Cols>;
 
-    template<class Type, bool SO = false>
-    using DynamicMatrix = DenseMatrix<Type, DynamicSize, DynamicSize, SO>;
+    template<class Type>
+    using DynamicMatrix = DenseMatrix<Type, DynamicSize, DynamicSize>;
 }

@@ -32,7 +32,7 @@ TEST_CASE("UnitTest_Matrix_Operator+-*/=")
     CHECK(mat(0, 1) == 4);
     CHECK(mat(1, 0) == 6);
     CHECK(mat(1, 1) == 8);
-    CHECK(mat == DynamicMatrix<int, false>{{2,4},{6,8}});
+    CHECK(mat == DynamicMatrix<int>{{2,4},{6,8}});
 
     const auto expr = trans(4 * (mat * mat) - 50);
     CHECK(expr(0, 0) == -34);
@@ -47,8 +47,7 @@ TEST_CASE("UnitTest_Matrix_Operator+-*/=")
     CHECK(mat(0, 1) == 103);
     CHECK(mat(1, 0) ==  25);
     CHECK(mat(1, 1) == 219);
-    CHECK(mat == DynamicMatrix<int, false>{{-27, 103},{ 25, 219 }});
-    CHECK(mat == DynamicMatrix<int, true> {{-27, 25},{ 103, 219 }});
+    CHECK(mat == DynamicMatrix<int>{{-27, 103},{ 25, 219 }});
 
     mat -= (mat * mat);
     mat -= -5000;

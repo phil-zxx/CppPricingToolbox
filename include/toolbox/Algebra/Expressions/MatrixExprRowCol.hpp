@@ -7,7 +7,7 @@
 namespace Toolbox
 {
     template <class MT, bool IS_ROW>
-    class MatrixExprView : public Matrix<MatrixExprView<MT, IS_ROW>, false>, Expression
+    class MatrixExprView : public Matrix<MatrixExprView<MT, IS_ROW>>, Expression
     {
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, MT&>;

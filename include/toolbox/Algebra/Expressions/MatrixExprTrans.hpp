@@ -7,8 +7,8 @@
 
 namespace Toolbox
 {
-    template <class OP, class MT, bool SO>
-    class MatrixExprTrans : public Matrix<MatrixExprTrans<OP, MT, SO>, SO>, Expression
+    template <class OP, class MT>
+    class MatrixExprTrans : public Matrix<MatrixExprTrans<OP, MT>>, Expression
     {
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, const MT&>;
@@ -16,11 +16,11 @@ namespace Toolbox
         using ElementType = OpResultType_t<OP, ET_MT>;
 
         constexpr MatrixExprTrans(const MT& mat)
-            : m_mat(mat) { }
+            : m_mat(mat), m_rowCount(m_mat.colCount()), m_colCount(m_mat.rowCount()) { }
 
         constexpr decltype(auto) operator[](size_t i) const
         {
-            return apply_unary<OP, MT>(m_mat, i);
+            return apply_unary<OP, MT>(m_mat, (i % m_colCount) * m_rowCount + (i / m_colCount));
         }
 
         constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx) const
@@ -40,15 +40,16 @@ namespace Toolbox
 
         constexpr size_t rowCount() const
         {
-            return m_mat.colCount();  // rowCount() is changed to colCount() as this is transposed
+            return m_rowCount;
         }
 
         constexpr size_t colCount() const
         {
-            return m_mat.rowCount();  // colCount() is changed to rowCount() as this is transposed
+            return m_colCount;
         }
 
     private:
         OT_MT m_mat;
+        const size_t m_rowCount, m_colCount;
     };
 }

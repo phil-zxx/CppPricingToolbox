@@ -27,29 +27,13 @@ namespace Toolbox
         if (lhs.rowCount() != rhs.rowCount() || lhs.colCount() != rhs.colCount())
             return false;
 
-        constexpr bool haveSameSO = matrix_storage_order_flag_v<MT1> == matrix_storage_order_flag_v<MT2>;
-
-        if constexpr (haveSameSO)
+        for (size_t i = 0, size = lhs.size(); i < size; ++i)
         {
-            for (size_t i = 0, size = lhs.size(); i < size; ++i)
-            {
-                if (detail::isApproxEqual(lhs[i], rhs[i]) == false)
-                    return false;
-            }
-        }
-        else
-        {
-            for (size_t iRow = 0, rowCount = rhs.rowCount(); iRow < rowCount; ++iRow)
-            {
-                for (size_t iCol = 0, colCount = rhs.colCount(); iCol < colCount; ++iCol)
-                {
-                    if (detail::isApproxEqual(lhs(iRow, iCol), rhs(iRow, iCol)) == false)
-                        return false;
-                }
-            }
+            if (detail::isApproxEqual(lhs[i], rhs[i]) == false)
+                return false;
         }
 
-        return true;
+            return true;
     }
 
     template<class MT1, class MT2, class = std::enable_if_t<is_matrix_v<MT1> && is_matrix_v<MT2>>>

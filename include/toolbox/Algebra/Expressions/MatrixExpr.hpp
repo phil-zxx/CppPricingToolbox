@@ -7,8 +7,8 @@
 
 namespace Toolbox
 {
-    template <class OP, class LHS, class RHS, bool SO>
-    class MatrixExpr : public Matrix<MatrixExpr<OP, LHS, RHS, SO>, SO>, Expression
+    template <class OP, class LHS, class RHS>
+    class MatrixExpr : public Matrix<MatrixExpr<OP, LHS, RHS>>, Expression
     {
     public:
         constexpr static bool is_unary_expression_v = std::is_same_v<void*, RHS>;
@@ -98,9 +98,9 @@ namespace Toolbox
         OT_RHS m_rhs;
     };
 
-    template <class OP, class MT, bool SO>
-    using MatrixExprUnary = MatrixExpr<OP, MT, void*, SO>;
+    template <class OP, class MT>
+    using MatrixExprUnary = MatrixExpr<OP, MT, void*>;
 
-    template <class OP, class MT1, class MT2, bool SO>
-    using MatrixExprBinary = MatrixExpr<OP, MT1, MT2, SO>;
+    template <class OP, class MT1, class MT2>
+    using MatrixExprBinary = MatrixExpr<OP, MT1, MT2>;
 }

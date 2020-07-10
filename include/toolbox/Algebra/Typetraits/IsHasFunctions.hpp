@@ -37,8 +37,8 @@ namespace Toolbox
     {
         using Tclean = remove_cv_ref_t<T>;
 
-        template <class MT, bool SO>
-        static std::true_type test(Matrix<MT, SO>*);
+        template <class MT>
+        static std::true_type test(Matrix<MT>*);
 
         static std::false_type test(void*);
 
@@ -88,19 +88,4 @@ namespace Toolbox
     /* ========== if ========== */
     template<bool Test, class T, T val1, T val2>
     constexpr T if_v = std::conditional_t<Test, std::integral_constant<T, val1>, std::integral_constant<T, val2>>::value;
-
-
-    /* ========== matrix_storage_order_flag ========== */
-    template<class ARG>
-    struct matrix_storage_order_flag
-    {
-        template<class MT> constexpr static std::true_type test(Matrix<MT, true>*);
-        template<class MT> constexpr static std::false_type test(Matrix<MT, false>*);
-        constexpr static std::false_type test(void*);
-
-        constexpr static bool value = decltype(test(std::declval<ARG*>()))::value;
-    };
-
-    template<class ARG>
-    constexpr bool matrix_storage_order_flag_v = matrix_storage_order_flag<ARG>::value;
 }

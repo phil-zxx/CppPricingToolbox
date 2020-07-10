@@ -9,9 +9,9 @@
 namespace Toolbox
 {
     template<class Type, size_t Size, bool TF>
-    class DenseVector : public DenseMatrix<Type, if_v<Size == DynamicSize, size_t, Size, TF ? 1 : Size>, if_v<Size == DynamicSize, size_t, Size, TF ? Size : 1>, TF>
+    class DenseVector : public DenseMatrix<Type, if_v<Size == DynamicSize, size_t, Size, TF ? 1 : Size>, if_v<Size == DynamicSize, size_t, Size, TF ? Size : 1>>
     {
-        using BaseType = DenseMatrix<Type, if_v<Size == DynamicSize, size_t, Size, TF ? 1 : Size>, if_v<Size == DynamicSize, size_t, Size, TF ? Size : 1>, TF>;
+        using BaseType = DenseMatrix<Type, if_v<Size == DynamicSize, size_t, Size, TF ? 1 : Size>, if_v<Size == DynamicSize, size_t, Size, TF ? Size : 1>>;
 
     public:
         constexpr explicit DenseVector() noexcept

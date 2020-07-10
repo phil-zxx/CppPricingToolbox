@@ -7,7 +7,7 @@
 namespace Toolbox
 {
     template <class MT>
-    class MatrixExprDiag : public Matrix<MatrixExprDiag<MT>, false>, Expression
+    class MatrixExprDiag : public Matrix<MatrixExprDiag<MT>>, Expression
     {
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, const MT&>;

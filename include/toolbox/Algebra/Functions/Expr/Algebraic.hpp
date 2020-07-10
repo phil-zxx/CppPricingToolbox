@@ -10,8 +10,7 @@ namespace Toolbox
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) trans(const MT& arg)
     {
-        constexpr bool SO = !matrix_storage_order_flag_v<MT>;
-        return MatrixExprTrans<OperationId<>, MT, SO>(arg);
+        return MatrixExprTrans<OperationId<>, MT>(arg);
     }
 
     template<class T, class MT, class = std::enable_if_t<is_matrix_v<MT>>>

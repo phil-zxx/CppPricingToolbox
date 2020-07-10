@@ -49,8 +49,8 @@ TEST_CASE("UnitTest_Matrix_BaseFunctions")
 
 TEST_CASE("UnitTest_Matrix_StorageOrder")
 {
-    const StaticMatrix<double, 2, 5, false> mat1{ {3,5,2},{6,4,9} };  // false = stored as row vectors
-    const StaticMatrix<double, 3, 2, true>  mat2{ {3,5,2},{6,4,9} };  // true  = stored as columns vectors
+    const StaticMatrix<double, 2, 5> mat1{ {3,5,2},{6,4,9} };
+    const StaticMatrix<double, 3, 2> mat2{ {3,6},{5,4},{2,9} };
 
     CHECK(mat1.capacity() == 10.);
     CHECK(mat1.size()     == 6.);
@@ -74,10 +74,10 @@ TEST_CASE("UnitTest_Matrix_StorageOrder")
     CHECK(mat2.rowCount() == 3.);
     CHECK(mat2.colCount() == 2.);
     CHECK(mat2[0]         == 3.);
-    CHECK(mat2[1]         == 5.);
-    CHECK(mat2[2]         == 2.);
-    CHECK(mat2[3]         == 6.);
-    CHECK(mat2[4]         == 4.);
+    CHECK(mat2[1]         == 6.);
+    CHECK(mat2[2]         == 5.);
+    CHECK(mat2[3]         == 4.);
+    CHECK(mat2[4]         == 2.);
     CHECK(mat2[5]         == 9.);
     CHECK(mat2(0, 0)      == 3.);
     CHECK(mat2(1, 0)      == 5.);
@@ -86,25 +86,18 @@ TEST_CASE("UnitTest_Matrix_StorageOrder")
     CHECK(mat2(1, 1)      == 4.);
     CHECK(mat2(2, 1)      == 9.);
 
-     CHECK_NOTHROW(StaticMatrix<double, 3, 3, false>{ {3, 5, 2}, { 6,4,9 } });
-     CHECK_NOTHROW(StaticMatrix<double, 2, 3, false>{ {3, 5, 2}, { 6,4,9 } });
-     CHECK_THROWS (StaticMatrix<double, 3, 2, false>{ {3, 5, 2}, { 6,4,9 } });
-
-     CHECK_NOTHROW(StaticMatrix<double, 3, 3, true>{ {3, 5, 2}, { 6,4,9 } });
-     CHECK_THROWS (StaticMatrix<double, 2, 3, true>{ {3, 5, 2}, { 6,4,9 } });
-     CHECK_NOTHROW(StaticMatrix<double, 3, 2, true>{ {3, 5, 2}, { 6,4,9 } });
+     CHECK_NOTHROW(StaticMatrix<double, 3, 3>{ {3, 5, 2}, { 6,4,9 } });
+     CHECK_NOTHROW(StaticMatrix<double, 2, 3>{ {3, 5, 2}, { 6,4,9 } });
+     CHECK_THROWS (StaticMatrix<double, 3, 2>{ {3, 5, 2}, { 6,4,9 } });
 }
 
 TEST_CASE("UnitTest_Matrix_Transpose")
 {
-    const StaticMatrix<double, 2, 3, false> mat1{ {3,5,2},{6,4,9} };
-    const StaticMatrix<double, 3, 2, true>  mat2{ {3,5,2},{6,4,9} };
+    const StaticMatrix<double, 2, 3> mat1{ {3,5,2},{6,4,9} };
+    const StaticMatrix<double, 3, 2> mat2{ {3,6},{5,4},{2,9} };
 
-    const auto expr1 = trans(mat1);
-    const auto expr2 = trans(mat2);
-
-    CHECK(expr1.storageOrder == true);
-    CHECK(expr2.storageOrder == false);
+    CHECK(trans(mat1) == mat2);
+    CHECK(mat1 == trans(mat2));
 }
 
 TEST_CASE("UnitTest_Matrix_Identity")

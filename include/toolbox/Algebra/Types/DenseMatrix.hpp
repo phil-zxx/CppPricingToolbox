@@ -9,8 +9,8 @@ namespace Toolbox
 {
     constexpr size_t DynamicSize = static_cast<size_t>(-1);
 
-    template<class Type, size_t R, size_t C, bool SO>
-    class DenseMatrix : public Matrix<DenseMatrix<Type, R, C, SO>, SO>
+    template<class Type, size_t R, size_t C>
+    class DenseMatrix : public Matrix<DenseMatrix<Type, R, C>>
     {
         static_assert(!((R == DynamicSize) ^ (C == DynamicSize)), "Matrix Dimensions R & C must be either fully dynamic or fully static");
         static_assert(R > 0 && C > 0, "Matrix Dimensions R & C must be greater than 0");
@@ -45,18 +45,12 @@ namespace Toolbox
         constexpr DenseMatrix(std::initializer_list<std::initializer_list<Type>> matrix)
             : DenseMatrix()
         {
-            if constexpr (SO == false)
-                this->allocate(matrix.size(), matrix.size() > 0 ? matrix.begin()->size() : 0);
-            else
-                this->allocate(matrix.size() > 0 ? matrix.begin()->size() : 0, matrix.size());
+            this->allocate(matrix.size(), matrix.size() > 0 ? matrix.begin()->size() : 0);
 
             size_t i = 0;
             for (const auto& row : matrix)
             {
-                if constexpr (SO == false)
-                    TB_ENSURE(row.size() == m_shape.cols, "Input matrix has rows of varying sizes (found " << row.size() << " and " << m_shape.cols << ")");
-                else
-                    TB_ENSURE(row.size() == m_shape.rows, "Input matrix has cols of varying sizes (found " << row.size() << " and " << m_shape.cols << ")");
+                TB_ENSURE(row.size() == m_shape.cols, "Input matrix has rows of varying sizes (found " << row.size() << " and " << m_shape.cols << ")");
 
                 for (const auto& element : row)
                 {
@@ -66,8 +60,8 @@ namespace Toolbox
             }
         }
 
-        template<class MT, bool SO2>
-        constexpr DenseMatrix(const Matrix<MT, SO2>& rhs)
+        template<class MT>
+        constexpr DenseMatrix(const Matrix<MT>& rhs)
             : DenseMatrix((~rhs).rowCount(), (~rhs).colCount())
         {
             this->copyFrom(~rhs);
@@ -91,8 +85,8 @@ namespace Toolbox
             return *this;
         }
 
-        template<class Type2, size_t R2, size_t C2, bool SO2>
-        DenseMatrix& operator=(const DenseMatrix<Type2, R2, C2, SO2>& rhs) noexcept
+        template<class Type2, size_t R2, size_t C2>
+        DenseMatrix& operator=(const DenseMatrix<Type2, R2, C2>& rhs) noexcept
         {
             this->copyFrom(rhs);
             return *this;
@@ -133,10 +127,7 @@ namespace Toolbox
             TB_ENSURE(rowIdx < m_shape.rows, "Row index ("    << rowIdx << ") is out of bounds (only have " << m_shape.rows << " rows)");
             TB_ENSURE(colIdx < m_shape.cols, "Column index (" << colIdx << ") is out of bounds (only have " << m_shape.cols << " columns)");
 
-            if constexpr (SO == false)
-                return m_data[rowIdx * colCount() + colIdx];
-            else
-                return m_data[colIdx * rowCount() + rowIdx];
+            return m_data[rowIdx * colCount() + colIdx];
         }
 
         constexpr ElementType& operator()(size_t rowIdx, size_t colIdx)
@@ -144,10 +135,7 @@ namespace Toolbox
             TB_ENSURE(rowIdx < m_shape.rows, "Row index ("    << rowIdx << ") is out of bounds (only have " << m_shape.rows << " rows)");
             TB_ENSURE(colIdx < m_shape.cols, "Column index (" << colIdx << ") is out of bounds (only have " << m_shape.cols << " columns)");
 
-            if constexpr (SO == false)
-                return m_data[rowIdx * colCount() + colIdx];
-            else
-                return m_data[colIdx * rowCount() + rowIdx];
+            return m_data[rowIdx * colCount() + colIdx];
         }
 
         void operator+=(const DenseMatrix& rhs)
@@ -267,7 +255,7 @@ namespace Toolbox
         }
 
         template<class Type2, size_t R2, size_t C2>
-        constexpr void copyFrom(const DenseMatrix<Type2, R2, C2, SO>& rhs)
+        constexpr void copyFrom(const DenseMatrix<Type2, R2, C2>& rhs)
         {
             this->allocate(rhs.rowCount(), rhs.colCount());
 
@@ -279,21 +267,8 @@ namespace Toolbox
         {
             this->allocate(rhs.rowCount(), rhs.colCount());
 
-            constexpr bool haveSameSO = (SO == matrix_storage_order_flag_v<MT>);
-
-            if constexpr (haveSameSO)
-            {
-                for (size_t i = 0, size = rhs.size(); i < size; ++i)
-                    m_data[i] = rhs[i];
-            }
-            else
-            {
-                for (size_t iRow = 0, rowCount = rhs.rowCount(); iRow < rowCount; ++iRow)
-                {
-                    for (size_t iCol = 0, colCount = rhs.colCount(); iCol < colCount; ++iCol)
-                        (*this)(iRow, iCol) = rhs(iRow, iCol);
-                }
-            }
+            for (size_t i = 0, size = rhs.size(); i < size; ++i)
+                m_data[i] = rhs[i];
         }
 
         constexpr void moveFrom(DenseMatrix&& rhs)

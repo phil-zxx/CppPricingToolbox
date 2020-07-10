@@ -16,7 +16,7 @@ namespace Toolbox
         TB_ENSURE(colCountL == rowCountR, "Need lhs matrix column count (" << colCountL << ") to be equal to rhs matrix row count (" << rowCountR << ") when multiplying");
 
         using ET = OpResultType_t<OperationMul, ElementType_t<MT1>, ElementType_t<MT2>>;
-        DenseMatrix<ET, DynamicSize, DynamicSize, false> result(rowCountL, colCountR, 0);
+        DenseMatrix<ET, DynamicSize, DynamicSize> result(rowCountL, colCountR, 0);
 
         for (size_t k = 0; k < colCountR; ++k)
         {

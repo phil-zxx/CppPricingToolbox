@@ -7,12 +7,10 @@
 
 namespace Toolbox
 {
-    template<typename MT, bool SO>
+    template<class MT>
     struct Matrix
     {
         using MatrixType = MT;
-
-        static constexpr bool storageOrder = SO;
 
         constexpr MatrixType& operator~() noexcept
         {
@@ -24,7 +22,7 @@ namespace Toolbox
             return static_cast<const MatrixType&>(*this);
         }
 
-        friend std::ostream& operator<<(std::ostream& os, const Matrix<MT, SO>& rhs)
+        friend std::ostream& operator<<(std::ostream& os, const Matrix<MT>& rhs)
         {
             os << "[";
             for (size_t iRow = 0, rowCount = (~rhs).rowCount(); iRow < rowCount; ++iRow)
