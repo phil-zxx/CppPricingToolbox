@@ -1,7 +1,6 @@
 #pragma once
 
-#include <toolbox/Algebra/Expressions/MatrixExprRowCol.hpp>
-#include <toolbox/Algebra/Expressions/MatrixExprDiag.hpp>
+#include <toolbox/Algebra/Expressions/MatrixExprRowColDiag.hpp>
 
 
 namespace Toolbox
