@@ -15,7 +15,7 @@ namespace Toolbox
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, MT&>;
         using ElementType = ElementType_t<MT>;
 
-        constexpr MatrixExprView(MT& mat)
+        constexpr explicit MatrixExprView(MT& mat)
             : m_mat(mat), m_idx(0)
         {
             static_assert(FLAG == DIAGONAL, "Constructor for Diagonal View was incorrectly called");
@@ -24,16 +24,20 @@ namespace Toolbox
             const size_t m_colCount = m_mat.colCount();
             m_idx = m_rowCount < m_colCount ? m_rowCount : m_colCount;
         }
-        
+
         constexpr MatrixExprView(MT& mat, const size_t& idx)
             : m_mat(mat), m_idx(idx)
         {
             static_assert(FLAG == ROW || FLAG == COLUMN, "Constructor for Row/Column View was incorrectly called");
 
             if constexpr (FLAG == ROW)
+            {
                 TB_ENSURE(idx < m_mat.rowCount(), "Row index (" << idx << ") is out of bounds (only have " << m_mat.rowCount() << " rows)");
+            }
             else if constexpr (FLAG == COLUMN)
+            {
                 TB_ENSURE(idx < m_mat.colCount(), "Column index (" << idx << ") is out of bounds (only have " << m_mat.colCount() << " columns)");
+            }
         }
 
         constexpr decltype(auto) operator[](size_t i) const
