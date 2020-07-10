@@ -89,6 +89,19 @@ TEST_CASE("UnitTest_Algebra_Matrix_RowCol")
     CHECK(colRow[0]    == 9);
 }
 
+TEST_CASE("UnitTest_Algebra_Matrix_RowCol_Operator")
+{
+    DynamicMatrix<int> mat = { {5,7,2},{9,3,6} };
+
+    auto col2 = column(mat, 2);
+    col2 *= 3;
+    CHECK(mat == DynamicMatrix<int>{ {5, 7, 6}, { 9,3,18 } });
+
+    auto row1 = row(mat, 1);
+    row1 *= 2;
+    CHECK(mat == DynamicMatrix<int>{ {5, 7, 6}, { 18,6,36 } });
+}
+
 TEST_CASE("UnitTest_Algebra_Matrix_RowCol_Throw")
 {
     const DynamicMatrix<int> mat = { {5,7,2},{9,3,6} };

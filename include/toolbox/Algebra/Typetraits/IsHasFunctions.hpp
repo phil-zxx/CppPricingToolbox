@@ -73,6 +73,11 @@ namespace Toolbox
 
     template<class T>
     constexpr bool has_storage_v = has_storage<T>::value;
+    
+
+    /* ========== is_mutable_matrix ========== */
+    template<class T>
+    constexpr bool is_mutable_matrix_v = !std::is_const_v<T> && !is_expression_v<T> && !is_scalar_v<T>;
 
 
     /* ========== dummy false type ========== */

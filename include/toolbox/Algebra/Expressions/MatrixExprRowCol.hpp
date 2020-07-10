@@ -10,10 +10,10 @@ namespace Toolbox
     class MatrixExprView : public Matrix<MatrixExprView<MT, IS_ROW>, false>, Expression
     {
     public:
-        using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, const MT&>;
+        using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, MT&>;
         using ElementType = ElementType_t<MT>;
 
-        constexpr MatrixExprView(const MT& mat, const size_t& idx)
+        constexpr MatrixExprView(MT& mat, const size_t& idx)
             : m_mat(mat), m_idx(idx)
         {
             if constexpr (IS_ROW)
@@ -32,7 +32,14 @@ namespace Toolbox
                 return m_mat(m_idx, i);
             else
                 return m_mat(i, m_idx);
-
+        }
+        
+        constexpr decltype(auto) operator[](size_t i)
+        {
+            if constexpr (IS_ROW)
+                return m_mat(m_idx, i);
+            else
+                return m_mat(i, m_idx);
         }
 
         constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx) const
@@ -46,6 +53,35 @@ namespace Toolbox
             {
                 TB_ENSURE(colIdx == 0, "Column index (" << colIdx << ") is out of bounds (only have " << 1 << " column)");
                 return m_mat(rowIdx, m_idx);
+            }
+        }
+        
+        constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx)
+        {
+            if constexpr (IS_ROW)
+            {
+                TB_ENSURE(rowIdx == 0, "Row index (" << rowIdx << ") is out of bounds (only have " << 1 << " row)");
+                return m_mat(m_idx, colIdx);
+            }
+            else
+            {
+                TB_ENSURE(colIdx == 0, "Column index (" << colIdx << ") is out of bounds (only have " << 1 << " column)");
+                return m_mat(rowIdx, m_idx);
+            }
+        }
+
+        template<class = std::enable_if_t<is_mutable_matrix_v<MT>>>
+        void operator*=(const ElementType& rhs)
+        {
+            if constexpr (IS_ROW)
+            {
+                for (size_t i = 0, size = m_mat.colCount(); i < size; ++i)
+                    m_mat(m_idx, i) *= rhs;
+            }
+            else
+            {
+                for (size_t i = 0, size = m_mat.rowCount(); i < size; ++i)
+                    m_mat(i, m_idx) *= rhs;
             }
         }
 
