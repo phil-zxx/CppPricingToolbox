@@ -42,6 +42,12 @@ namespace Toolbox
                 m_data[i] = init;
         }
 
+        constexpr DenseMatrix(std::initializer_list<Type>)
+            : DenseMatrix()
+        {
+            TB_THROW("To create a DenseMatrix, use constructor with initializer_list<initializer_list<>> instead of just initializer_list<> (to avoid potential inconsistencies), or use DenseVector with initializer_list<>");
+        }
+
         constexpr DenseMatrix(std::initializer_list<std::initializer_list<Type>> matrix)
             : DenseMatrix()
         {

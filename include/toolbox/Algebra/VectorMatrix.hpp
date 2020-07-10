@@ -11,6 +11,7 @@
 #include <toolbox/Algebra/Functions/DotInnerProduct.hpp>
 #include <toolbox/Algebra/Functions/IsSquareSymmetric.hpp>
 #include <toolbox/Algebra/Functions/MinMax.hpp>
+#include <toolbox/Algebra/Functions/Mult.hpp>
 #include <toolbox/Algebra/Functions/SumProd.hpp>
 #include <toolbox/Algebra/Functions/SwapRowsCols.hpp>
 
