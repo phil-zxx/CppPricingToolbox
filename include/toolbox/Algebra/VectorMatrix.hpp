@@ -12,6 +12,7 @@
 #include <toolbox/Algebra/Functions/IsSquareSymmetric.hpp>
 #include <toolbox/Algebra/Functions/MinMax.hpp>
 #include <toolbox/Algebra/Functions/SumProd.hpp>
+#include <toolbox/Algebra/Functions/swapRowsCols.hpp>
 
 
 namespace Toolbox
