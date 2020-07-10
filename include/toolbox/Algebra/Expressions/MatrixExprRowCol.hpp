@@ -70,9 +70,10 @@ namespace Toolbox
             }
         }
 
-        template<class = std::enable_if_t<is_mutable_matrix_v<MT>>>
         void operator*=(const ElementType& rhs)
         {
+            static_assert(is_mutable_matrix_v<MT>, "Need underlying matrix to be mutable");
+
             if constexpr (IS_ROW)
             {
                 for (size_t i = 0, size = m_mat.colCount(); i < size; ++i)

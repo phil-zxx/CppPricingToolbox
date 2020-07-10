@@ -141,8 +141,8 @@ namespace Toolbox
         j_left  = rot1.mult(j_right.transposed());
     }
 
-    inline DynamicVector<double>  SingularValueDecomp::solve(const DynamicVector<double>& y) const
+    inline DynamicVector<double> SingularValueDecomp::solve(const DynamicVector<double>& y) const
     {
-         // TODO: return mult(invertedMatrix, y);
+        return mult(invertedMatrix, y);
     }
 }
