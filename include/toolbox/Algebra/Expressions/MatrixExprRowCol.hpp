@@ -33,7 +33,7 @@ namespace Toolbox
             else
                 return m_mat(i, m_idx);
         }
-        
+
         constexpr decltype(auto) operator[](size_t i)
         {
             if constexpr (IS_ROW)
@@ -55,7 +55,7 @@ namespace Toolbox
                 return m_mat(rowIdx, m_idx);
             }
         }
-        
+
         constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx)
         {
             if constexpr (IS_ROW)

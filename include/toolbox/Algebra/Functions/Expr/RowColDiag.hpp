@@ -23,7 +23,7 @@ namespace Toolbox
     {
         return MatrixExprDiag<const MT>(arg);
     }
-    
+
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) row(MT& arg, size_t rowIdx)
     {
