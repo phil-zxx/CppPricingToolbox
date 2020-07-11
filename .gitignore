@@ -6,3 +6,4 @@
 /.idea
 /cmake-build-**
 /build
+/linux_build_folder

@@ -1,7 +1,5 @@
 #pragma once
 
-#define CPP_PRICING_TOOLBOX_ENABLE_ASSERT 1
-
 #include <cassert>
 #include <string>
 
@@ -12,7 +10,7 @@ namespace Toolbox
     {
     public:
         Error(const std::string& file, long line, const std::string& functionName, const std::string& message)
-            : m_message(Error::createMessage(file, line, functionName, message)) { }
+            : m_message("Error: " + functionName + ":\n  " + file + "(" + std::to_string(line) + "): \n" + message) { }
 
         const char* what() const noexcept override
         {
@@ -51,29 +49,19 @@ namespace Toolbox
         };
 
     private:
-        std::string m_message;
-
-        static std::string createMessage(const std::string& file, long line, const std::string& functionName, const std::string& message)
-        {
-            return Error::Msg() << "Error: " << functionName << ":\n  " << file << "(" << line << "): \n" << message;
-        }
+        const std::string m_message;
     };
-
-    inline bool TB_ASSERT_MESSAGE(const char* /* msg */)
-    {
-        return false;
-    }
 }
 
-#if CPP_PRICING_TOOLBOX_ENABLE_ASSERT
-    #define TB_ASSERT(expr, msg) assert((expr) || Toolbox::TB_ASSERT_MESSAGE(msg))
-#else
+#ifdef NDEBUG
     #define TB_ASSERT(expr, msg)
+#else
+    #define TB_ASSERT(expr, msg) assert((expr) || !msg)
 #endif
 
 #define TB_ENSURE(condition,message) \
-if (!(condition)) { \
-    throw Toolbox::Error(__FILE__, __LINE__, __func__, Error::Msg() << message); \
- } else
+    if (!(condition)) { \
+        throw Toolbox::Error(__FILE__, __LINE__, __func__, Error::Msg() << message); \
+     } else
 
 #define TB_THROW(message) TB_ENSURE(false, message)
