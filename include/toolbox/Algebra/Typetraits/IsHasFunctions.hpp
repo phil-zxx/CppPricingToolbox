@@ -59,9 +59,9 @@ namespace Toolbox
     constexpr bool is_expression_or_scalar_v = is_expression_v<T> || is_scalar_v<T>;
 
 
-    /* ========== is_binary_op_valid ========== */
+    /* ========== at_least_one_is_matrix ========== */
     template <class LHS, class RHS>
-    constexpr bool is_binary_op_valid_v = is_matrix_v<LHS> || is_matrix_v<RHS>;
+    constexpr bool at_least_one_is_matrix_v = is_matrix_v<LHS> || is_matrix_v<RHS>;
 
 
     /* ========== has_storage ========== */

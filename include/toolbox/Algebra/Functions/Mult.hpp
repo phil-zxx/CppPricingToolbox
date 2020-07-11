@@ -6,7 +6,7 @@
 
 namespace Toolbox
 {
-    template<class MT1, class MT2, class = std::enable_if_t<is_matrix_v<MT1>&& is_matrix_v<MT2>>>
+    template<class MT1, class MT2, class = std::enable_if_t<is_matrix_v<MT1> && is_matrix_v<MT2>>>
     decltype(auto) mult(const MT1& lhs, const MT2& rhs)
     {
         const size_t rowCountL = lhs.rowCount();

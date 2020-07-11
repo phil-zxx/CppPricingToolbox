@@ -1,5 +1,6 @@
 #pragma once
 
+#include <toolbox/Core/Error.hpp>
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
 
 
@@ -8,8 +9,7 @@ namespace Toolbox
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) minEl(const MT& arg)
     {
-        if (arg.size() == 0)
-            throw("Cannot use min function on an empty matrix");
+        TB_ENSURE(arg.size() > 0, "Cannot use min function on an empty matrix");
 
         auto minElTemp = arg[0];
         for (size_t i = 1, size = arg.size(); i < size; ++i)
@@ -30,8 +30,7 @@ namespace Toolbox
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     size_t argMin(const MT& arg)
     {
-        if (arg.size() == 0)
-            throw("Cannot use argMin function on an empty matrix");
+        TB_ENSURE(arg.size() > 0, "Cannot use argMin function on an empty matrix");
 
         auto minElTemp = arg[0];
         size_t minIdx  = 0;
@@ -57,8 +56,7 @@ namespace Toolbox
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     size_t argMaxFrom(const MT& arg, const size_t& offset)
     {
-        if (arg.size() <= offset)
-            throw("Cannot use argMaxFrom function on an empty matrix");
+        TB_ENSURE(arg.size() > offset, "Need matrix size (" << arg.size() << ") to be larger than the offset (" << offset << ") in argMaxFrom function");
 
         auto maxElTemp = arg[offset];
         size_t maxIdx  = offset;

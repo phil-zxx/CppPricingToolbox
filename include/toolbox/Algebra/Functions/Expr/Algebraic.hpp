@@ -1,6 +1,6 @@
 #pragma once
 
-#include <toolbox/Algebra/Typetraits/OpResultClass.hpp>
+#include <toolbox/Algebra/Expressions/MatrixExpr.hpp>
 #include <toolbox/Algebra/Expressions/MatrixExprTrans.hpp>
 #include <toolbox/Algebra/Operations/AlgebraicOperations.hpp>
 
@@ -16,36 +16,36 @@ namespace Toolbox
     template<class T, class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) asType(const MT& arg)
     {
-        return OpResultUnary_t<OperationId<T>, MT>(arg);
+        return MatrixExprUnary<OperationId<T>, MT>(arg);
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) abs(const MT& arg)
     {
-        return OpResultUnary_t<OperationAbs, MT>(arg);
+        return MatrixExprUnary<OperationAbs, MT>(arg);
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) sqrt(const MT& arg)
     {
-        return OpResultUnary_t<OperationSqrt, MT>(arg);
+        return MatrixExprUnary<OperationSqrt, MT>(arg);
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) cbrt(const MT& arg)
     {
-        return OpResultUnary_t<OperationCbrt, MT>(arg);
+        return MatrixExprUnary<OperationCbrt, MT>(arg);
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) squared(const MT& arg)
     {
-        return OpResultUnary_t<OperationSquared, MT>(arg);
+        return MatrixExprUnary<OperationSquared, MT>(arg);
     }
 
     template<class MT, class ST, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) power(const MT& arg, const ST& n)
     {
-        return OpResultBinary_t<OperationPower, MT, ST>(arg, n);
+        return MatrixExprBinary<OperationPower, MT, ST>(arg, n);
     }
 }
