@@ -80,11 +80,6 @@ namespace Toolbox
     constexpr bool is_mutable_matrix_v = !std::is_const_v<T> && !is_expression_v<T> && !is_scalar_v<T>;
 
 
-    /* ========== dummy false type ========== */
-    template<class... Args>
-    struct false_template : std::false_type { };
-
-
     /* ========== if ========== */
     template<bool Test, class T, T val1, T val2>
     constexpr T if_v = std::conditional_t<Test, std::integral_constant<T, val1>, std::integral_constant<T, val2>>::value;

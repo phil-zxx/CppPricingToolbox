@@ -35,8 +35,8 @@ namespace Toolbox
             return operation(lhs[idx], rhs);
         else if constexpr (!is_matrix_v<LHS> && is_matrix_v<RHS>)
             return operation(lhs, rhs[idx]);
-        else
-            static_assert(false_template<OP, LHS, RHS>::value, "Need at least one input to be a matrix");
+
+        static_assert(at_least_one_is_matrix_v<LHS, RHS>, "Need at least one input to be a matrix");
     }
 
     template<class OP, class LHS, class RHS>
@@ -50,7 +50,7 @@ namespace Toolbox
             return operation(lhs(rowIdx, colIdx), rhs);
         else if constexpr (!is_matrix_v<LHS> && is_matrix_v<RHS>)
             return operation(lhs, rhs(rowIdx, colIdx));
-        else
-            static_assert(false_template<OP, LHS, RHS>::value, "Need at least one input to be a matrix");
+
+        static_assert(at_least_one_is_matrix_v<LHS, RHS>, "Need at least one input to be a matrix");
     }
 }

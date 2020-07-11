@@ -59,8 +59,8 @@ namespace Toolbox
                 return m_lhs.size();
             else if constexpr (is_matrix_v<RHS>)
                 return m_rhs.size();
-            else
-                static_assert(false_template<OP>::value, "At least one input must be a matrix");
+
+            static_assert(at_least_one_is_matrix_v<LHS, RHS>, "At least one input must be a matrix");
         }
 
         constexpr const MatrixShape& shape() const
@@ -69,8 +69,8 @@ namespace Toolbox
                 return m_lhs.shape();
             else if constexpr (is_matrix_v<RHS>)
                 return m_rhs.shape();
-            else
-                static_assert(false_template<OP>::value, "At least one input must be a matrix");
+
+            static_assert(at_least_one_is_matrix_v<LHS, RHS>, "At least one input must be a matrix");
         }
 
         constexpr size_t rowCount() const
@@ -79,8 +79,8 @@ namespace Toolbox
                 return m_lhs.rowCount();
             else if constexpr (is_matrix_v<RHS>)
                 return m_rhs.rowCount();
-            else
-                static_assert(false_template<OP>::value, "At least one input must be a matrix");
+
+            static_assert(at_least_one_is_matrix_v<LHS, RHS>, "At least one input must be a matrix");
         }
 
         constexpr size_t colCount() const
@@ -89,8 +89,8 @@ namespace Toolbox
                 return m_lhs.colCount();
             else if constexpr (is_matrix_v<RHS>)
                 return m_rhs.colCount();
-            else
-                static_assert(false_template<OP>::value, "At least one input must be a matrix");
+
+            static_assert(at_least_one_is_matrix_v<LHS, RHS>, "At least one input must be a matrix");
         }
 
     private:
