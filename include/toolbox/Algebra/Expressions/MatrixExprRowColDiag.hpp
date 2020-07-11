@@ -25,7 +25,7 @@ namespace Toolbox
             m_idx = m_rowCount < m_colCount ? m_rowCount : m_colCount;
         }
 
-        constexpr MatrixExprView(MT& mat, const size_t& idx)
+        constexpr explicit MatrixExprView(MT& mat, const size_t& idx)
             : m_mat(mat), m_idx(idx)
         {
             static_assert(FLAG == ROW || FLAG == COLUMN, "Constructor for Row/Column View was incorrectly called");

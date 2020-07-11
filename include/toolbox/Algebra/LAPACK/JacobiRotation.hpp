@@ -11,11 +11,11 @@ namespace Toolbox
     public:
         double c, s;
 
-        JacobiRotation();
-        JacobiRotation(const double& c, const double& s);
+        explicit JacobiRotation();
+        explicit JacobiRotation(const double& c, const double& s);
 
         template<class MT>
-        JacobiRotation(const size_t& p, const size_t& q, const MT& mat);
+        explicit JacobiRotation(const size_t& p, const size_t& q, const MT& mat);
 
         template<class MT>
         void rotateMatrixFromLeft(const size_t& p, const size_t& q, MT& mat) const;

@@ -15,7 +15,7 @@ namespace Toolbox
         using ET_MT       = ElementType_t<MT>;
         using ElementType = OpResultType_t<OP, ET_MT>;
 
-        constexpr MatrixExprTrans(const MT& mat)
+        constexpr explicit MatrixExprTrans(const MT& mat)
             : m_mat(mat), m_rowCount(m_mat.colCount()), m_colCount(m_mat.rowCount()) { }
 
         constexpr decltype(auto) operator[](size_t i) const

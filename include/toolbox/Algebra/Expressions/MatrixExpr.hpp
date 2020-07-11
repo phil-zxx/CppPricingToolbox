@@ -19,13 +19,13 @@ namespace Toolbox
         using ET_RHS      = ElementType_t<RHS>;
         using ElementType = OpResultType_t<OP, ET_LHS, ET_RHS>;
 
-        constexpr MatrixExpr(const LHS& arg)
+        constexpr explicit MatrixExpr(const LHS& arg)
             : m_lhs(arg), m_rhs(nullptr)
         {
             static_assert(is_unary_expression_v, "Operator is not unary, need to provide two inputs");
         }
 
-        constexpr MatrixExpr(const LHS& lhs, const RHS& rhs)
+        constexpr explicit MatrixExpr(const LHS& lhs, const RHS& rhs)
             : m_lhs(lhs), m_rhs(rhs)
         {
             if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
