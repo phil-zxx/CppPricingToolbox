@@ -92,6 +92,10 @@ TEST_CASE("UnitTest_Vector_AlgebraicOp_Dot")
     CHECK_NOTHROW(dot(v1, v2));
     CHECK_THROWS (dot(v1, v3));
     CHECK_THROWS (dot(v2, v3));
+
+    const StaticVector<int, 5> v4;
+    const DynamicVector<int>   v5;
+    CHECK(dot(v4, v5) == 0);
 }
 
 TEST_CASE("UnitTest_Vector_AlgebraicOp_DotInnerProd")

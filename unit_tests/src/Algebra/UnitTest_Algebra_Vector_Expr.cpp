@@ -99,4 +99,12 @@ TEST_CASE("UnitTest_Vector_Expressions")
         CHECK(expr3 == vecTrue3);
         CHECK(!(expr3 != vecTrue3));
     }
+
+    SUBCASE("Test_ShapesDoNotMatch")
+    {
+        const DynamicVector<double> vecErr = { -3,7,5,1 };
+
+        CHECK_NOTHROW(vecS + vecD);
+        CHECK_THROWS (vecS + vecErr);
+    }
 }

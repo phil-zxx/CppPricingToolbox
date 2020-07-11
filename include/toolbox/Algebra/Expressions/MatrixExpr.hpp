@@ -30,7 +30,7 @@ namespace Toolbox
         {
             if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
             {
-                if (lhs.rowCount() != rhs.rowCount() || lhs.colCount() != rhs.colCount())
+                if (lhs.shape() != rhs.shape())
                     throw("Matrix shapes do not match");
             }
 
