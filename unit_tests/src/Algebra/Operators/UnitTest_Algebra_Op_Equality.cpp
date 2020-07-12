@@ -69,3 +69,21 @@ TEST_CASE("UnitTest_Algebra_Op_Equality5")
     CHECK(!(mat != vec));
     CHECK(!(vec != mat));
 }
+
+TEST_CASE("UnitTest_Algebra_Op_Equality6")
+{
+    DynamicMatrix<double> mat12 = { {1,1},{1,2} };
+    DynamicMatrix<double> mat1  = { {1,1},{1,1} };
+
+    // Matrix should NOT be equal to 1
+    CHECK(mat12 != 1);
+    CHECK(1 != mat12);
+    CHECK(!(mat12 == 1));
+    CHECK(!(1 == mat12));
+
+    // Matrix should be equal to 1
+    CHECK(mat1 == 1);
+    CHECK(1 == mat1);
+    CHECK(!(mat1 != 1));
+    CHECK(!(1 != mat1));
+}

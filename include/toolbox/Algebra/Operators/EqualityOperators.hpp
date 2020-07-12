@@ -30,23 +30,23 @@ namespace Toolbox
                 return false;
         }
 
-        for (size_t i = 0, size = lhs.size(); i < size; ++i)
+        if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
         {
-            if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
-            {
+            for (size_t i = 0, size = lhs.size(); i < size; ++i)
                 if (detail::isApproxEqual(lhs[i], rhs[i]) == false)
                     return false;
-            }
-            else if constexpr (is_matrix_v<LHS> && !is_matrix_v<RHS>)
-            {
+        }
+        else if constexpr (is_matrix_v<LHS> && !is_matrix_v<RHS>)
+        {
+            for (size_t i = 0, size = lhs.size(); i < size; ++i)
                 if (detail::isApproxEqual(lhs[i], rhs) == false)
                     return false;
-            }
-            else if constexpr (!is_matrix_v<LHS> && is_matrix_v<RHS>)
-            {
+        }
+        else if constexpr (!is_matrix_v<LHS> && is_matrix_v<RHS>)
+        {
+            for (size_t i = 0, size = rhs.size(); i < size; ++i)
                 if (detail::isApproxEqual(lhs, rhs[i]) == false)
                     return false;
-            }
         }
 
         return true;
