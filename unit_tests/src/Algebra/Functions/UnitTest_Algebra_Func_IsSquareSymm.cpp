@@ -4,7 +4,7 @@
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Matrix_isSquare_isSymmetric")
+TEST_CASE("UnitTest_Algebra_Func_IsSquareSymm")
 {
     const DynamicMatrix<double> mat1 = { {1,2,3},{2,9,4},{3,3.99999999,8} };
     const DynamicMatrix<double> mat2 = { {1,2,3},{2,9,4},{3,4,8} };

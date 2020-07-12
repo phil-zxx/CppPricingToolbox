@@ -4,7 +4,7 @@
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Vector_AlgebraicOp_SumProd")
+TEST_CASE("UnitTest_Algebra_Func_SumProd")
 {
     const StaticVector<int, 10> vecS = { 5,7,-9 };
     const DynamicVector<double> vecD = { -3,7,5 };

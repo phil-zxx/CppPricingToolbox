@@ -4,7 +4,7 @@
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Vector_Expressions")
+TEST_CASE("UnitTest_Algebra_Expr_LongExpr")
 {
     const StaticVector<int, 10> vecS = { 5,7,-9 };
     const DynamicVector<double> vecD = { -3,7,5 };
