@@ -8,7 +8,7 @@ TEST_CASE("UnitTest_Algebra_Expr_Row")
 {
     const DynamicMatrix<int> mat = { {5,7,2},{9,3,6} };
 
-    const auto row0 = row(mat, 0);
+    auto row0 = row(mat, 0);
     CHECK(row0.size()     == 3);
     CHECK(row0.rowCount() == 1);
     CHECK(row0.colCount() == 3);
@@ -37,7 +37,7 @@ TEST_CASE("UnitTest_Algebra_Expr_Col")
 {
     const DynamicMatrix<int> mat = { {5,7,2},{9,3,6} };
 
-    const auto col0 = column(mat, 0);
+    auto col0 = column(mat, 0);
     CHECK(col0.size()     == 2);
     CHECK(col0.rowCount() == 2);
     CHECK(col0.colCount() == 1);
@@ -89,17 +89,26 @@ TEST_CASE("UnitTest_Algebra_Expr_RowCol")
     CHECK(colRow[0]    == 9);
 }
 
-TEST_CASE("UnitTest_Algebra_Expr_RowCol_Operator")
+TEST_CASE("UnitTest_Algebra_Expr_RowColDiag_Operator")
 {
     DynamicMatrix<int> mat = { {5,7,2},{9,3,6} };
 
     auto col2 = column(mat, 2);
     col2 *= 3;
-    CHECK(mat == DynamicMatrix<int>{ {5, 7, 6}, { 9,3,18 } });
+    CHECK(mat == DynamicMatrix<int>{ {5,7,6},{9,3,18} });
 
     auto row1 = row(mat, 1);
     row1 *= 2;
-    CHECK(mat == DynamicMatrix<int>{ {5, 7, 6}, { 18,6,36 } });
+    CHECK(mat == DynamicMatrix<int>{ {5,7,6},{18,6,36} });
+
+    auto diag = diagonal(mat);
+    diag *= 4;
+    CHECK(mat == DynamicMatrix<int>{ {20,7,6},{18,24,36} });
+
+    DynamicMatrix<int> mat2 = { {5,7},{2,9},{3,6} };
+    auto diag2 = diagonal(mat2);
+    diag2 *= 3;
+    CHECK(mat2 == DynamicMatrix<int>{ {15,7},{2,27},{3,6} });
 }
 
 TEST_CASE("UnitTest_Algebra_Expr_Throw")
@@ -121,7 +130,7 @@ TEST_CASE("UnitTest_Algebra_Expr_Diagonal")
 {
     const DynamicMatrix<int> mat = { {5,7,2},{9,3,6} };
 
-    const auto diag = diagonal(mat);
+    auto diag = diagonal(mat);
     CHECK(diag.size()     == 2);
     CHECK(diag.rowCount() == 2);
     CHECK(diag.colCount() == 1);
@@ -138,4 +147,13 @@ TEST_CASE("UnitTest_Algebra_Expr_Diagonal")
     CHECK(diagDiag.shape()    == MatrixShape(1, 1));
     CHECK(diagDiag(0, 0) == 5);
     CHECK(diagDiag[0]    == 5);
+
+    DynamicMatrix<double> mat2 = { {9,22,3},{1,-5,9} };
+    CHECK(mat2[0]    == 9);
+    CHECK(mat2(0, 0) == 9);
+    CHECK(mat2 == DynamicMatrix<int>{ {9, 22, 3}, { 1,-5,9 } });
+    diagonal(diagonal(mat2))[0] = 4;
+    CHECK(mat2[0]    == 4);
+    CHECK(mat2(0, 0) == 4);
+    CHECK(mat2 == DynamicMatrix<int>{ {4, 22, 3}, { 1,-5,9 } });
 }

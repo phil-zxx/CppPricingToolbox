@@ -114,7 +114,7 @@ namespace Toolbox
             }
             else if constexpr (FLAG == DIAGONAL)
             {
-                for (size_t i = 0, size = m_mat.rowCount(); i < size; ++i)
+                for (size_t i = 0, size = m_idx; i < size; ++i)
                     m_mat(i, i) *= rhs;
             }
         }
