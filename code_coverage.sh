@@ -22,7 +22,7 @@ echo ">>> Running Code Coverage"
 lcov -d . -c -o coverage.info --rc lcov_branch_coverage=1
 lcov -r coverage.info "/usr*"        -o coverage.info --rc lcov_branch_coverage=1
 lcov -r coverage.info "*/external/*" -o coverage.info --rc lcov_branch_coverage=1
-genhtml coverage.info -o out --legend --rc genhtml_branch_coverage=1
+genhtml coverage.info -o out --legend --branch-coverage
 
 echo ">>> Opening Code Coverage HTML"
 cd out
