@@ -7,7 +7,7 @@
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Random")
+TEST_CASE("UnitTest_Random_RV_Generator")
 {
     constexpr unsigned int seed = 10;
 
@@ -28,12 +28,34 @@ TEST_CASE("UnitTest_Random")
     CHECK(ApproxValue(rvg3.getAntithetic()) == 6.0405541263088525);
     CHECK(ApproxValue(rvg3.getNext())       == 3.4119257803495748);
     CHECK(ApproxValue(rvg3.getAntithetic()) == 3.5201314370331396);
+}
 
-    RandomVariableGenerator rvg4(std::exponential_distribution<>(0.012), seed);
-    MonteCarloEngine mce(rvg4, 10'000);
+TEST_CASE("UnitTest_Random_MonteCarloEngine1")
+{
+    constexpr unsigned int seed = 10;
+
+    RandomVariableGenerator rvg(std::exponential_distribution<>(0.012), seed);
+    MonteCarloEngine mce(rvg, 10'000);
+    CHECK(mce.getStats().mean()     == 0);
+    CHECK(mce.getStats().variance() == 0);
 
     constexpr auto payoff = [T = 5](const double& tau) { return tau < T ? 0.6 - tau * 0.01 : -T * 0.01; };
     mce.run(payoff);
     auto npv = mce.getStats().mean() * 10'000'000;
     CHECK(ApproxValue(npv) == -150136.53532115807);
+}
+
+TEST_CASE("UnitTest_Random_MonteCarloEngine2")
+{
+    constexpr unsigned int seed = 10;
+
+    RandomVariableGenerator rvg(std::exponential_distribution<>(0.012), seed);
+    MonteCarloEngine mce(rvg, 10'000, true);
+    CHECK(mce.getStats().mean()     == 0);
+    CHECK(mce.getStats().variance() == 0);
+
+    constexpr auto payoff = [T = 5](const double& tau) { return tau < T ? 0.6 - tau * 0.01 : -T * 0.01; };
+    mce.run(payoff);
+    auto npv = mce.getStats().mean() * 10'000'000;
+    CHECK(ApproxValue(npv) == -151704.00568797035);
 }

@@ -12,11 +12,11 @@ TEST_CASE("UnitTest_ApproxValue")
     std::ostringstream os1; os1 << approx1;
     CHECK(approx1   == 123);
     CHECK(os1.str() == "123");
-    
+
     std::ostringstream os2; os2 << approx2;
     CHECK(approx2   == 1.23);
     CHECK(os2.str() == "1.23");
-    
+
     std::ostringstream os3; os3 << approx3;
     CHECK(approx3   == 1.414213562373095);
     CHECK(os3.str() == "1.414213562373095");
