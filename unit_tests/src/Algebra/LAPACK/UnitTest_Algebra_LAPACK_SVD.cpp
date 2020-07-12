@@ -5,7 +5,7 @@
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Algebra_LAPACK_SVD")
+TEST_CASE("UnitTest_Algebra_LAPACK_SVD1")
 {
     const DynamicMatrix<double> matD{ {5,7},{1,3} };
     const SingularValueDecomp svd(matD);
@@ -15,8 +15,22 @@ TEST_CASE("UnitTest_Algebra_LAPACK_SVD")
     CHECK(svd.singularValues == DynamicVector<double>{ 9.12310562561766, 0.876894374382339 });
     CHECK(svd.invertedMatrix == DynamicMatrix<double>{ {0.375,-0.875},{-0.125,0.625} });
 
-    const auto sol = svd.solve({10,-6});
+    const auto sol = svd.solve({ 10,-6 });
     CHECK(sol == DynamicVector<double>{ 9,-5 });
+}
+
+TEST_CASE("UnitTest_Algebra_LAPACK_SVD2")
+{
+    const DynamicMatrix<double> matD{ {0,0,0.1},{0,0.4,0},{0.5,0,0} };
+    const SingularValueDecomp svd(matD);
+
+    CHECK(svd.matrixU        == DynamicMatrix<double>{ {0,0,1},{0,1,0},{1,0,0} });
+    CHECK(svd.matrixV        == DynamicMatrix<double>{ {1,0,0},{0,1,0},{0,0,1} });
+    CHECK(svd.singularValues == DynamicVector<double>{ 0.5, 0.4, 0.1 });
+    CHECK(svd.invertedMatrix == DynamicMatrix<double>{ {0,0,2},{0,2.5,0},{10,0,0} });
+
+    const auto sol = svd.solve({ 3,-2,10 });
+    CHECK(sol == DynamicVector<double>{ 20,-5,30 });
 }
 
 TEST_CASE("UnitTest_Algebra_LAPACK_SVD_Null1")
