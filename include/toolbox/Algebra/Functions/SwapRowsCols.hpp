@@ -7,8 +7,10 @@
 namespace Toolbox
 {
     template<class MT, class = std::enable_if_t<is_mutable_matrix_v<MT>>>
-    decltype(auto) swapRows(MT& arg, const size_t& rowIdx1, const size_t& rowIdx2)
+    void swapRows(MT& arg, const size_t& rowIdx1, const size_t& rowIdx2)
     {
+        TB_ENSURE(rowIdx1 < arg.rowCount() && rowIdx2 < arg.rowCount(), "Need row indices (" << rowIdx1 << ", " << rowIdx2 << ") to be swapped to be less than the total row count (" << arg.rowCount() << ")");
+
         if (rowIdx1 == rowIdx2)
             return;
 
@@ -21,8 +23,10 @@ namespace Toolbox
     }
 
     template<class MT, class = std::enable_if_t<is_mutable_matrix_v<MT>>>
-    decltype(auto) swapColumns(MT& arg, const size_t& colIdx1, const size_t& colIdx2)
+    void swapColumns(MT& arg, const size_t& colIdx1, const size_t& colIdx2)
     {
+        TB_ENSURE(colIdx1 < arg.colCount() && colIdx2 < arg.colCount(), "Need column indices (" << colIdx1 << ", " << colIdx2 << ") to be swapped to be less than the total column count (" << arg.colCount() << ")");
+
         if (colIdx1 == colIdx2)
             return;
 
