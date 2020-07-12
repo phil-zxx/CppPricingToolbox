@@ -1,5 +1,6 @@
 #include <doctest/doctest.h>
 #include <toolbox/Algebra/VectorMatrix.hpp>
+#include <toolbox/Core/ApproxValue.hpp>
 
 using namespace Toolbox;
 
@@ -64,10 +65,10 @@ TEST_CASE("UnitTest_Algebra_Expr_Cbrt")
     CHECK(matC.colCount() == 2);
     CHECK(matC.shape()    == MatrixShape(3, 2));
 
-    CHECK(mat(0, 0) ==   -1); CHECK(matC(0, 0) == -1);
-    CHECK(mat(0, 1) ==    8); CHECK(matC(0, 1) ==  2);
-    CHECK(mat(1, 0) ==   27); CHECK(matC(1, 0) ==  3);
-    CHECK(mat(1, 1) ==   -8); CHECK(matC(1, 1) == -2);
-    CHECK(mat(2, 0) == -125); CHECK(matC(2, 0) == -5);
-    CHECK(mat(2, 1) ==  216); CHECK(matC(2, 1) ==  6);
+    CHECK(mat(0, 0) ==   -1); CHECK(ApproxValue(matC(0, 0)) == -1);
+    CHECK(mat(0, 1) ==    8); CHECK(ApproxValue(matC(0, 1)) ==  2);
+    CHECK(mat(1, 0) ==   27); CHECK(ApproxValue(matC(1, 0)) ==  3);
+    CHECK(mat(1, 1) ==   -8); CHECK(ApproxValue(matC(1, 1)) == -2);
+    CHECK(mat(2, 0) == -125); CHECK(ApproxValue(matC(2, 0)) == -5);
+    CHECK(mat(2, 1) ==  216); CHECK(ApproxValue(matC(2, 1)) ==  6);
 }
