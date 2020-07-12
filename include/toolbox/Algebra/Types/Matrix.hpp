@@ -31,12 +31,11 @@ namespace Toolbox
                 for (size_t iCol = 0, colCount = (~rhs).colCount(); iCol < colCount; ++iCol)
                 {
                     const double val = (~rhs)(iRow, iCol);
-                    if (std::isnan(val))
-                        os << std::setw(10) << "NaN ";
-                    else if (std::abs(val) < 1.e-8)
-                        os << std::setw(10) << ". ";
+                    if (std::abs(val) < 1.e-8)
+                        os << std::setw(9) << ".";
                     else
-                        os << std::setw(10) << std::setprecision(4) << val << " ";
+                        os << std::setw(9) << std::setprecision(6) << val;
+                    os << " ";
                 }
                 os << "]" << (iRow + 1 < rowCount ? ",\n" : "");
             }
