@@ -37,7 +37,7 @@ namespace Toolbox
         // Scaling factor to reduce over/under-flows
         double scale = maxEl(abs(matrix));
         if (scale == 0.)
-            scale = 1.;
+            return;
 
         /*** step 1. The R-SVD step: we use a QR decomposition to reduce to the case of a square matrix */
         DynamicMatrix<double> workMatrix = matrix / scale;
@@ -108,7 +108,7 @@ namespace Toolbox
             }
         }
 
-        // TODO: invertedMatrix = matrixV.multWithDiag(1. / singularValues).multWithTransposed(matrixU);
+        // TODO: invertedMatrix = mult(mult(matrixV, DiagonalMatrixFromVector(1. / singularValues)), trans(matrixU))
     }
 
     inline void SingularValueDecomp::JacobiSVD2x2(const DynamicMatrix<double>& matrix, const size_t& p, const size_t& q, JacobiRotation& j_left, JacobiRotation& j_right)

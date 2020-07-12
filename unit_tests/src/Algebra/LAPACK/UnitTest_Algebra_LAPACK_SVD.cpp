@@ -15,3 +15,14 @@ TEST_CASE("UnitTest_Algebra_LAPACK_SVD")
     CHECK(svd.matrixV        == DynamicMatrix<double>{ {0.553146906319590, 0.833083729302803},{0.833083729302803, -0.553146906319590} });
     CHECK(svd.singularValues == DynamicVector<double>{ 9.12310562561766, 0.876894374382339 });
 }
+
+TEST_CASE("UnitTest_Algebra_LAPACK_SVD_Null")
+{
+    const DynamicMatrix<double> matD{ {0,0},{0,0} };
+
+    const SingularValueDecomp svd(matD);
+
+    CHECK(svd.matrixU        == DynamicMatrix<double>{ {1, 0},{0, 1} });
+    CHECK(svd.matrixV        == DynamicMatrix<double>{ {1, 0},{0, 1} });
+    CHECK(svd.singularValues == DynamicVector<double>{ 0, 0 });
+}
