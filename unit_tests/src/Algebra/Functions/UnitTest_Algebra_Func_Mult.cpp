@@ -63,3 +63,26 @@ TEST_CASE("UnitTest_Algebra_Func_Mult_MatMat")
     CHECK(A2B5_2            == DynamicMatrix<int>{ {166, -68}, { -108, 348 }, { -318, 232 }, { 126, -172 }, { 30, 4 } });
     CHECK(A2B5_2            != DynamicMatrix<int>{ {166, -68}, { -108, 348 }, { -318, 232 }, { 126, -172 }, { 30, 0 } });
 }
+
+TEST_CASE("UnitTest_Algebra_Func_MultWithDiagonal")
+{
+    const DynamicMatrix<double> M{ {4,5},{9,2},{7,6} };
+    const DynamicVector<int> v{ 8,-4 };
+
+    const auto Mv = multWithDiagonal(M, v);
+    CHECK(Mv.size()     == 6);
+    CHECK(Mv.rowCount() == 3);
+    CHECK(Mv.colCount() == 2);
+    CHECK(Mv.shape()    == MatrixShape(3, 2));
+    CHECK(Mv            == DynamicMatrix<int>{ {32,-20},{72,-8},{56,-24} });
+
+    const DynamicMatrix<double> N{ {4,5,1},{9,2,5},{7,6,9} };
+    const DynamicVector<int> w{ 8,-4,99 };
+
+    CHECK_NOTHROW(multWithDiagonal(M, v));
+    CHECK_NOTHROW(multWithDiagonal(N, w));
+    CHECK_THROWS (multWithDiagonal(M, M));
+    CHECK_THROWS (multWithDiagonal(N, N));
+    CHECK_THROWS (multWithDiagonal(M, w));
+    CHECK_THROWS (multWithDiagonal(N, v));
+}

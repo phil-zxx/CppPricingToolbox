@@ -29,7 +29,8 @@ namespace Toolbox
     inline SingularValueDecomp::SingularValueDecomp(const DynamicMatrix<double>& matrix)
         : matrixU(DynamicMatrix<double>::createIdMatrix(std::min(matrix.rowCount(), matrix.colCount()))),
           matrixV(DynamicMatrix<double>::createIdMatrix(std::min(matrix.rowCount(), matrix.colCount()))),
-          singularValues(std::min(matrix.rowCount(), matrix.colCount()))
+          singularValues(std::min(matrix.rowCount(), matrix.colCount())),
+          invertedMatrix()
     {
         const double precision      = 2.0 * std::numeric_limits<double>::epsilon();
         const double considerAsZero = std::numeric_limits<double>::min();
@@ -108,7 +109,8 @@ namespace Toolbox
             }
         }
 
-        // TODO: invertedMatrix = mult(mult(matrixV, DiagonalMatrixFromVector(1. / singularValues)), trans(matrixU))
+        if (minEl(abs(singularValues)) > 0)
+            invertedMatrix = mult(multWithDiagonal(matrixV, 1. / singularValues), trans(matrixU));
     }
 
     inline void SingularValueDecomp::JacobiSVD2x2(const DynamicMatrix<double>& matrix, const size_t& p, const size_t& q, JacobiRotation& j_left, JacobiRotation& j_right)
