@@ -41,4 +41,7 @@ TEST_CASE("UnitTest_Algebra_Func_DotInnerProd")
     CHECK(typeid(dotProductInt)   == typeid(int));
     CHECK(typeid(innerProductDbl) == typeid(double));
     CHECK(typeid(innerProductInt) == typeid(int));
+
+    CHECK_NOTHROW(innerProduct(trans(vecS), vecD));
+    CHECK_THROWS (innerProduct(vecS, vecD));
 }

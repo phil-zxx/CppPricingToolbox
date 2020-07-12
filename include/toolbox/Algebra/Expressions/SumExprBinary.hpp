@@ -1,6 +1,7 @@
 #pragma once
 
 #include <toolbox/Algebra/Typetraits/OpResultType.hpp>
+#include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
 
 
 namespace Toolbox
