@@ -37,8 +37,8 @@ TEST_CASE("UnitTest_Algebra_Func_DotInnerProd")
     CHECK(innerProductDbl == -11);
     CHECK(innerProductInt == -11);
 
-    CHECK(std::string(typeid(dotProductDbl).name())   == "double");
-    CHECK(std::string(typeid(dotProductInt).name())   == "int");
-    CHECK(std::string(typeid(innerProductDbl).name()) == "double");
-    CHECK(std::string(typeid(innerProductInt).name()) == "int");
+    CHECK(typeid(dotProductDbl)   == typeid(double));
+    CHECK(typeid(dotProductInt)   == typeid(int));
+    CHECK(typeid(innerProductDbl) == typeid(double));
+    CHECK(typeid(innerProductInt) == typeid(int));
 }

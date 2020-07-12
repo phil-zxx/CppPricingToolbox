@@ -15,9 +15,9 @@ TEST_CASE("UnitTest_Algebra_Expr_LongExpr")
         const auto expr2 = trans(vecS);
         const auto expr3 = vecS + 3;
 
-        CHECK(std::string(typeid(expr1).name()) == "class Toolbox::DenseVector<int,10,0>");
-        CHECK(std::string(typeid(expr2).name()) == "class Toolbox::MatrixExprTrans<struct Toolbox::OperationId<void>,class Toolbox::DenseVector<int,10,0> >");
-        CHECK(std::string(typeid(expr3).name()) == "class Toolbox::MatrixExpr<struct Toolbox::OperationAdd,class Toolbox::DenseVector<int,10,0>,int>");
+        CHECK(typeid(expr1) == typeid(DenseVector<int, 10, 0>));
+        CHECK(typeid(expr2) == typeid(MatrixExprTrans<OperationId<void>, DenseVector<int, 10, 0>>));
+        CHECK(typeid(expr3) == typeid(MatrixExpr<OperationAdd, DenseVector<int, 10, 0>, int>));
     }
 
     SUBCASE("Test_Expression1")

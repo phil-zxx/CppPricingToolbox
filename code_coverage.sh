@@ -16,7 +16,7 @@ echo ">>> Running Make"
 make -j 12
 
 echo ">>> Running Unit Tests"
-./../build/Debug_x86_64/UnitTests -tc=*Algebra*
+./../build/Debug_x86_64/UnitTests
 
 echo ">>> Running Code Coverage"
 lcov -d . -c -o coverage.info --rc lcov_branch_coverage=1
