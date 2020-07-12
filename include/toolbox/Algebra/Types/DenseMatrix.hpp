@@ -30,14 +30,12 @@ namespace Toolbox
         }
 
         constexpr explicit DenseMatrix(size_t rowCount, size_t colCount)
+            : DenseMatrix(rowCount, colCount, 0) { }
+
+        constexpr explicit DenseMatrix(size_t rowCount, size_t colCount, Type init)
             : DenseMatrix()
         {
             this->allocate(rowCount, colCount);
-        }
-
-        constexpr explicit DenseMatrix(size_t rowCount, size_t colCount, Type init)
-            : DenseMatrix(rowCount, colCount)
-        {
             for (size_t i = 0; i < size(); ++i)
                 m_data[i] = init;
         }
