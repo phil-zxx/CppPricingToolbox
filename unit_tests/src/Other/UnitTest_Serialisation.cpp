@@ -37,6 +37,7 @@ TEST_CASE("UnitTest_Serialisation_Base")
     const auto out7 = ba.load<decltype(in7)>();
     const auto out8 = ba.load<decltype(in8)>();
     const auto out9 = ba.load<decltype(in9)>();
+    CHECK_THROWS(ba.load<int>());
 
     CHECK(in1 == out1);
     CHECK(in2 == out2);
@@ -86,6 +87,7 @@ TEST_CASE("UnitTest_Serialisation_Ptr")
     const auto out7 = ba.load<decltype(in7)>();
     const auto out8 = ba.load<decltype(in8)>();
     const auto out9 = ba.load<decltype(in9)>();
+    CHECK_THROWS(ba.load<double>());
 
     CHECK(*in1 == *out1);
     CHECK(*in2 == *out2);
@@ -129,6 +131,7 @@ TEST_CASE("UnitTest_Serialisation_Other")
     const auto out4 = ba.load<decltype(in4)>();
     const auto out5 = ba.load<decltype(in5)>();
     const auto out6 = ba.load<decltype(in6)>();
+    CHECK_THROWS(ba.load<std::string>());
 
     CHECK(in1 == out1);
     CHECK(in2 == out2);

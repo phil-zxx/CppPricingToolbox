@@ -130,7 +130,7 @@ namespace Toolbox
         void load(T& obj)
         {
             if (m_readPos >= m_writePos)
-                throw;
+                throw std::out_of_range("read position has gone beyond internal storage length");
 
             if constexpr (std::is_floating_point_v<T> || std::is_trivial_v<T>)
             {
