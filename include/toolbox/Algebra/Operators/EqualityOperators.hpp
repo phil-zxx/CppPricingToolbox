@@ -21,23 +21,39 @@ namespace Toolbox
         }
     }
 
-    template<class MT1, class MT2, class = std::enable_if_t<is_matrix_v<MT1> && is_matrix_v<MT2>>>
-    bool operator==(const MT1& lhs, const MT2& rhs)
+    template<class LHS, class RHS, class = std::enable_if_t<at_least_one_is_matrix_v<LHS, RHS>>>
+    bool operator==(const LHS& lhs, const RHS& rhs)
     {
-        if (lhs.rowCount() != rhs.rowCount() || lhs.colCount() != rhs.colCount())
-            return false;
-
-        for (size_t i = 0, size = lhs.size(); i < size; ++i)
+        if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
         {
-            if (detail::isApproxEqual(lhs[i], rhs[i]) == false)
+            if (lhs.rowCount() != rhs.rowCount() || lhs.colCount() != rhs.colCount())
                 return false;
         }
 
-            return true;
+        for (size_t i = 0, size = lhs.size(); i < size; ++i)
+        {
+            if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
+            {
+                if (detail::isApproxEqual(lhs[i], rhs[i]) == false)
+                    return false;
+            }
+            else if constexpr (is_matrix_v<LHS> && !is_matrix_v<RHS>)
+            {
+                if (detail::isApproxEqual(lhs[i], rhs) == false)
+                    return false;
+            }
+            else if constexpr (!is_matrix_v<LHS> && is_matrix_v<RHS>)
+            {
+                if (detail::isApproxEqual(lhs, rhs[i]) == false)
+                    return false;
+            }
+        }
+
+        return true;
     }
 
-    template<class MT1, class MT2, class = std::enable_if_t<is_matrix_v<MT1> && is_matrix_v<MT2>>>
-    bool operator!=(const MT1& lhs, const MT2& rhs)
+    template<class LHS, class RHS, class = std::enable_if_t<at_least_one_is_matrix_v<LHS, RHS>>>
+    bool operator!=(const LHS& lhs, const RHS& rhs)
     {
         return !(lhs == rhs);
     }

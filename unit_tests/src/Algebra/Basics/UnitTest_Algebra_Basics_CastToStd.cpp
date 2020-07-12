@@ -4,7 +4,7 @@
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Algebra_Vector_CastToStd")
+TEST_CASE("UnitTest_Algebra_Basics_CastToStd")
 {
     const StaticVector<int, 3> vecAlg1 = { 9,5,2 };
     CHECK(vecAlg1.colCount() == 1);
@@ -16,6 +16,7 @@ TEST_CASE("UnitTest_Algebra_Vector_CastToStd")
     CHECK(vecAlg1.at(0)  == 9);
     CHECK(vecAlg1.at(1)  == 5);
     CHECK(vecAlg1.at(2)  == 2);
+    CHECK_THROWS(vecAlg1.at(3) == 0);
 
     const std::vector<int> vecStd = vecAlg1;
     CHECK(vecStd.size() == 3);
@@ -25,6 +26,7 @@ TEST_CASE("UnitTest_Algebra_Vector_CastToStd")
     CHECK(vecStd.at(0)  == 9);
     CHECK(vecStd.at(1)  == 5);
     CHECK(vecStd.at(2)  == 2);
+    CHECK_THROWS(vecStd.at(3) == 0);
 
     StaticVector<int, 3> vecAlg2 = vecStd;
     CHECK(vecAlg2.colCount() == 1);
@@ -36,4 +38,5 @@ TEST_CASE("UnitTest_Algebra_Vector_CastToStd")
     CHECK(vecAlg2.at(0)  == 9);
     CHECK(vecAlg2.at(1)  == 5);
     CHECK(vecAlg2.at(2)  == 2);
+    CHECK_THROWS(vecAlg2.at(3) == 0);
 }

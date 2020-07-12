@@ -4,7 +4,7 @@
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_StaticVector_Initialisation")
+TEST_CASE("UnitTest_Algebra_Basics_InitVec_Static")
 {
     const StaticVector<double, 9> vec1;
     const StaticVector<double, 8> vec2(4);
@@ -15,12 +15,14 @@ TEST_CASE("UnitTest_StaticVector_Initialisation")
     CHECK(vec1.rowCount() == 0);
     CHECK(vec1.colCount() == 0);
     CHECK(vec1.size()     == 0);
+    CHECK(vec1.shape()    == MatrixShape(0, 0));
     CHECK_THROWS(vec1.at(0));
 
     CHECK(vec2.capacity() == 8);
     CHECK(vec2.rowCount() == 4);
     CHECK(vec2.colCount() == 1);
     CHECK(vec2.size()     == 4);
+    CHECK(vec2.shape()    == MatrixShape(4, 1));
     CHECK_NOTHROW(vec2.at(3));
     CHECK_THROWS (vec2.at(4));
 
@@ -28,6 +30,7 @@ TEST_CASE("UnitTest_StaticVector_Initialisation")
     CHECK(vec3.rowCount() == 5);
     CHECK(vec3.colCount() == 1);
     CHECK(vec3.size()     == 5);
+    CHECK(vec3.shape()    == MatrixShape(5, 1));
     CHECK(vec3[0]         == 9);
     CHECK(vec3[1]         == 9);
     CHECK(vec3[2]         == 9);
@@ -40,6 +43,7 @@ TEST_CASE("UnitTest_StaticVector_Initialisation")
     CHECK(vec4.rowCount() == 3);
     CHECK(vec4.colCount() == 1);
     CHECK(vec4.size()     == 3);
+    CHECK(vec4.shape()    == MatrixShape(3, 1));
     CHECK(vec4[0]         == 7);
     CHECK(vec4[1]         == 8);
     CHECK(vec4[2]         == 9);
@@ -47,7 +51,7 @@ TEST_CASE("UnitTest_StaticVector_Initialisation")
     CHECK_THROWS (vec4.at(3));
 }
 
-TEST_CASE("UnitTest_DynamicVector_Initialisation")
+TEST_CASE("UnitTest_Algebra_Basics_InitVec_Dynamic")
 {
     const DynamicVector<double> vec1;
     const DynamicVector<double> vec2(4);
@@ -58,12 +62,14 @@ TEST_CASE("UnitTest_DynamicVector_Initialisation")
     CHECK(vec1.rowCount() == 0);
     CHECK(vec1.colCount() == 0);
     CHECK(vec1.size()     == 0);
+    CHECK(vec1.shape()    == MatrixShape(0, 0));
     CHECK_THROWS(vec1.at(0));
 
     CHECK(vec2.capacity() == 4);
     CHECK(vec2.rowCount() == 4);
     CHECK(vec2.colCount() == 1);
     CHECK(vec2.size()     == 4);
+    CHECK(vec2.shape()    == MatrixShape(4, 1));
     CHECK_NOTHROW(vec2.at(3));
     CHECK_THROWS (vec2.at(4));
 
@@ -71,6 +77,7 @@ TEST_CASE("UnitTest_DynamicVector_Initialisation")
     CHECK(vec3.rowCount() == 5);
     CHECK(vec3.colCount() == 1);
     CHECK(vec3.size()     == 5);
+    CHECK(vec3.shape()    == MatrixShape(5, 1));
     CHECK(vec3[0]         == 9);
     CHECK(vec3[1]         == 9);
     CHECK(vec3[2]         == 9);
@@ -83,6 +90,7 @@ TEST_CASE("UnitTest_DynamicVector_Initialisation")
     CHECK(vec4.rowCount() == 3);
     CHECK(vec4.colCount() == 1);
     CHECK(vec4.size()     == 3);
+    CHECK(vec4.shape()    == MatrixShape(3, 1));
     CHECK(vec4[0]         == 7);
     CHECK(vec4[1]         == 8);
     CHECK(vec4[2]         == 9);
@@ -90,7 +98,7 @@ TEST_CASE("UnitTest_DynamicVector_Initialisation")
     CHECK_THROWS (vec4.at(3));
 }
 
-TEST_CASE("UnitTest_StaticVector_Initialisation_Transposed")
+TEST_CASE("UnitTest_Algebra_Basics_InitVec_StaticT")
 {
     const StaticVector<double, 9, true> vec1;
     const StaticVector<double, 8, true> vec2(4);
@@ -101,12 +109,14 @@ TEST_CASE("UnitTest_StaticVector_Initialisation_Transposed")
     CHECK(vec1.rowCount() == 0);
     CHECK(vec1.colCount() == 0);
     CHECK(vec1.size()     == 0);
+    CHECK(vec1.shape()    == MatrixShape(0, 0));
     CHECK_THROWS(vec1.at(0));
 
     CHECK(vec2.capacity() == 8);
     CHECK(vec2.rowCount() == 1);
     CHECK(vec2.colCount() == 4);
     CHECK(vec2.size()     == 4);
+    CHECK(vec2.shape()    == MatrixShape(1, 4));
     CHECK_NOTHROW(vec2.at(3));
     CHECK_THROWS (vec2.at(4));
 
@@ -114,6 +124,7 @@ TEST_CASE("UnitTest_StaticVector_Initialisation_Transposed")
     CHECK(vec3.rowCount() == 1);
     CHECK(vec3.colCount() == 5);
     CHECK(vec3.size()     == 5);
+    CHECK(vec3.shape()    == MatrixShape(1, 5));
     CHECK(vec3[0]         == 9);
     CHECK(vec3[1]         == 9);
     CHECK(vec3[2]         == 9);
@@ -126,6 +137,7 @@ TEST_CASE("UnitTest_StaticVector_Initialisation_Transposed")
     CHECK(vec4.rowCount() == 1);
     CHECK(vec4.colCount() == 3);
     CHECK(vec4.size()     == 3);
+    CHECK(vec4.shape()    == MatrixShape(1, 3));
     CHECK(vec4[0]         == 7);
     CHECK(vec4[1]         == 8);
     CHECK(vec4[2]         == 9);
@@ -133,7 +145,7 @@ TEST_CASE("UnitTest_StaticVector_Initialisation_Transposed")
     CHECK_THROWS (vec4.at(3));
 }
 
-TEST_CASE("UnitTest_DynamicVector_Initialisation_Transposed")
+TEST_CASE("UnitTest_Algebra_Basics_InitVec_DynamicT")
 {
     const DynamicVector<double, true> vec1;
     const DynamicVector<double, true> vec2(4);
@@ -144,12 +156,14 @@ TEST_CASE("UnitTest_DynamicVector_Initialisation_Transposed")
     CHECK(vec1.rowCount() == 0);
     CHECK(vec1.colCount() == 0);
     CHECK(vec1.size()     == 0);
+    CHECK(vec1.shape()    == MatrixShape(0, 0));
     CHECK_THROWS(vec1.at(0));
 
     CHECK(vec2.capacity() == 4);
     CHECK(vec2.rowCount() == 1);
     CHECK(vec2.colCount() == 4);
     CHECK(vec2.size()     == 4);
+    CHECK(vec2.shape()    == MatrixShape(1, 4));
     CHECK_NOTHROW(vec2.at(3));
     CHECK_THROWS (vec2.at(4));
 
@@ -157,6 +171,7 @@ TEST_CASE("UnitTest_DynamicVector_Initialisation_Transposed")
     CHECK(vec3.rowCount() == 1);
     CHECK(vec3.colCount() == 5);
     CHECK(vec3.size()     == 5);
+    CHECK(vec3.shape()    == MatrixShape(1, 5));
     CHECK(vec3[0]         == 9);
     CHECK(vec3[1]         == 9);
     CHECK(vec3[2]         == 9);
@@ -169,6 +184,7 @@ TEST_CASE("UnitTest_DynamicVector_Initialisation_Transposed")
     CHECK(vec4.rowCount() == 1);
     CHECK(vec4.colCount() == 3);
     CHECK(vec4.size()     == 3);
+    CHECK(vec4.shape()    == MatrixShape(1, 3));
     CHECK(vec4[0]         == 7);
     CHECK(vec4[1]         == 8);
     CHECK(vec4[2]         == 9);
@@ -176,7 +192,7 @@ TEST_CASE("UnitTest_DynamicVector_Initialisation_Transposed")
     CHECK_THROWS (vec4.at(3));
 }
 
-TEST_CASE("UnitTest_Vector_Initializerlist")
+TEST_CASE("UnitTest_Algebra_Basics_InitVec_List")
 {
     const StaticVector<double, 10> vecS{ 7,5,25,11 };
     const DynamicVector<int> vecD{ 6,3,-3,6,-32,8,99 };
@@ -184,8 +200,8 @@ TEST_CASE("UnitTest_Vector_Initializerlist")
     CHECK(vecS.capacity() == 10);
     CHECK(vecS.rowCount() == 4);
     CHECK(vecS.colCount() == 1);
-    CHECK(vecS.capacity() == 10);
     CHECK(vecS.size()     == 4);
+    CHECK(vecS.shape()    == MatrixShape(4, 1));
     CHECK(vecS[0]         == 7.);
     CHECK(vecS[1]         == 5.);
     CHECK(vecS[2]         == 25.);
@@ -197,6 +213,7 @@ TEST_CASE("UnitTest_Vector_Initializerlist")
     CHECK(vecD.rowCount() == 7);
     CHECK(vecD.colCount() == 1);
     CHECK(vecD.size()     == 7);
+    CHECK(vecD.shape()    == MatrixShape(7, 1));
     CHECK(vecD[0]         == 6);
     CHECK(vecD[1]         == 3);
     CHECK(vecD[2]         == -3);
@@ -208,16 +225,21 @@ TEST_CASE("UnitTest_Vector_Initializerlist")
     CHECK_THROWS(vecD.at(10));
 }
 
-TEST_CASE("UnitTest_Vector_InitialisationValidity")
+TEST_CASE("UnitTest_Algebra_Basics_InitVec_Throw")
 {
     CHECK_NOTHROW(StaticVector<int, 3>(1));
     CHECK_NOTHROW(StaticVector<int, 3>(2));
     CHECK_NOTHROW(StaticVector<int, 3>(3));
     CHECK_THROWS (StaticVector<int, 3>(4));
     CHECK_THROWS (StaticVector<int, 10>(15));
-    CHECK_NOTHROW(StaticVector<int, 4>{3,4,5,6});
-    CHECK_THROWS (StaticVector<int, 4>{3,4,5,6,7});
+    CHECK_NOTHROW(StaticVector<int, 4>{3, 4, 5, 6});
+    CHECK_THROWS (StaticVector<int, 4>{3, 4, 5, 6, 7});
 
-    CHECK_NOTHROW(DynamicVector<int>{3,4,5,6});
-    CHECK_NOTHROW(DynamicVector<int>{3,4,5,6,7});
+    const size_t N = static_cast<size_t>(-1);
+    CHECK_THROWS (DynamicVector<int>(N));
+    CHECK_THROWS (DynamicVector<int>(N, 99));
+    CHECK_NOTHROW(DynamicVector<int>{-1});
+    CHECK_NOTHROW(DynamicVector<int>{-1, 99});
+    CHECK_NOTHROW(DynamicVector<int>{3, 4, 5, 6});
+    CHECK_NOTHROW(DynamicVector<int>{3, 4, 5, 6, 7});
 }

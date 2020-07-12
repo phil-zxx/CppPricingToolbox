@@ -5,7 +5,7 @@
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Algebra_Matrix_Mult_MatVec")
+TEST_CASE("UnitTest_Algebra_Func_Mult_MatVec")
 {
     const DynamicMatrix<double> M{ {4,5},{9,2},{7,6} };
     const DynamicVector<int> v{ 8,-4 };
@@ -19,7 +19,7 @@ TEST_CASE("UnitTest_Algebra_Matrix_Mult_MatVec")
     CHECK(Mv            == DynamicMatrix<int>{ {12},{64},{32} });
 }
 
-TEST_CASE("UnitTest_Algebra_Matrix_Mult_VecVec")
+TEST_CASE("UnitTest_Algebra_Func_Mult_VecVec")
 {
     const DynamicVector<int>       u{ 8,-4,3,5 };
     const DynamicVector<int, true> v{ 3,9,-7 };
@@ -32,7 +32,7 @@ TEST_CASE("UnitTest_Algebra_Matrix_Mult_VecVec")
     CHECK(uv            == DynamicMatrix<int>{ {24, 72, -56}, { -12, -36, 28 }, { 9, 27, -21 }, { 15, 45, -35 } });
 }
 
-TEST_CASE("UnitTest_Algebra_Matrix_Mult_MatMat")
+TEST_CASE("UnitTest_Algebra_Func_Mult_MatMat")
 {
     const DynamicMatrix<double> A{ {2, 7, -5}, {-12, -6, -12}, {1, -7, -8}, {12, 11, -7}, {2, 3, -5} };
     const DynamicMatrix<double> B{ {-3, 2}, {22, -4}, {9, -2} };

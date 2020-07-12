@@ -4,7 +4,7 @@
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Algebra_Matrix_Row")
+TEST_CASE("UnitTest_Algebra_Expr_Row")
 {
     const DynamicMatrix<int> mat = { {5,7,2},{9,3,6} };
 
@@ -33,7 +33,7 @@ TEST_CASE("UnitTest_Algebra_Matrix_Row")
     CHECK(row1[2]    == 6);
 }
 
-TEST_CASE("UnitTest_Algebra_Matrix_Col")
+TEST_CASE("UnitTest_Algebra_Expr_Col")
 {
     const DynamicMatrix<int> mat = { {5,7,2},{9,3,6} };
 
@@ -68,7 +68,7 @@ TEST_CASE("UnitTest_Algebra_Matrix_Col")
     CHECK(col2[1]    == 6);
 }
 
-TEST_CASE("UnitTest_Algebra_Matrix_RowCol")
+TEST_CASE("UnitTest_Algebra_Expr_RowCol")
 {
     const DynamicMatrix<int> mat = { {5,7,2},{9,3,6} };
 
@@ -89,7 +89,7 @@ TEST_CASE("UnitTest_Algebra_Matrix_RowCol")
     CHECK(colRow[0]    == 9);
 }
 
-TEST_CASE("UnitTest_Algebra_Matrix_RowCol_Operator")
+TEST_CASE("UnitTest_Algebra_Expr_RowCol_Operator")
 {
     DynamicMatrix<int> mat = { {5,7,2},{9,3,6} };
 
@@ -102,7 +102,7 @@ TEST_CASE("UnitTest_Algebra_Matrix_RowCol_Operator")
     CHECK(mat == DynamicMatrix<int>{ {5, 7, 6}, { 18,6,36 } });
 }
 
-TEST_CASE("UnitTest_Algebra_Matrix_RowCol_Throw")
+TEST_CASE("UnitTest_Algebra_Expr_Throw")
 {
     const DynamicMatrix<int> mat = { {5,7,2},{9,3,6} };
 
@@ -117,7 +117,7 @@ TEST_CASE("UnitTest_Algebra_Matrix_RowCol_Throw")
     CHECK_THROWS (row(mat, 3));
 }
 
-TEST_CASE("UnitTest_Algebra_Matrix_Diagonal")
+TEST_CASE("UnitTest_Algebra_Expr_Diagonal")
 {
     const DynamicMatrix<int> mat = { {5,7,2},{9,3,6} };
 
