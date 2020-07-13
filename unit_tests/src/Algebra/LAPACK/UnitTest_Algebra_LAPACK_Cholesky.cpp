@@ -18,7 +18,7 @@ TEST_CASE("UnitTest_Algebra_LAPACK_Cholesky1x1")
 
 TEST_CASE("UnitTest_Algebra_LAPACK_Cholesky2x2")
 {
-    const DynamicMatrix<double> mat{ {16,12},{12,58} };
+    const StaticMatrix<double, 2, 2> mat{ {16,12},{12,58} };
     const CholeskyDecomp cholesky(mat);
 
     CHECK(cholesky.lowerTriangular == DynamicMatrix<double>{ {4,0},{3,7} });

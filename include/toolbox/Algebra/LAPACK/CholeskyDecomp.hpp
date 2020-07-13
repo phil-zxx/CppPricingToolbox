@@ -8,19 +8,19 @@ namespace Toolbox
 {
     /* Based on https://www.geeksforgeeks.org/cholesky-decomposition-matrix-decomposition */
 
-    template<class MT>
+    template<size_t R, size_t C>
     class CholeskyDecomp
     {
     public:
-        MT lowerTriangular;
+        DenseMatrix<double, R, C> lowerTriangular;
 
-        explicit CholeskyDecomp(const MT& matrix);
+        explicit CholeskyDecomp(const DenseMatrix<double, R, C>& matrix);
     };
 
     // Inline Definitions
 
-    template<class MT>
-    inline CholeskyDecomp<MT>::CholeskyDecomp(const MT& matrix)
+    template<size_t R, size_t C>
+    inline CholeskyDecomp<R, C>::CholeskyDecomp(const DenseMatrix<double, R, C>& matrix)
         : lowerTriangular(matrix.shape())
     {
         TB_ENSURE(matrix.size() > 0,   "Input matrix in CholeskyDecomp cannot be empty");

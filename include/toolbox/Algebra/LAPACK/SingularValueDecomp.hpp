@@ -9,31 +9,34 @@ namespace Toolbox
 {
     /* Based on https://gitlab.com/libeigen/eigen/-/blob/master/Eigen/src/SVD/JacobiSVD.h */
 
+    template<size_t R, size_t C>
     class SingularValueDecomp
     {
+        using DenseVectorType = DenseVector<double, R == DynamicSize ? DynamicSize : (R < C ? R : C), false>;
+
     public:
-        DynamicMatrix<double> matrixU, matrixV;
-        DynamicVector<double> singularValues;
-        DynamicMatrix<double> invertedMatrix;
+        DenseMatrix<double, R, C> matrixU, matrixV, invertedMatrix;
+        DenseVectorType singularValues;
 
-        explicit SingularValueDecomp(const DynamicMatrix<double>& matrix);
+        explicit SingularValueDecomp(const DenseMatrix<double, R, C>& matrix);
 
-        DynamicVector<double> solve(const DynamicVector<double>& y) const;
+        DenseVectorType solve(const DenseVectorType& y) const;
 
     private:
-        static void JacobiSVD2x2(const DynamicMatrix<double>& matrix, const size_t& p, const size_t& q, JacobiRotation& j_left, JacobiRotation& j_right);
+        static void JacobiSVD2x2(const DenseMatrix<double, R, C>& matrix, const size_t& p, const size_t& q, JacobiRotation& j_left, JacobiRotation& j_right);
     };
 
     // Inline Definitions
 
-    inline SingularValueDecomp::SingularValueDecomp(const DynamicMatrix<double>& matrix)
-        : matrixU(DynamicMatrix<double>::createIdMatrix(std::min(matrix.rowCount(), matrix.colCount()))),
-          matrixV(DynamicMatrix<double>::createIdMatrix(std::min(matrix.rowCount(), matrix.colCount()))),
-          singularValues(std::min(matrix.rowCount(), matrix.colCount())),
-          invertedMatrix()
+    template<size_t R, size_t C>
+    inline SingularValueDecomp<R, C>::SingularValueDecomp(const DenseMatrix<double, R, C>& matrix)
+        : matrixU(DenseMatrix<double, R, C>::createIdMatrix(std::min(matrix.rowCount(), matrix.colCount()))),
+          matrixV(DenseMatrix<double, R, C>::createIdMatrix(std::min(matrix.rowCount(), matrix.colCount()))),
+          invertedMatrix(),
+          singularValues(std::min(matrix.rowCount(), matrix.colCount()))
     {
-        const double precision      = 2.0 * std::numeric_limits<double>::epsilon();
-        const double considerAsZero = std::numeric_limits<double>::min();
+        constexpr double precision      = 2.0 * std::numeric_limits<double>::epsilon();
+        constexpr double considerAsZero = std::numeric_limits<double>::min();
 
         // Scaling factor to reduce over/under-flows
         double scale = maxEl(abs(matrix));
@@ -41,7 +44,7 @@ namespace Toolbox
             return;
 
         /*** step 1. The R-SVD step: we use a QR decomposition to reduce to the case of a square matrix */
-        DynamicMatrix<double> workMatrix = matrix / scale;
+        DenseMatrix<double, R, C> workMatrix = matrix / scale;
 
         /*** step 2. The main Jacobi SVD iteration. ***/
         double maxDiagEntry = maxEl(abs(diagonal(workMatrix)));
@@ -113,7 +116,8 @@ namespace Toolbox
             invertedMatrix = mult(multWithDiagonal(matrixV, 1. / singularValues), trans(matrixU));
     }
 
-    inline void SingularValueDecomp::JacobiSVD2x2(const DynamicMatrix<double>& matrix, const size_t& p, const size_t& q, JacobiRotation& j_left, JacobiRotation& j_right)
+    template<size_t R, size_t C>
+    inline void SingularValueDecomp<R, C>::JacobiSVD2x2(const DenseMatrix<double, R, C>& matrix, const size_t& p, const size_t& q, JacobiRotation& j_left, JacobiRotation& j_right)
     {
         StaticMatrix<double, 2, 2> m(2, 2);
         m(0, 0) = matrix(p, p);
@@ -143,7 +147,8 @@ namespace Toolbox
         j_left  = rot1.mult(j_right.transposed());
     }
 
-    inline DynamicVector<double> SingularValueDecomp::solve(const DynamicVector<double>& y) const
+    template<size_t R, size_t C>
+    inline typename SingularValueDecomp<R, C>::DenseVectorType SingularValueDecomp<R, C>::solve(const DenseVectorType& y) const
     {
         return mult(invertedMatrix, y);
     }
