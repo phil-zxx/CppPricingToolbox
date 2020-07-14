@@ -31,7 +31,7 @@ namespace Toolbox
 
         constexpr explicit DenseMatrix(size_t rowCount, size_t colCount)
             : DenseMatrix(rowCount, colCount, 0) { }
-        
+
         constexpr explicit DenseMatrix(const MatrixShape& shape)
             : DenseMatrix(shape.rows, shape.cols, 0) { }
 
