@@ -1,5 +1,4 @@
 #include <doctest/doctest.h>
-#include <iostream>
 #include <toolbox/Algebra/VectorMatrix.hpp>
 #include <toolbox/Algebra/LAPACK/CholeskyDecomp.hpp>
 
@@ -74,9 +73,9 @@ TEST_CASE("UnitTest_Algebra_LAPACK_Cholesky_Singular1")
 {
     const DynamicMatrix<double> mat{ {9,0},{0,0} };
     const CholeskyDecomp cholesky(mat);
-    
+
     CHECK(cholesky.lowerTriangular == DynamicMatrix<double>{ {3,0},{0,0} });
-    
+
     const auto LLT = mult(cholesky.lowerTriangular, trans(cholesky.lowerTriangular));
     CHECK(LLT == mat);
 }
@@ -85,9 +84,9 @@ TEST_CASE("UnitTest_Algebra_LAPACK_Cholesky_Singular2")
 {
     const DynamicMatrix<double> mat{ {16,12},{12,9} };
     const CholeskyDecomp cholesky(mat);
-    
+
     CHECK(cholesky.lowerTriangular == DynamicMatrix<double>{ {4,0},{3,0} });
-    
+
     const auto LLT = mult(cholesky.lowerTriangular, trans(cholesky.lowerTriangular));
     CHECK(LLT == mat);
 }
