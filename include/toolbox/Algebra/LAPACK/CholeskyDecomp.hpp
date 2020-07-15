@@ -37,7 +37,7 @@ namespace Toolbox
 
                 if (i == j)  // Summation for diagonals
                 {
-                    for (int k = 0; k < j; k++)
+                    for (size_t k = 0; k < j; k++)
                         sum += lowerTriangular(j, k) * lowerTriangular(j, k);
                     lowerTriangular(j, j) = std::sqrt(matrix(j, j) - sum);
                 }

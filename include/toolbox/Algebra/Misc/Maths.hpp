@@ -24,6 +24,6 @@ namespace Toolbox
     template<class T>
     T TB_max(const T a, const T b, const T c)
     {
-        return a > b ? (a > c ? a : c) : (b > c ? b : c)
+        return a > b ? (a > c ? a : c) : (b > c ? b : c);
     }
 }
