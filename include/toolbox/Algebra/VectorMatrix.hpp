@@ -9,6 +9,7 @@
 #include <toolbox/Algebra/Functions/Expr/Algebraic.hpp>
 #include <toolbox/Algebra/Functions/Expr/Diagonal.hpp>
 #include <toolbox/Algebra/Functions/Expr/RowColumn.hpp>
+#include <toolbox/Algebra/Functions/Expr/SubMatrix.hpp>
 #include <toolbox/Algebra/Functions/DotInnerProduct.hpp>
 #include <toolbox/Algebra/Functions/IsSquareSymmetric.hpp>
 #include <toolbox/Algebra/Functions/MinMax.hpp>
