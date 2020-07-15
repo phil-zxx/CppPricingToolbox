@@ -1,5 +1,7 @@
 #pragma once
 
+#include <limits>
+
 
 namespace Toolbox
 {
@@ -26,4 +28,10 @@ namespace Toolbox
     {
         return a > b ? (a > c ? a : c) : (b > c ? b : c);
     }
+
+    constexpr double TB_INF_NEG = -std::numeric_limits<double>::infinity();
+    constexpr double TB_INF_POS = std::numeric_limits<double>::infinity();
+    constexpr double TB_EPS     = std::numeric_limits<double>::epsilon();
+    constexpr double TB_NAN     = std::numeric_limits<double>::quiet_NaN();
+    constexpr double TB_ZERO    = std::numeric_limits<double>::min();
 }
