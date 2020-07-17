@@ -7,13 +7,13 @@
 namespace Toolbox
 {
     template <class MT>
-    class MatrixExprSubMatrixView : public Matrix<MatrixExprSubMatrixView<MT>>, Expression
+    class MatrixExprSubmatrixView : public Matrix<MatrixExprSubmatrixView<MT>>, Expression
     {
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, MT&>;
         using ElementType = ElementType_t<MT>;
 
-        constexpr explicit MatrixExprSubMatrixView(MT& mat, const size_t& rowIdx1, const size_t& rowIdx2, const size_t& colIdx1, const size_t& colIdx2)
+        constexpr explicit MatrixExprSubmatrixView(MT& mat, const size_t& rowIdx1, const size_t& rowIdx2, const size_t& colIdx1, const size_t& colIdx2)
             : m_mat(mat), m_rowIdx(rowIdx1), m_rowSize(rowIdx2 - rowIdx1 + 1), m_colIdx(colIdx1), m_colSize(colIdx2 - colIdx1 + 1)
         {
             TB_ENSURE(rowIdx1 <= rowIdx2, "Need first row index ("    << rowIdx1 << ") to be less or equal to second row index ("    << rowIdx2 << ")");
