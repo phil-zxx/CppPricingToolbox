@@ -292,12 +292,12 @@ namespace Toolbox
             rhs.m_capacity   = 0;
         }
 
-        static DenseMatrix createIdMatrix(const size_t& size)
+        static constexpr DenseMatrix Identity(const size_t& size)
         {
-            return DenseMatrix::createIdMatrix(size, size);
+            return DenseMatrix::Identity(size, size);
         }
 
-        static DenseMatrix createIdMatrix(const size_t& rowSize, const size_t& colSize)
+        static constexpr DenseMatrix Identity(const size_t& rowSize, const size_t& colSize)
         {
             DenseMatrix result(rowSize, colSize, 0);
             for (size_t i = 0, size = rowSize < colSize ? rowSize : colSize; i < size; ++i)

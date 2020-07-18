@@ -4,9 +4,9 @@
 using namespace Toolbox;
 
 
-TEST_CASE("UnitTest_Algebra_Basics_Identity_Square")
+TEST_CASE("UnitTest_Algebra_Basics_IdentityMatrix_Square")
 {
-    const auto matI = DynamicMatrix<double>::Identity(3);
+    const auto matI = IdentityMatrix<double>(3);
 
     CHECK(matI.size()     == 9);
     CHECK(matI.rowCount() == 3);
@@ -39,9 +39,9 @@ TEST_CASE("UnitTest_Algebra_Basics_Identity_Square")
             CHECK(matI(iRow, iCol) == (iRow == iCol ? 1 : 0));
 }
 
-TEST_CASE("UnitTest_Algebra_Basics_Identity_NonSquare")
+TEST_CASE("UnitTest_Algebra_Basics_IdentityMatrix_NonSquare")
 {
-    const auto matI = DynamicMatrix<int>::Identity(4, 2);
+    const auto matI = IdentityMatrix<int>(4, 2);
 
     CHECK(matI.size()     == 8);
     CHECK(matI.rowCount() == 4);
@@ -71,4 +71,37 @@ TEST_CASE("UnitTest_Algebra_Basics_Identity_NonSquare")
     for (size_t iRow = 0; iRow < 4; ++iRow)
         for (size_t iCol = 0; iCol < 2; ++iCol)
             CHECK(matI(iRow, iCol) == (iRow == iCol ? 1 : 0));
+}
+
+TEST_CASE("UnitTest_Algebra_Basics_IdentityMatrix_Equality_5x3")
+{
+    const IdentityMatrix<int> matI1 = IdentityMatrix<int>(5, 3);
+    const DynamicMatrix<int>  matI2 = IdentityMatrix<int>(5, 3);
+    const DynamicMatrix<int>  matI3 = DynamicMatrix<int>::Identity(5, 3);
+
+    CHECK(matI1 == matI2);
+    CHECK(matI1 == matI3);
+    CHECK(matI2 == matI3);
+}
+
+TEST_CASE("UnitTest_Algebra_Basics_IdentityMatrix_Equality_4x7")
+{
+    const IdentityMatrix<int> matI1 = IdentityMatrix<int>(4, 7);
+    const DynamicMatrix<int>  matI2 = IdentityMatrix<int>(4, 7);
+    const DynamicMatrix<int>  matI3 = DynamicMatrix<int>::Identity(4, 7);
+
+    CHECK(matI1 == matI2);
+    CHECK(matI1 == matI3);
+    CHECK(matI2 == matI3);
+}
+
+TEST_CASE("UnitTest_Algebra_Basics_IdentityMatrix_Equality_10x10")
+{
+    const IdentityMatrix<int> matI1 = IdentityMatrix<int>(10);
+    const DynamicMatrix<int>  matI2 = IdentityMatrix<int>(10);
+    const DynamicMatrix<int>  matI3 = DynamicMatrix<int>::Identity(10);
+
+    CHECK(matI1 == matI2);
+    CHECK(matI1 == matI3);
+    CHECK(matI2 == matI3);
 }

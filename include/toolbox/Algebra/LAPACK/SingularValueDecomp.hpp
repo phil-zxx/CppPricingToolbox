@@ -2,7 +2,6 @@
 
 #include <toolbox/Algebra/VectorMatrix.hpp>
 #include <toolbox/Algebra/LAPACK/JacobiRotation.hpp>
-#include <algorithm>
 
 
 namespace Toolbox
@@ -30,13 +29,12 @@ namespace Toolbox
 
     template<size_t R, size_t C>
     inline SingularValueDecomp<R, C>::SingularValueDecomp(const DenseMatrix<double, R, C>& matrix)
-        : matrixU(DenseMatrix<double, R, C>::createIdMatrix(std::min(matrix.rowCount(), matrix.colCount()))),
-          matrixV(DenseMatrix<double, R, C>::createIdMatrix(std::min(matrix.rowCount(), matrix.colCount()))),
+        : matrixU(DenseMatrix<double, R, C>::Identity(TB_min(matrix.rowCount(), matrix.colCount()))),
+          matrixV(DenseMatrix<double, R, C>::Identity(TB_min(matrix.rowCount(), matrix.colCount()))),
           invertedMatrix(),
-          singularValues(std::min(matrix.rowCount(), matrix.colCount()))
+          singularValues(TB_min(matrix.rowCount(), matrix.colCount()))
     {
-        constexpr double precision      = 2.0 * std::numeric_limits<double>::epsilon();
-        constexpr double considerAsZero = std::numeric_limits<double>::min();
+        constexpr double precision = 2.0 * TB_EPS;
 
         // Scaling factor to reduce over/under-flows
         double scale = maxEl(abs(matrix));
@@ -63,7 +61,7 @@ namespace Toolbox
                     // if this 2x2 sub-matrix is not diagonal already...
                     // notice that this comparison will evaluate to false if any NaN is involved, ensuring that NaN's don't
                     // keep us iterating forever. Similarly, small denormal numbers are considered zero.
-                    double threshold = std::max<double>(considerAsZero, precision * maxDiagEntry);
+                    const double threshold = TB_max(TB_ZERO, precision * maxDiagEntry);
                     if (std::abs(workMatrix(p, q)) > threshold || std::abs(workMatrix(q, p)) > threshold)
                     {
                         finished = false;
@@ -78,7 +76,7 @@ namespace Toolbox
                         j_right.rotateMatrixFromRight(p, q, matrixV);
 
                         // keep track of the largest diagonal coefficient
-                        maxDiagEntry = std::max(maxDiagEntry, std::max(std::abs(workMatrix(p, p)), std::abs(workMatrix(q, q))));
+                        maxDiagEntry = TB_max(maxDiagEntry, std::abs(workMatrix(p, p)), std::abs(workMatrix(q, q)));
                     }
                 }
             }

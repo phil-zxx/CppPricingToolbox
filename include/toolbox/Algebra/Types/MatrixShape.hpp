@@ -6,6 +6,9 @@ namespace Toolbox
     class MatrixShape
     {
     public:
+        constexpr explicit MatrixShape(const MatrixShape& shape) noexcept
+            : rows(shape.rows), cols(shape.cols) { }
+
         constexpr explicit MatrixShape(size_t rows, size_t cols) noexcept
             : rows(rows), cols(cols) { }
 

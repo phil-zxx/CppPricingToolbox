@@ -17,7 +17,7 @@ TEST_CASE("UnitTest_Algebra_LAPACK_SVD1")
 
     const auto sol = svd.solve({ 10,-6 });
     CHECK(sol == DynamicVector<double>{ 9,-5 });
-    CHECK(mult(svd.invertedMatrix, mat) == DynamicMatrix<int>::createIdMatrix(mat.colCount()));
+    CHECK(mult(svd.invertedMatrix, mat) == IdentityMatrix<int>(mat.colCount()));
 }
 
 TEST_CASE("UnitTest_Algebra_LAPACK_SVD2")
@@ -32,7 +32,7 @@ TEST_CASE("UnitTest_Algebra_LAPACK_SVD2")
 
     const auto sol = svd.solve({ 3,-2,10 });
     CHECK(sol == DynamicVector<double>{ 20,-5,30 });
-    CHECK(mult(svd.invertedMatrix, mat) == DynamicMatrix<int>::createIdMatrix(mat.colCount()));
+    CHECK(mult(svd.invertedMatrix, mat) == IdentityMatrix<int>(mat.colCount()));
 }
 
 TEST_CASE("UnitTest_Algebra_LAPACK_SVD3")
@@ -47,7 +47,7 @@ TEST_CASE("UnitTest_Algebra_LAPACK_SVD3")
 
     const auto sol = svd.solve({ 12,8 });
     CHECK(sol == DynamicVector<double>{ 4, 6 });
-    CHECK(mult(svd.invertedMatrix, mat) == DynamicMatrix<int>::createIdMatrix(mat.colCount()));
+    CHECK(mult(svd.invertedMatrix, mat) == IdentityMatrix<int>(mat.colCount()));
 }
 
 TEST_CASE("UnitTest_Algebra_LAPACK_SVD_Null1")

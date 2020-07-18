@@ -1,7 +1,6 @@
 #pragma once
 
 #include <toolbox/Algebra/VectorMatrix.hpp>
-#include <algorithm>
 
 
 namespace Toolbox
@@ -11,8 +10,8 @@ namespace Toolbox
     public:
         double c, s;
 
-        explicit JacobiRotation();
-        explicit JacobiRotation(const double& c, const double& s);
+        explicit JacobiRotation() noexcept;
+        explicit JacobiRotation(const double& c, const double& s) noexcept;
 
         template<class MT>
         explicit JacobiRotation(const size_t& p, const size_t& q, const MT& mat);
@@ -29,9 +28,10 @@ namespace Toolbox
 
     // Inline Definitions
 
-    inline JacobiRotation::JacobiRotation() = default;
+    inline JacobiRotation::JacobiRotation() noexcept
+        : c(0), s(0) { }
 
-    inline JacobiRotation::JacobiRotation(const double& c, const double& s)
+    inline JacobiRotation::JacobiRotation(const double& c, const double& s) noexcept
         : c(c), s(s) { }
 
     template<class MT>
