@@ -18,12 +18,12 @@ namespace Toolbox
         using ET = OpResultType_t<OperationMul, ElementType_t<MT1>, ElementType_t<MT2>>;
         DenseMatrix<ET, DynamicSize, DynamicSize> result(rowCountL, colCountR, 0);
 
-        for (size_t k = 0; k < colCountR; ++k)
+        for (size_t iCol = 0; iCol < colCountR; ++iCol)
         {
-            for (size_t i = 0; i < rowCountL; ++i)
+            for (size_t iRow = 0; iRow < rowCountL; ++iRow)
             {
                 for (size_t j = 0; j < colCountL; ++j)
-                    result(i, k) += lhs(i, j) * rhs(j, k);
+                    result(iRow, iCol) += lhs(iRow, j) * rhs(j, iCol);
             }
         }
 

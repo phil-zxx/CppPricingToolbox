@@ -118,6 +118,25 @@ namespace Toolbox
             }
         }
 
+        template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
+        void operator-=(const MT& rhs)
+        {
+            static_assert(is_mutable_matrix_v<MT>, "Need underlying matrix to be mutable");
+
+            if constexpr (TF == ROW)
+            {
+                for (size_t rowIdx = m_idx, rowCount = m_idx + m_size; rowIdx < rowCount; ++rowIdx)
+                    for (size_t colIdx = 0, colCount = m_mat.colCount(); colIdx < colCount; ++colIdx)
+                        m_mat(rowIdx, colIdx) -= rhs(rowIdx, colIdx);
+            }
+            else if constexpr (TF == COLUMN)
+            {
+                for (size_t colIdx = m_idx, colCount = m_idx + m_size; colIdx < colCount; ++colIdx)
+                    for (size_t rowIdx = 0, size = m_mat.rowCount(); rowIdx < size; ++rowIdx)
+                        m_mat(rowIdx, colIdx) -= rhs(rowIdx, colIdx);
+            }
+        }
+
         constexpr size_t size() const
         {
             if constexpr (TF == ROW)
