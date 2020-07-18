@@ -34,12 +34,6 @@ namespace Toolbox
                 return *this;
             }
 
-            Msg& operator<<(const std::string& msg)
-            {
-                m_str.append(msg);
-                return *this;
-            }
-
             operator std::string() const
             {
                 return m_str;
