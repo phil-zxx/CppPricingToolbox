@@ -10,7 +10,7 @@ mkdir linux_build_folder
 cd linux_build_folder
 
 echo ">>> Running CMake"
-cmake -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage" -DCMAKE_BUILD_TYPE=Debug ..
+cmake -DCMAKE_CXX_FLAGS="-fprofile-arcs -ftest-coverage" -DCMAKE_BUILD_TYPE=Release ..
 
 echo ">>> Running Make"
 make -j 12
