@@ -20,15 +20,15 @@ namespace Toolbox
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
-    constexpr decltype(auto) rows(const MT& arg, size_t rowIdx1, size_t rowIdx2)
+    constexpr decltype(auto) rows(const MT& arg, size_t rowIdx, size_t rowSize)
     {
-        return MatrixExprRowView<const MT>(arg, rowIdx1, rowIdx2);
+        return MatrixExprRowView<const MT>(arg, rowIdx, rowSize);
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
-    constexpr decltype(auto) rows(MT& arg, size_t rowIdx1, size_t rowIdx2)
+    constexpr decltype(auto) rows(MT& arg, size_t rowIdx, size_t rowSize)
     {
-        return MatrixExprRowView<MT>(arg, rowIdx1, rowIdx2);
+        return MatrixExprRowView<MT>(arg, rowIdx, rowSize);
     }
 
 
@@ -47,13 +47,14 @@ namespace Toolbox
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
-    constexpr decltype(auto) columns(const MT& arg, size_t colIdx1, size_t colIdx2)
+    constexpr decltype(auto) columns(const MT& arg, size_t colIdx, size_t colSize)
     {
-        return MatrixExprColView<const MT>(arg, colIdx1, colIdx2);
+        return MatrixExprColView<const MT>(arg, colIdx, colSize);
     }
+
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
-    constexpr decltype(auto) columns(MT& arg, size_t colIdx1, size_t colIdx2)
+    constexpr decltype(auto) columns(MT& arg, size_t colIdx, size_t colSize)
     {
-        return MatrixExprColView<MT>(arg, colIdx1, colIdx2);
+        return MatrixExprColView<MT>(arg, colIdx, colSize);
     }
 }

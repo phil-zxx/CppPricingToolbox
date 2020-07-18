@@ -50,7 +50,7 @@ TEST_CASE("UnitTest_Algebra_ExprView_Rows")
     CHECK_THROWS (rows12[8]);
     CHECK_THROWS (rows12[9]);
 
-    const auto rows24 = rows(mat, 2, 4);
+    const auto rows24 = rows(mat, 2, 3);
     CHECK(rows24.size()     == 12);
     CHECK(rows24.rowCount() == 3);
     CHECK(rows24.colCount() == 4);
@@ -106,7 +106,7 @@ TEST_CASE("UnitTest_Algebra_ExprView_Cols")
                                      { 9, 0, 8, 4},
                                      {-5, 7, 4, 5} };
 
-    auto cols23 = columns(mat, 2, 3);
+    auto cols23 = columns(mat, 2, 2);
     CHECK(cols23.size()     == 10);
     CHECK(cols23.rowCount() == 5);
     CHECK(cols23.colCount() == 2);
@@ -149,7 +149,7 @@ TEST_CASE("UnitTest_Algebra_ExprView_Cols")
     CHECK_THROWS (cols23[10]);
     CHECK_THROWS (cols23[11]);
 
-    const auto cols11 = columns(mat, 0, 2);
+    const auto cols11 = columns(mat, 0, 3);
     CHECK(cols11.size()     == 15);
     CHECK(cols11.rowCount() == 5);
     CHECK(cols11.colCount() == 3);

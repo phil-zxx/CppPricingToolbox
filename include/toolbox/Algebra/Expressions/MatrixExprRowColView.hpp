@@ -29,18 +29,16 @@ namespace Toolbox
             }
         }
 
-        constexpr explicit MatrixExprRowColView(MT& mat, const size_t& idx1, const size_t& idx2)
-            : m_mat(mat), m_idx(idx1), m_size(idx2 - idx1 + 1)
+        constexpr explicit MatrixExprRowColView(MT& mat, const size_t& idx, const size_t& size)
+            : m_mat(mat), m_idx(idx), m_size(size)
         {
-            TB_ENSURE(idx1 <= idx2, "Need first index (" << idx1 << ") to be less or equal to second index (" << idx2 << ")");
-
             if constexpr (TF == ROW)
             {
-                TB_ENSURE(idx1 < m_mat.rowCount(), "Row index (" << idx1 << ") is out of bounds (only have " << m_mat.rowCount() << " rows)");
+                TB_ENSURE(idx + size <= m_mat.rowCount(), "Row index + size (" << idx + size << ") is out of bounds (only have " << m_mat.rowCount() << " rows)");
             }
             else if constexpr (TF == COLUMN)
             {
-                TB_ENSURE(idx1 < m_mat.colCount(), "Column index (" << idx1 << ") is out of bounds (only have " << m_mat.colCount() << " columns)");
+                TB_ENSURE(idx + size <= m_mat.colCount(), "Column index + size (" << idx + size << ") is out of bounds (only have " << m_mat.colCount() << " columns)");
             }
         }
 
