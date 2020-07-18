@@ -12,7 +12,7 @@ TEST_CASE("UnitTest_Algebra_ExprView_Submatrix")
                                      { 9, 0,18, 4,-9,-3,18,23},
                                      {-5,17, 4, 5,-1,20,19,24} };
 
-    auto submat1 = submatrix(mat, 2, 4, 0, 1);
+    auto submat1 = submatrix(mat, 2, 0, 3, 2);
     CHECK(submat1.size()     == 6);
     CHECK(submat1.rowCount() == 3);
     CHECK(submat1.colCount() == 2);
@@ -44,7 +44,7 @@ TEST_CASE("UnitTest_Algebra_ExprView_Submatrix")
     CHECK_THROWS (submat1[6]);
     CHECK_THROWS (submat1[7]);
 
-    const auto submat2 = submatrix(mat, 1, 3, 2, 6);
+    const auto submat2 = submatrix(mat, 1, 2, 3, 5);
     CHECK(submat2.size()     == 15);
     CHECK(submat2.rowCount() == 3);
     CHECK(submat2.colCount() == 5);
@@ -107,7 +107,7 @@ TEST_CASE("UnitTest_Algebra_ExprView_Submatrix_Operator")
                                { 9, 0,18, 4,-9,-3,18,23},
                                {-5,17, 4, 5,-1,20,19,24} };
 
-    auto submat = submatrix(mat, 2, 4, 1,5);
+    auto submat = submatrix(mat, 2, 1, 3, 5);
     CHECK(submat == DynamicMatrix<int>{ {-8,2,1,0,12},{0,18, 4,-9,-3},{17,4,5,-1,20} });
 
     submat *= 3;

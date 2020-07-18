@@ -13,13 +13,11 @@ namespace Toolbox
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, MT&>;
         using ElementType = ElementType_t<MT>;
 
-        constexpr explicit MatrixExprSubmatrixView(MT& mat, const size_t& rowIdx1, const size_t& rowIdx2, const size_t& colIdx1, const size_t& colIdx2)
-            : m_mat(mat), m_rowIdx(rowIdx1), m_rowSize(rowIdx2 - rowIdx1 + 1), m_colIdx(colIdx1), m_colSize(colIdx2 - colIdx1 + 1)
+        constexpr explicit MatrixExprSubmatrixView(MT& mat, const size_t& rowIdx, const size_t& colIdx, const size_t& rowSize, const size_t& colSize)
+            : m_mat(mat), m_rowIdx(rowIdx), m_colIdx(colIdx), m_rowSize(rowSize), m_colSize(colSize)
         {
-            TB_ENSURE(rowIdx1 <= rowIdx2, "Need first row index ("    << rowIdx1 << ") to be less or equal to second row index ("    << rowIdx2 << ")");
-            TB_ENSURE(colIdx1 <= colIdx2, "Need first column index (" << colIdx1 << ") to be less or equal to second column index (" << colIdx2 << ")");
-            TB_ENSURE(rowIdx2 < m_mat.rowCount(), "Row index ("       << rowIdx2 << ") is out of bounds (only have " << m_mat.rowCount() << " rows)");
-            TB_ENSURE(colIdx2 < m_mat.colCount(), "Column index ("    << colIdx2 << ") is out of bounds (only have " << m_mat.colCount() << " columns)");
+            TB_ENSURE(rowIdx + rowSize <= m_mat.rowCount(), "Row index + size ("    << rowIdx + rowSize << ") is out of bounds (only have " << m_mat.rowCount() << " rows)");
+            TB_ENSURE(colIdx + colSize <= m_mat.colCount(), "Column index + size (" << colIdx + colSize << ") is out of bounds (only have " << m_mat.colCount() << " columns)");
         }
 
         constexpr decltype(auto) operator[](size_t i) const
@@ -83,7 +81,6 @@ namespace Toolbox
 
     private:
         OT_MT m_mat;
-        size_t m_rowIdx, m_rowSize;
-        size_t m_colIdx, m_colSize;
+        size_t m_rowIdx, m_colIdx, m_rowSize, m_colSize;
     };
 }
