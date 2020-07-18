@@ -10,7 +10,7 @@ namespace Toolbox
     template <class MT, bool TF>
     class MatrixExprDiagView : public Matrix<MatrixExprDiagView<MT, TF>>, Expression
     {
-        enum TransposeFlag : bool { ColumnVector = false, RowVector = true };
+        enum TypeFlag : bool { ROW = false, COLUMN = true };
 
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, MT&>;
@@ -33,12 +33,12 @@ namespace Toolbox
 
         constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx) const
         {
-            if constexpr (TF == TransposeFlag::ColumnVector)
+            if constexpr (TF == COLUMN)
             {
                 TB_ENSURE(colIdx == 0, "Column index (" << colIdx << ") is out of bounds (only have " << 1 << " column)");
                 return m_mat(rowIdx, rowIdx);
             }
-            else if constexpr (TF == TransposeFlag::RowVector)
+            else if constexpr (TF == ROW)
             {
                 TB_ENSURE(rowIdx == 0, "Row index (" << rowIdx << ") is out of bounds (only have " << 1 << " row)");
                 return m_mat(colIdx, colIdx);
@@ -47,12 +47,12 @@ namespace Toolbox
 
         constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx)
         {
-            if constexpr (TF == TransposeFlag::ColumnVector)
+            if constexpr (TF == COLUMN)
             {
                 TB_ENSURE(colIdx == 0, "Column index (" << colIdx << ") is out of bounds (only have " << 1 << " column)");
                 return m_mat(rowIdx, rowIdx);
             }
-            else if constexpr (TF == TransposeFlag::RowVector)
+            else if constexpr (TF == ROW)
             {
                 TB_ENSURE(rowIdx == 0, "Row index (" << rowIdx << ") is out of bounds (only have " << 1 << " row)");
                 return m_mat(colIdx, colIdx);
@@ -74,25 +74,25 @@ namespace Toolbox
 
         constexpr MatrixShape shape() const
         {
-            if constexpr (TF == TransposeFlag::ColumnVector)
+            if constexpr (TF == COLUMN)
                 return MatrixShape(m_size, 1);
-            else if constexpr (TF == TransposeFlag::RowVector)
+            else if constexpr (TF == ROW)
                 return MatrixShape(1, m_size);
         }
 
         constexpr size_t rowCount() const
         {
-            if constexpr (TF == TransposeFlag::ColumnVector)
+            if constexpr (TF == COLUMN)
                 return m_size;
-            else if constexpr (TF == TransposeFlag::RowVector)
+            else if constexpr (TF == ROW)
                 return 1;
         }
 
         constexpr size_t colCount() const
         {
-            if constexpr (TF == TransposeFlag::ColumnVector)
+            if constexpr (TF == COLUMN)
                 return 1;
-            else if constexpr (TF == TransposeFlag::RowVector)
+            else if constexpr (TF == ROW)
                 return m_size;
         }
 

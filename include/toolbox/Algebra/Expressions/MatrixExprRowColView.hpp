@@ -10,7 +10,7 @@ namespace Toolbox
     template <class MT, bool TF>
     class MatrixExprRowColView : public Matrix<MatrixExprRowColView<MT, TF>>, Expression
     {
-        enum TypeFlag : bool { ROW = false, COLUMN = true};
+        enum TypeFlag : bool { ROW = false, COLUMN = true };
 
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, MT&>;
