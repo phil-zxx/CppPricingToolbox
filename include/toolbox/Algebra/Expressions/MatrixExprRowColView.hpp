@@ -118,10 +118,12 @@ namespace Toolbox
             }
         }
 
-        template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
-        void operator-=(const MT& rhs)
+        template<class MT2, class = std::enable_if_t<is_matrix_v<MT2>>>
+        void operator-=(const MT2& rhs)
         {
             static_assert(is_mutable_matrix_v<MT>, "Need underlying matrix to be mutable");
+
+            TB_ENSURE(m_mat.shape() == rhs.shape(), "Shapes of lhs and rhs do not match");
 
             if constexpr (TF == ROW)
             {
