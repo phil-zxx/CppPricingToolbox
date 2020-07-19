@@ -1,7 +1,6 @@
 #pragma once
 
 #include <toolbox/Core/Error.hpp>
-#include <toolbox/Algebra/Typetraits/ElementType.hpp>
 
 
 namespace Toolbox
@@ -11,7 +10,7 @@ namespace Toolbox
     {
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, MT&>;
-        using ElementType = ElementType_t<MT>;
+        using ElementType = typename MT::ElementType;
 
         constexpr explicit MatrixExprSubmatrixView(MT& mat, const size_t& rowIdx, const size_t& colIdx, const size_t& rowSize, const size_t& colSize)
             : m_mat(mat), m_rowIdx(rowIdx), m_colIdx(colIdx), m_rowSize(rowSize), m_colSize(colSize)

@@ -2,7 +2,6 @@
 
 #include <toolbox/Core/Error.hpp>
 #include <toolbox/Algebra/Misc/Maths.hpp>
-#include <toolbox/Algebra/Typetraits/ElementType.hpp>
 
 
 namespace Toolbox
@@ -14,7 +13,7 @@ namespace Toolbox
 
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, MT&>;
-        using ElementType = ElementType_t<MT>;
+        using ElementType = typename MT::ElementType;
 
         constexpr explicit MatrixExprDiagView(MT& mat)
             : m_mat(mat), m_size(TB_min(m_mat.rowCount(), m_mat.colCount())) { }

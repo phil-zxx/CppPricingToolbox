@@ -1,7 +1,6 @@
 #pragma once
 
 #include <toolbox/Algebra/Typetraits/ApplyOperator.hpp>
-#include <toolbox/Algebra/Typetraits/ElementType.hpp>
 #include <toolbox/Algebra/Typetraits/OpResultType.hpp>
 
 
@@ -12,8 +11,7 @@ namespace Toolbox
     {
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, const MT&>;
-        using ET_MT       = ElementType_t<MT>;
-        using ElementType = OpResultType_t<OP, ET_MT>;
+        using ElementType = OpResultType_t<OP, typename MT::ElementType>;
 
         constexpr explicit MatrixExprTrans(const MT& mat)
             : m_mat(mat), m_rowCount(m_mat.colCount()), m_colCount(m_mat.rowCount()) { }

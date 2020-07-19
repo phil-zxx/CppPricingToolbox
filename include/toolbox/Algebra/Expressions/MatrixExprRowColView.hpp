@@ -14,7 +14,7 @@ namespace Toolbox
 
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, MT&>;
-        using ElementType = ElementType_t<MT>;
+        using ElementType = typename MT::ElementType;
 
         constexpr explicit MatrixExprRowColView(MT& mat, const size_t& idx)
             : m_mat(mat), m_idx(idx), m_size(1)
