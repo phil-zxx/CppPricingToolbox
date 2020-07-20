@@ -1,7 +1,6 @@
 #pragma once
 
 #include <toolbox/Core/Error.hpp>
-#include <toolbox/Algebra/Typetraits/ElementType.hpp>
 #include <toolbox/Algebra/Misc/Maths.hpp>
 
 

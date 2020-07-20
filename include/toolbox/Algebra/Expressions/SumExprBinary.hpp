@@ -16,15 +16,13 @@ namespace Toolbox
             if (lhs.size() != rhs.size())
                 throw("Vector sizes do not match");
 
-            using ET1    = typename LHS::ElementType;
-            using ET2    = typename RHS::ElementType;
-            using OpType = OpResultType_t<OP, ET1, ET2>;
+            using ElementType = OpResultType_t<OP, LHS, RHS>;
 
             const size_t N = lhs.size();
             if (N == 0)
-                return OpType();
+                return ElementType(0);
 
-            OpType totalSum = pairwiseOperation(lhs[0], rhs[0]);
+            ElementType totalSum = pairwiseOperation(lhs[0], rhs[0]);
             for (size_t i = 1; i < N; ++i)
                 totalSum += pairwiseOperation(lhs[i], rhs[i]);
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <toolbox/Algebra/Typetraits/ApplyOperator.hpp>
-#include <toolbox/Algebra/Typetraits/ElementType.hpp>
 #include <toolbox/Algebra/Typetraits/OpResultType.hpp>
 
 
@@ -15,9 +14,7 @@ namespace Toolbox
 
         using OT_LHS      = std::conditional_t<is_expression_or_scalar_v<LHS>, const LHS, const LHS&>;
         using OT_RHS      = std::conditional_t<is_expression_or_scalar_v<RHS> || is_unary_expression_v, const RHS, const RHS&>;
-        using ET_LHS      = ElementType_t<LHS>;
-        using ET_RHS      = ElementType_t<RHS>;
-        using ElementType = OpResultType_t<OP, ET_LHS, ET_RHS>;
+        using ElementType = OpResultType_t<OP, LHS, RHS>;
 
         constexpr explicit MatrixExpr(const LHS& arg)
             : m_lhs(arg), m_rhs(nullptr)

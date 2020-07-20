@@ -80,23 +80,20 @@ namespace Toolbox
             this->moveFrom(std::move(rhs));
         }
 
-        DenseMatrix& operator=(const DenseMatrix& rhs) noexcept
+        void operator=(const DenseMatrix& rhs) noexcept
         {
             this->copyFrom(rhs);
-            return *this;
         }
 
         template<class Type2, size_t R2, size_t C2>
-        DenseMatrix& operator=(const DenseMatrix<Type2, R2, C2>& rhs) noexcept
+        void operator=(const DenseMatrix<Type2, R2, C2>& rhs) noexcept
         {
             this->copyFrom(rhs);
-            return *this;
         }
 
-        DenseMatrix& operator=(DenseMatrix&& rhs) noexcept
+        void operator=(DenseMatrix&& rhs) noexcept
         {
             this->moveFrom(std::move(rhs));
-            return *this;
         }
 
         constexpr const ElementType& operator[](size_t idx) const

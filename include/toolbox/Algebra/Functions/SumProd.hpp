@@ -8,7 +8,7 @@ namespace Toolbox
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     auto sum(const MT& arg)
     {
-        using ElementType = ElementType_t<MT>;
+        using ElementType = typename MT::ElementType;
 
         if (arg.size() == 0)
             return ElementType(0);
@@ -23,7 +23,7 @@ namespace Toolbox
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     auto prod(const MT& arg)
     {
-        using ElementType = ElementType_t<MT>;
+        using ElementType = typename MT::ElementType;
 
         if (arg.size() == 0)
             return ElementType(1);

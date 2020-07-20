@@ -11,7 +11,7 @@ namespace Toolbox
     {
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, const MT&>;
-        using ElementType = OpResultType_t<OP, typename MT::ElementType>;
+        using ElementType = OpResultType_t<OP, MT>;
 
         constexpr explicit MatrixExprTrans(const MT& mat)
             : m_mat(mat), m_rowCount(m_mat.colCount()), m_colCount(m_mat.rowCount()) { }

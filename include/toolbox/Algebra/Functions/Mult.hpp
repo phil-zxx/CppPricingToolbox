@@ -1,6 +1,5 @@
 #pragma once
 
-#include <toolbox/Core/Error.hpp>
 #include <toolbox/Algebra/Types/DenseMatrix.hpp>
 
 
@@ -15,7 +14,7 @@ namespace Toolbox
         const size_t colCountR = rhs.colCount();
         TB_ENSURE(colCountL == rowCountR, "Need lhs matrix column count (" << colCountL << ") to be equal to rhs matrix row count (" << rowCountR << ") when multiplying");
 
-        using ET = OpResultType_t<OperationMul, ElementType_t<MT1>, ElementType_t<MT2>>;
+        using ET = OpResultType_t<OperationMul, MT1, MT2>;
         DenseMatrix<ET, DynamicSize, DynamicSize> result(rowCountL, colCountR, 0);
 
         for (size_t iCol = 0; iCol < colCountR; ++iCol)
@@ -39,7 +38,7 @@ namespace Toolbox
         TB_ENSURE(rhs.rowCount() == 1 || rhs.colCount() == 1, "Need rhs to be a row or column vector, but have dimensions " << rhs.rowCount() << "x" << rhs.colCount() << "");
         TB_ENSURE(colCountL == sizeR,                         "Need lhs matrix column count (" << colCountL << ") to be equal to rhs vector size (" << sizeR << ") when multiplying");
 
-        using ET = OpResultType_t<OperationMul, ElementType_t<MT1>, ElementType_t<MT2>>;
+        using ET = OpResultType_t<OperationMul, MT1, MT2>;
         DenseMatrix<ET, DynamicSize, DynamicSize> result(rowCountL, sizeR, 0);
 
         for (size_t k = 0; k < sizeR; ++k)
