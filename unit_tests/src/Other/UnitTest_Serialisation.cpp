@@ -1,4 +1,5 @@
 #include <doctest/doctest.h>
+#include <filesystem>
 #include <toolbox/Generic/Serialisation.hpp>
 
 using namespace Toolbox;
@@ -106,7 +107,6 @@ TEST_CASE("UnitTest_Serialisation_Ptr")
     CHECK(in9->c == out9->c);
 }
 
-
 TEST_CASE("UnitTest_Serialisation_Other")
 {
     ByteArchive ba;
@@ -138,4 +138,41 @@ TEST_CASE("UnitTest_Serialisation_Other")
     CHECK(in3 == out3);
     CHECK(in4 == out4);
     CHECK(in6 == out6);
+}
+
+TEST_CASE("UnitTest_Serialisation_ToFromFile")
+{
+    const std::string fileName = "__temp_file.dat";
+
+    ByteArchive ba;
+    const auto in1 = double(2.6);
+    const auto in2 = std::string("some text");
+    const auto in3 = std::vector<int>{ 9,2,-3,7 };
+    ba.store(in1, in2, in3);
+
+    // Check saveToFile & loadFromFile (stored in binary format)
+    ba.saveToFile(fileName, true);
+    CHECK(ba == ByteArchive::loadFromFile(fileName, true));
+    
+    // Check saveToFile & loadFromFile (stored as human-readable hex format)
+    ba.saveToFile(fileName, false);
+    CHECK(ba == ByteArchive::loadFromFile(fileName, false));
+    
+    // Delete temporary file
+    CHECK(std::filesystem::exists(fileName) == true);
+    std::filesystem::remove(fileName);
+    CHECK(std::filesystem::exists(fileName) == false);
+}
+
+TEST_CASE("UnitTest_Serialisation_ToString")
+{
+    ByteArchive ba;
+    const auto in1 = double(2.6);
+    const auto in2 = std::string("some text");
+    const auto in3 = std::vector<int>{ 9,2,-3,7 };
+    ba.store(in1, in2, in3);
+
+    const std::string str1 = ba.toString();
+    const std::string str2 = ByteArchive::fromString(str1).toString();
+    CHECK(str1 == str2);
 }

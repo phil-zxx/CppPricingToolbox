@@ -11,6 +11,9 @@
 #include <optional>
 #include <variant>
 #include <cstring>
+#include <iomanip>
+#include <sstream>
+#include <charconv>
 
 
 namespace Toolbox
@@ -221,23 +224,94 @@ namespace Toolbox
             }
         }
 
-        void saveToFile(const std::string& fileName)
+        bool operator==(const ByteArchive& rhs) const
         {
-            std::ofstream outFile(fileName, std::ios::out | std::ios::binary);
-            outFile.write(reinterpret_cast<const char*>(m_bytes.data()), m_writePos);
-            outFile.close();
+            if (this->m_readPos != rhs.m_readPos || this->m_writePos != rhs.m_writePos)
+                return false;
+
+            for (size_t i = 0, size = this->m_writePos; i < size; ++i)
+            {
+                if (this->m_bytes[i] != rhs.m_bytes[i])
+                    return false;
+            }
+
+            return true;
         }
 
-        void loadFromFile(const std::string& fileName)
+        void saveToFile(const std::string& fileName, const bool& asBinary)
         {
-            std::basic_ifstream<std::byte> inFile(fileName, std::ios::binary);
+            if (asBinary)
+            {
+                std::ofstream outFile(fileName, std::ios::out | std::ios::binary);
+                outFile.write(reinterpret_cast<const char*>(m_bytes.data()), m_writePos);
+                outFile.close();
+            }
+            else
+            {
+                std::ofstream outFile(fileName, std::ios::out);
+                const std::string str = this->toString();
+                outFile.write(str.c_str(), str.size());
+                outFile.close();
+            }
+        }
 
-            m_bytes.clear();
-            m_bytes   = std::vector<std::byte>(std::istreambuf_iterator<std::byte>(inFile), {});
-            m_readPos = m_bytes.size();
-            m_readPos = 0;
+        static ByteArchive loadFromFile(const std::string& fileName, const bool& asBinary)
+        {
+            if (asBinary)
+            {
+                ByteArchive ba;
+                std::basic_ifstream<std::byte> inFile(fileName, std::ios::binary);
+                ba.m_bytes    = std::vector<std::byte>(std::istreambuf_iterator<std::byte>(inFile), {});
+                ba.m_writePos = ba.m_bytes.size();
+                ba.m_readPos  = 0;
+                inFile.close();
+                return ba;
+            }
+            else
+            {
+                std::ifstream inFile(fileName);
+                std::ostringstream sstr;
+                sstr << inFile.rdbuf();
+                inFile.close();
+                return ByteArchive::fromString(sstr.str());
+            }
+        }
 
-            inFile.close();
+        std::string toString() const
+        {
+            std::stringstream os;
+            os << std::hex;
+
+            for (size_t i = 0; i < m_writePos; ++i)
+                os << std::setw(2) << std::setfill('0') << static_cast<int>(m_bytes[i]);
+
+            return os.str();
+        }
+        
+        static ByteArchive fromString(const std::string_view& str)
+        {
+            const size_t N = str.size();
+
+            if (N % 2 != 0)
+                throw std::runtime_error("Size of Byte String must be an even number");
+
+            ByteArchive ba;
+            ba.m_bytes.reserve(N / 2);
+
+            for (const char* ptr = str.data(), *end = str.data() + str.size(); ptr < end; ptr += 2)
+            {
+                unsigned char c;
+                const auto result = std::from_chars(ptr, ptr + 2, c, 16);
+                if (result.ec == std::errc::invalid_argument)
+                    throw std::invalid_argument("Invalid hex sequence in Byte String");
+                else
+                    ba.m_bytes.emplace_back(std::byte(c));
+            }
+
+            ba.m_writePos = ba.m_bytes.size();
+            ba.m_readPos  = 0;
+
+            return ba;
         }
 
     private:
