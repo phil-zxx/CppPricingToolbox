@@ -16,7 +16,7 @@ TEST_CASE("UnitTest_Algebra_Expr_LongExpr")
         const auto expr3 = vecS + 3;
 
         CHECK(typeid(expr1) == typeid(DenseVector<int, 10, 0>));
-        CHECK(typeid(expr2) == typeid(MatrixExprTrans<OperationId<void>, DenseVector<int, 10, 0>>));
+        CHECK(typeid(expr2) == typeid(MatrixExprTrans<DenseVector<int, 10, 0>>));
         CHECK(typeid(expr3) == typeid(MatrixExpr<OperationAdd, DenseVector<int, 10, 0>, int>));
     }
 

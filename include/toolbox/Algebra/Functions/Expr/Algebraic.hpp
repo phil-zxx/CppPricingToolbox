@@ -10,7 +10,7 @@ namespace Toolbox
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) trans(const MT& arg)
     {
-        return MatrixExprTrans<OperationId<>, MT>(arg);
+        return MatrixExprTrans<MT>(arg);
     }
 
     template<class T, class MT, class = std::enable_if_t<is_matrix_v<MT>>>

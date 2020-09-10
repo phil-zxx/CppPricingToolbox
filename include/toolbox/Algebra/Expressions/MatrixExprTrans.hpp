@@ -6,24 +6,24 @@
 
 namespace Toolbox
 {
-    template <class OP, class MT>
-    class MatrixExprTrans : public Matrix<MatrixExprTrans<OP, MT>>, Expression
+    template <class MT>
+    class MatrixExprTrans : public Matrix<MatrixExprTrans<MT>>, Expression
     {
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, const MT&>;
-        using ElementType = OpResultType_t<OP, MT>;
+        using ElementType = typename MT::ElementType;
 
         constexpr explicit MatrixExprTrans(const MT& mat)
             : m_mat(mat), m_rowCount(m_mat.colCount()), m_colCount(m_mat.rowCount()) { }
 
         constexpr decltype(auto) operator[](size_t i) const
         {
-            return apply_unary<OP, MT>(m_mat, (i % m_colCount) * m_rowCount + (i / m_colCount));
+            return m_mat[(i % m_colCount) * m_rowCount + (i / m_colCount)];
         }
 
         constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx) const
         {
-            return apply_unary<OP, MT>(m_mat, colIdx, rowIdx);  // (rowIdx, colIdx) are swapped to (colIdx, rowIdx) as this is transposed
+            return m_mat(colIdx, rowIdx);  // (rowIdx, colIdx) are swapped to (colIdx, rowIdx) as this is transposed
         }
 
         constexpr size_t size() const
