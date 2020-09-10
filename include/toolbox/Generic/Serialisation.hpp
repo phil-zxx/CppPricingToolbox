@@ -278,11 +278,14 @@ namespace Toolbox
             if (asBinary)
             {
                 ByteArchive ba;
-                std::basic_ifstream<std::byte> inFile(fileName, std::ios::binary);
-                ba.m_bytes    = std::vector<std::byte>(std::istreambuf_iterator<std::byte>(inFile), {});
+                std::basic_ifstream<char> inFile(fileName, std::ios::in | std::ios::binary);
+                const auto vecChar = std::vector<char>(std::istreambuf_iterator<char>(inFile), std::istreambuf_iterator<char>());
+                inFile.close();
+
+                ba.m_bytes.reserve(vecChar.size());
+                std::transform(vecChar.begin(), vecChar.end(), std::back_inserter(ba.m_bytes), [](const char c){ return std::byte(c); });
                 ba.m_writePos = ba.m_bytes.size();
                 ba.m_readPos  = 0;
-                inFile.close();
                 return ba;
             }
             else
