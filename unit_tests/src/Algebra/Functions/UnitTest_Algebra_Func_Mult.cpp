@@ -86,3 +86,13 @@ TEST_CASE("UnitTest_Algebra_Func_MultWithDiagonal")
     CHECK_THROWS (multWithDiagonal(M, w));
     CHECK_THROWS (multWithDiagonal(N, v));
 }
+
+TEST_CASE("UnitTest_Algebra_Func_MultExpression")
+{
+    StaticMatrix<double, 3, 3> M1 = { {1,2,4}, {6,5,-2},{9,4,2} };
+    StaticMatrix<double, 3, 3> M2 = { {8,7,3}, {2,-3,6},{8,5,7} };
+
+    M1 += mult(M1, M1 + M2);
+
+    CHECK(M1 == StaticMatrix<double, 3, 3>{ {94,51,55},{66,51,42},{156,111,99} });
+}
