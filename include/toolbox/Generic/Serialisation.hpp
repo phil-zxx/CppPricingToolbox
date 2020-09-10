@@ -14,6 +14,7 @@
 #include <iomanip>
 #include <sstream>
 #include <charconv>
+#include <algorithm>
 
 
 namespace Toolbox
