@@ -43,7 +43,7 @@ namespace Toolbox
     template<class, class = void> struct has_store : std::false_type { };
     template<class T> struct has_store<T, std::void_t<decltype(std::declval<T>().store(std::declval<ByteArchive>()))>> : std::true_type { };
     template<class T> constexpr bool has_store_v = has_store<T>::value;
-    
+
     template<class, class = void> struct has_load : std::false_type { };
     template<class T> struct has_load<T, std::void_t<decltype(std::declval<T>().load(std::declval<ByteArchive>()))>> : std::true_type { };
     template<class T> constexpr bool has_load_v = has_load<T>::value;
