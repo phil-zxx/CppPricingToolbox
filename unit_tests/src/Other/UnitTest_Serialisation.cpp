@@ -167,7 +167,19 @@ TEST_CASE("UnitTest_Serialisation_ToFromFile")
     CHECK(std::filesystem::exists(fileName) == false);
 }
 
-TEST_CASE("UnitTest_Serialisation_ToString")
+TEST_CASE("UnitTest_Serialisation_EqualOperator")
+{
+    ByteArchive ba;
+    const auto in1 = double(2.6);
+    const auto in2 = std::vector<int>{ 9,2,-3,7 };
+    ba.store(in1, in2);
+
+    CHECK(ba == ByteArchive::fromString("cdcccccccccc044004000000000000000900000002000000fdffffff07000000"));
+    CHECK(ba != ByteArchive::fromString("cdcccccccccd044004000000000000000900000002000000fdffffff07000000"));
+    CHECK(ba != ByteArchive::fromString("cdcccccccccc044004000000000000000900000002000000fdffffff07"));
+}
+
+TEST_CASE("UnitTest_Serialisation_ToFromString")
 {
     ByteArchive ba;
     const auto in1 = double(2.6);
@@ -178,6 +190,10 @@ TEST_CASE("UnitTest_Serialisation_ToString")
     const std::string str1 = ba.toString();
     const std::string str2 = ByteArchive::fromString(str1).toString();
     CHECK(str1 == str2);
+
+    CHECK_NOTHROW(ByteArchive::fromString("cdcccccccccc044004000000000000000900000002000000fdffffff07000000"));
+    CHECK_THROWS (ByteArchive::fromString("cdcccccccccc044004000000000000000900000002000000fdffff..07000000"));
+    CHECK_THROWS (ByteArchive::fromString("cdcccccccccc044004000000000000000900000002000000fdffffff0700000"));
 }
 
 struct Dummy

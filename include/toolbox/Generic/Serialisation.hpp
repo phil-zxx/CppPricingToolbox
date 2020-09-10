@@ -256,6 +256,11 @@ namespace Toolbox
             return true;
         }
 
+        bool operator!=(const ByteArchive& rhs) const
+        {
+            return !(*this == rhs);
+        }
+
         void saveToFile(const std::string& fileName, const bool& asBinary)
         {
             if (asBinary)
