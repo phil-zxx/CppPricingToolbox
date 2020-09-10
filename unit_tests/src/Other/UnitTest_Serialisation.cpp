@@ -146,18 +146,21 @@ TEST_CASE("UnitTest_Serialisation_ToFromFile")
 
     ByteArchive ba;
     const auto in1 = double(2.6);
-    const auto in2 = std::string("some text");
-    const auto in3 = std::vector<int>{ 9,2,-3,7 };
+    const auto in2 = std::string("some text and more, closing line");
+    const auto in3 = std::vector<int>{ 9,2,-3,7,2,-3,7,2,-3,7,2,-3,7,2,-3,7,2,-3,7,2,-3,7 };
+    ba.store(in1, in2, in3);
+    ba.store(in1, in2, in3);
+    ba.store(in1, in2, in3);
     ba.store(in1, in2, in3);
 
     // Check saveToFile & loadFromFile (stored in binary format)
     ba.saveToFile(fileName, true);
     CHECK(ba == ByteArchive::loadFromFile(fileName, true));
-    
+
     // Check saveToFile & loadFromFile (stored as human-readable hex format)
     ba.saveToFile(fileName, false);
     CHECK(ba == ByteArchive::loadFromFile(fileName, false));
-    
+
     // Delete temporary file
     CHECK(std::filesystem::exists(fileName) == true);
     std::filesystem::remove(fileName);
@@ -171,6 +174,53 @@ TEST_CASE("UnitTest_Serialisation_ToString")
     const auto in2 = std::string("some text");
     const auto in3 = std::vector<int>{ 9,2,-3,7 };
     ba.store(in1, in2, in3);
+
+    const std::string str1 = ba.toString();
+    const std::string str2 = ByteArchive::fromString(str1).toString();
+    CHECK(str1 == str2);
+}
+
+struct Dummy
+{
+    const int num;
+    const std::vector<int> vec;
+
+    void store(ByteArchive& ba) const
+    {
+        ba.store(num, vec);
+    }
+
+    static Dummy load(ByteArchive& ba)
+    {
+        return { ba.load<int>(), ba.load<std::vector<int>>() };
+    }
+};
+
+TEST_CASE("UnitTest_Serialisation_CustomClass")
+{
+    constexpr bool a1 = has_store_v<Dummy>;
+    constexpr bool a2 = has_store_v<std::vector<int>>;
+    constexpr bool a3 = has_store_v<double>;
+
+    constexpr bool b1 = has_load_v<Dummy>;
+    constexpr bool b2 = has_load_v<std::vector<int>>;
+    constexpr bool b3 = has_load_v<double>;
+
+    ByteArchive ba;
+    const auto in1 = std::string("some text");
+    const auto in2 = Dummy{ 21, std::vector<int>{44,77,99} };
+    const auto in3 = double(100);
+    ba.store(in1, in2);
+    ba.store(in3);
+
+    const auto out1 = ba.load<decltype(in1)>();
+    const auto out2 = ba.load<decltype(in2)>();
+    const auto out3 = ba.load<decltype(in3)>();
+
+    CHECK(in1     == out1);
+    CHECK(in2.num == out2.num);
+    CHECK(in2.vec == out2.vec);
+    CHECK(in3     == out3);
 
     const std::string str1 = ba.toString();
     const std::string str2 = ByteArchive::fromString(str1).toString();

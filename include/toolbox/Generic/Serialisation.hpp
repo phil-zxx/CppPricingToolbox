@@ -38,6 +38,16 @@ namespace Toolbox
     template<class T> struct has_begin<T, std::void_t<decltype(*std::begin(std::declval<T>()))>> : std::true_type { };
     template<class T> constexpr bool has_begin_v = has_begin<T>::value;
 
+    class ByteArchive;
+
+    template<class, class = void> struct has_store : std::false_type { };
+    template<class T> struct has_store<T, std::void_t<decltype(std::declval<T>().store(std::declval<ByteArchive>()))>> : std::true_type { };
+    template<class T> constexpr bool has_store_v = has_store<T>::value;
+    
+    template<class, class = void> struct has_load : std::false_type { };
+    template<class T> struct has_load<T, std::void_t<decltype(std::declval<T>().load(std::declval<ByteArchive>()))>> : std::true_type { };
+    template<class T> constexpr bool has_load_v = has_load<T>::value;
+
     template <class T, template <class...> class Template> constexpr bool is_instance_of_v = false;
     template <template <class...> class Template, class... Args> constexpr bool is_instance_of_v<Template<Args...>, Template> = true;
 
@@ -117,9 +127,13 @@ namespace Toolbox
             {
                 store(obj.get());
             }
+            else if constexpr (has_store_v<T>)
+            {
+                obj.store(*this);
+            }
             else
             {
-                static_assert(false_template<T>::value, "Provided Template argument is not covered in save function");
+                static_assert(false_template<T>::value, "Provided Template argument is not covered in store function");
             }
         }
 
@@ -218,6 +232,10 @@ namespace Toolbox
             {
                 return std::make_from_tuple<SampleData>(loadTuple<double, std::string, std::vector<int>>());
             }
+            else if constexpr (has_load_v<T>)
+            {
+                return T::load(*this);
+            }
             else
             {
                 static_assert(false_template<T>::value, "Provided Template argument is not covered in load function");
@@ -287,7 +305,7 @@ namespace Toolbox
 
             return os.str();
         }
-        
+
         static ByteArchive fromString(const std::string_view& str)
         {
             const size_t N = str.size();
@@ -312,6 +330,11 @@ namespace Toolbox
             ba.m_readPos  = 0;
 
             return ba;
+        }
+
+        size_t size() const
+        {
+            return m_writePos;
         }
 
     private:
