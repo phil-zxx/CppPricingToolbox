@@ -12,10 +12,17 @@ TEST_CASE("UnitTest_Random_RV_Generator")
     constexpr unsigned int seed = 10;
 
     RandomVariableGenerator rvg1(std::uniform_int_distribution<>(0, 5), seed);
+    #ifdef _MSC_VER
     CHECK(rvg1.getNext()       == 5);
     CHECK(rvg1.getAntithetic() == 0);
     CHECK(rvg1.getNext()       == 3);
     CHECK(rvg1.getAntithetic() == 2);
+    #else
+    CHECK(rvg1.getNext()       == 4);
+    CHECK(rvg1.getAntithetic() == 1);
+    CHECK(rvg1.getNext()       == 1);
+    CHECK(rvg1.getAntithetic() == 4);
+    #endif
 
     RandomVariableGenerator rvg2(std::uniform_real_distribution<>(0, 5), seed);
     CHECK(ApproxValue(rvg2.getNext())       == 1.4938057933134499);

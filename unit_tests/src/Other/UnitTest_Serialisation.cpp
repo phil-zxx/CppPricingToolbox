@@ -198,13 +198,13 @@ struct Dummy
 
 TEST_CASE("UnitTest_Serialisation_CustomClass")
 {
-    constexpr bool a1 = has_store_v<Dummy>;
-    constexpr bool a2 = has_store_v<std::vector<int>>;
-    constexpr bool a3 = has_store_v<double>;
+    CHECK(has_store_v<Dummy>            == true);
+    CHECK(has_store_v<std::vector<int>> == false);
+    CHECK(has_store_v<double>           == false);
 
-    constexpr bool b1 = has_load_v<Dummy>;
-    constexpr bool b2 = has_load_v<std::vector<int>>;
-    constexpr bool b3 = has_load_v<double>;
+    CHECK(has_load_v<Dummy>            == true);
+    CHECK(has_load_v<std::vector<int>> == false);
+    CHECK(has_load_v<double>           == false);
 
     ByteArchive ba;
     const auto in1 = std::string("some text");
