@@ -5,7 +5,7 @@
 
 namespace Toolbox
 {
-    /* ===== Row Views (i) =====*/
+    /* ===== Row Views (i) ===== */
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) row(const MT& arg, size_t rowIdx)
@@ -20,7 +20,7 @@ namespace Toolbox
     }
 
 
-    /* ===== Rows Views (i:end) =====*/
+    /* ===== Rows Views (i:end) ===== */
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) rows(const MT& arg, size_t rowIdxStart)
@@ -35,7 +35,7 @@ namespace Toolbox
     }
 
 
-    /* ===== Rows Views (i:j) =====*/
+    /* ===== Rows Views (i:j) ===== */
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) rows(const MT& arg, size_t rowIdx, size_t rowSize)
@@ -50,7 +50,7 @@ namespace Toolbox
     }
 
 
-    /* ===== Column Views (i) =====*/
+    /* ===== Column Views (i) ===== */
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) column(const MT& arg, size_t colIdx)
@@ -65,7 +65,7 @@ namespace Toolbox
     }
 
 
-    /* ===== Columns Views (i:end) =====*/
+    /* ===== Columns Views (i:end) ===== */
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) columns(const MT& arg, size_t colIdxStart)
@@ -80,7 +80,7 @@ namespace Toolbox
     }
 
 
-    /* ===== Columns Views (i:j) =====*/
+    /* ===== Columns Views (i:j) ===== */
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) columns(const MT& arg, size_t colIdx, size_t colSize)

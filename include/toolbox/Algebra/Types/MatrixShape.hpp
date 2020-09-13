@@ -27,6 +27,11 @@ namespace Toolbox
             return MatrixShape(cols, rows);
         }
 
+        friend std::ostream& operator<<(std::ostream& os, const MatrixShape& rhs)
+        {
+            return os << rhs.rows << "x" << rhs.cols;
+        }
+
         size_t rows, cols;
     };
 }

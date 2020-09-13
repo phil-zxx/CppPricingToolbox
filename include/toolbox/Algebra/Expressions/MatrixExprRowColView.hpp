@@ -101,7 +101,7 @@ namespace Toolbox
 
         void operator*=(const ElementType& rhs)
         {
-            static_assert(is_mutable_matrix_v<MT>, "Need underlying matrix to be mutable");
+            static_assert(is_mutable_matrix_v<MT>, "Need underlying matrix to be mutable in order to apply operator*=");
 
             if constexpr (TF == ROW)
             {
@@ -112,7 +112,7 @@ namespace Toolbox
             else if constexpr (TF == COLUMN)
             {
                 for (size_t colIdx = m_idx, colCount = m_idx + m_size; colIdx < colCount; ++colIdx)
-                    for (size_t rowIdx = 0, size = m_mat.rowCount(); rowIdx < size; ++rowIdx)
+                    for (size_t rowIdx = 0, rowCount = m_mat.rowCount(); rowIdx < rowCount; ++rowIdx)
                         m_mat(rowIdx, colIdx) *= rhs;
             }
         }
@@ -120,21 +120,21 @@ namespace Toolbox
         template<class MT2, class = std::enable_if_t<is_matrix_v<MT2>>>
         void operator-=(const MT2& rhs)
         {
-            static_assert(is_mutable_matrix_v<MT>, "Need underlying matrix to be mutable");
+            static_assert(is_mutable_matrix_v<MT>, "Need underlying matrix to be mutable in order to apply operator-=");
 
-            TB_ENSURE(m_mat.shape() == rhs.shape(), "Shapes of lhs and rhs do not match");
+            TB_ENSURE(this->shape() == rhs.shape(), "Shapes of lhs (" << m_mat.shape() << ") and rhs (" << rhs.shape() << ") do not match");
 
             if constexpr (TF == ROW)
             {
                 for (size_t rowIdx = m_idx, rowCount = m_idx + m_size; rowIdx < rowCount; ++rowIdx)
                     for (size_t colIdx = 0, colCount = m_mat.colCount(); colIdx < colCount; ++colIdx)
-                        m_mat(rowIdx, colIdx) -= rhs(rowIdx, colIdx);
+                        m_mat(rowIdx, colIdx) -= rhs(rowIdx - m_idx, colIdx);
             }
             else if constexpr (TF == COLUMN)
             {
                 for (size_t colIdx = m_idx, colCount = m_idx + m_size; colIdx < colCount; ++colIdx)
-                    for (size_t rowIdx = 0, size = m_mat.rowCount(); rowIdx < size; ++rowIdx)
-                        m_mat(rowIdx, colIdx) -= rhs(rowIdx, colIdx);
+                    for (size_t rowIdx = 0, rowCount = m_mat.rowCount(); rowIdx < rowCount; ++rowIdx)
+                        m_mat(rowIdx, colIdx) -= rhs(rowIdx, colIdx - m_idx);
             }
         }
 
