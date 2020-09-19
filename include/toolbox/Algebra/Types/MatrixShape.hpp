@@ -1,13 +1,13 @@
 #pragma once
 
 #include <sstream>
+#include <toolbox/Core/Error.hpp>
 
 
 namespace Toolbox
 {
-    class MatrixShape
+    struct MatrixShape
     {
-    public:
         constexpr explicit MatrixShape(const MatrixShape& shape) noexcept
             : rows(shape.rows), cols(shape.cols) { }
 
@@ -29,9 +29,9 @@ namespace Toolbox
             return MatrixShape(cols, rows);
         }
 
-        friend std::ostream& operator<<(std::ostream& os, const MatrixShape& rhs)
+        friend ErrorOS& operator<<(ErrorOS& os, const MatrixShape& msg)
         {
-            return os << rhs.rows << "x" << rhs.cols;
+            return os << msg.rows << "x" << msg.cols;
         }
 
         size_t rows, cols;

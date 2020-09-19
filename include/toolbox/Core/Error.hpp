@@ -1,32 +1,34 @@
 #pragma once
 
 #include <cassert>
-#include <sstream>
 #include <string>
 
 
 namespace Toolbox
 {
-    class Error : public std::exception
+    struct ErrorOS
     {
-    public:
-        Error(const std::string& file, long line, const std::string& functionName, const std::string& message)
-            : m_message(Error::createMessage(file, line, functionName, message)) { }
+        ErrorOS() = default;
 
-        const char* what() const noexcept override
+        template<class T>
+        ErrorOS& operator<<(const T i)
         {
-            return m_message.c_str();
+            m_str.append(std::to_string(i));
+            return *this;
         }
 
-    private:
-        const std::string m_message;
-
-        static std::string createMessage(const std::string& file, long line, const std::string& functionName, const std::string& message)
+        ErrorOS& operator<<(const char* msg)
         {
-            std::ostringstream os;
-            os << "Error: " << functionName << ":\n  " << file << "(" << line << "): \n" << message;
-            return os.str();
+            m_str.append(msg);
+            return *this;
         }
+
+        operator std::string() const
+        {
+            return m_str;
+        }
+
+        std::string m_str;
     };
 }
 
@@ -38,9 +40,7 @@ namespace Toolbox
 
 #define TB_ENSURE(condition, message) \
     if (!(condition)) { \
-        std::ostringstream __os__; \
-        __os__ << message; \
-        throw Toolbox::Error(__FILE__, __LINE__, __func__, __os__.str()); \
+        throw std::runtime_error(Toolbox::ErrorOS() << "Error: " << __func__ << ":\n  " << __FILE__ << "(" << __LINE__ << "): \n" << message); \
      } else
 
 #define TB_THROW(message) TB_ENSURE(false, message)
