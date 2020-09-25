@@ -23,6 +23,8 @@ namespace Toolbox
         static void sleepForSeconds(const double& seconds);
         static void sleepForNanoSeconds(const uint64_t& nanos);
 
+        uint64_t getTotalTime() const;
+
         std::string toString(const bool& withDistribution = false) const;
 
     private:
@@ -89,6 +91,11 @@ namespace Toolbox
     {
         const uint64_t endTime = getNanos() + nanos;
         while(getNanos() < endTime) { }
+    }
+
+    inline uint64_t Profiler::getTotalTime() const
+    {
+        return m_timeTotal;
     }
 
     inline std::string Profiler::toString(const bool& withDistribution) const

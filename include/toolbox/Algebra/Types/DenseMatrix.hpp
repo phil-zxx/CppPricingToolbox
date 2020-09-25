@@ -280,7 +280,7 @@ namespace Toolbox
             {
                 std::move(rhs.data(), rhs.data() + rhs.size(), this->m_data);
             }
-            
+
             this->m_size     = rhs.m_size;
             this->m_capacity = rhs.m_capacity;
             this->m_shape    = rhs.m_shape;
