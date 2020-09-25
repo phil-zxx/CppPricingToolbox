@@ -32,9 +32,9 @@ namespace Toolbox
                 {
                     const double val = (~rhs)(iRow, iCol);
                     if (std::abs(val) < 1.e-8)
-                        os << std::setw(9) << ".";
+                        os << std::setw(11) << ".";
                     else
-                        os << std::setw(9) << std::setprecision(6) << val;
+                        os << std::setw(11) << std::setprecision(6) << val;
                     os << " ";
                 }
                 os << "]" << (iRow + 1 < rowCount ? ",\n" : "");

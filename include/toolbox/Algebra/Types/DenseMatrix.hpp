@@ -152,7 +152,7 @@ namespace Toolbox
 
         void operator-=(const DenseMatrix& rhs)
         {
-            TB_ENSURE(this->shape() == rhs.shape(), "Cannot apply += when this & rhs have different shapes");
+            TB_ENSURE(this->shape() == rhs.shape(), "Cannot apply -= when this & rhs have different shapes");
 
             for (size_t i = 0, size = this->size(); i < size; ++i)
                 m_data[i] -= rhs[i];
@@ -166,7 +166,7 @@ namespace Toolbox
 
         void operator*=(const DenseMatrix& rhs)
         {
-            TB_ENSURE(this->shape() == rhs.shape(), "Cannot apply += when this & rhs have different shapes");
+            TB_ENSURE(this->shape() == rhs.shape(), "Cannot apply *= when this & rhs have different shapes");
 
             for (size_t i = 0, size = this->size(); i < size; ++i)
                 m_data[i] *= rhs[i];
@@ -180,7 +180,7 @@ namespace Toolbox
 
         void operator/=(const DenseMatrix& rhs)
         {
-            TB_ENSURE(this->shape() == rhs.shape(), "Cannot apply += when this & rhs have different shapes");
+            TB_ENSURE(this->shape() == rhs.shape(), "Cannot apply /= when this & rhs have different shapes");
 
             for (size_t i = 0, size = this->size(); i < size; ++i)
                 m_data[i] /= rhs[i];
@@ -271,8 +271,6 @@ namespace Toolbox
 
         constexpr void moveFrom(DenseMatrix&& rhs)
         {
-            this->allocate(rhs.rowCount(), rhs.colCount());
-
             if constexpr (hasDynamicSize)
             {
                 this->m_data = rhs.data();
@@ -282,11 +280,15 @@ namespace Toolbox
             {
                 std::move(rhs.data(), rhs.data() + rhs.size(), this->m_data);
             }
+            
+            this->m_size     = rhs.m_size;
+            this->m_capacity = rhs.m_capacity;
+            this->m_shape    = rhs.m_shape;
 
             rhs.m_size       = 0;
+            rhs.m_capacity   = 0;
             rhs.m_shape.rows = 0;
             rhs.m_shape.cols = 0;
-            rhs.m_capacity   = 0;
         }
 
         static constexpr DenseMatrix Identity(const size_t& size)
