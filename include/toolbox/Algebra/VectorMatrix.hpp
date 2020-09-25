@@ -2,6 +2,7 @@
 
 #include <toolbox/Algebra/Types/DenseVector.hpp>
 #include <toolbox/Algebra/Types/DenseMatrix.hpp>
+#include <toolbox/Algebra/Types/CustomMatrix.hpp>
 #include <toolbox/Algebra/Types/IdentityMatrix.hpp>
 
 #include <toolbox/Algebra/Operators/ArithmeticOperators.hpp>
