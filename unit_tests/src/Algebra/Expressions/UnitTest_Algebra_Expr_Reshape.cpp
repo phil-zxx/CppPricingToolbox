@@ -9,8 +9,8 @@ TEST_CASE("UnitTest_Algebra_Expr_Reshape1")
     const DynamicVector<int> vec = { {5,9,4} };
     const auto vecR = reshape(vec, 1, 3);
 
-    CHECK(vec == reshape(reshape(vec, 3, 1), 1, 3));
-    CHECK(vec != reshape(vec, 3, 1));
+    CHECK(vec == reshape(reshape(vec, 1, 3), 3, 1));
+    CHECK(vec != reshape(vec, 1, 3));
 
     CHECK(vec.size()      == 3);
     CHECK(vec.rowCount()  == 3);
@@ -44,9 +44,9 @@ TEST_CASE("UnitTest_Algebra_Expr_Reshape2")
     const DynamicVector<int> vec = { {5,9,4,3,7,8} };
     const auto vecR = reshape(vec, 3, 2);
 
-    CHECK(vec        == reshape(reshape(vec, 3, 2), 1, 6));
-    CHECK(trans(vec) == reshape(reshape(vec, 2, 3), 6, 1));
-    CHECK(vec        == trans(reshape(reshape(vec, 2, 3), 6, 1)));
+    CHECK(vec        == reshape(reshape(vec, 3, 2), 6, 1));
+    CHECK(trans(vec) == reshape(reshape(vec, 2, 3), 1, 6));
+    CHECK(vec        == trans(reshape(reshape(vec, 2, 3), 1, 6)));
     CHECK(vec        != reshape(vec, 1, 6));
 
     CHECK(vec.size()      == 6);
@@ -119,7 +119,7 @@ TEST_CASE("UnitTest_Algebra_Expr_Reshape3")
 
     CHECK(matR(0, 0) ==  9);
     CHECK(matR(0, 1) ==  8);
-    CHECK(matR(0, 2) ==  8);
+    CHECK(matR(0, 2) ==  7);
     CHECK(matR(0, 3) ==  6);
     CHECK(matR(0, 4) ==  5);
     CHECK(matR(0, 5) ==  4);
@@ -132,7 +132,7 @@ TEST_CASE("UnitTest_Algebra_Expr_Reshape3")
 
     CHECK(matR[ 0] ==  9);
     CHECK(matR[ 1] ==  8);
-    CHECK(matR[ 2] ==  8);
+    CHECK(matR[ 2] ==  7);
     CHECK(matR[ 3] ==  6);
     CHECK(matR[ 4] ==  5);
     CHECK(matR[ 5] ==  4);
