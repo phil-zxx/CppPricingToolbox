@@ -19,9 +19,9 @@ echo ">>> Running Unit Tests"
 ./../build/Debug_x86_64/UnitTests
 
 echo ">>> Running Code Coverage"
-lcov -d . -c -o coverage.info --rc
-lcov -r coverage.info "/usr*"        -o coverage.info --rc
-lcov -r coverage.info "*/external/*" -o coverage.info --rc
+lcov -d . -c -o coverage.info
+lcov -r coverage.info "/usr*"        -o coverage.info
+lcov -r coverage.info "*/external/*" -o coverage.info
 genhtml coverage.info -o out --legend --demangle-cpp
 
 echo ">>> Opening Code Coverage HTML"
