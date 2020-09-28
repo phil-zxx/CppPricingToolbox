@@ -20,6 +20,10 @@
 #include <toolbox/Algebra/Functions/SumProd.hpp>
 #include <toolbox/Algebra/Functions/SwapRowsCols.hpp>
 
+#include <toolbox/Algebra/LAPACK/CholeskyDecomp.hpp>
+#include <toolbox/Algebra/LAPACK/SingularValueDecomp.hpp>
+#include <toolbox/Algebra/LAPACK/QRDecomp.hpp>
+
 
 namespace Toolbox
 {
