@@ -2123,6 +2123,21 @@ namespace Toolbox
 
 namespace Toolbox
 {
+    template<class Type, size_t Size, bool TF = false>
+    using StaticVector = DenseVector<Type, Size, TF>;
+
+    template<class Type, bool TF = false>
+    using DynamicVector = DenseVector<Type, DynamicSize, TF>;
+
+    template<class Type, size_t Rows, size_t Cols>
+    using StaticMatrix = DenseMatrix<Type, Rows, Cols>;
+
+    template<class Type>
+    using DynamicMatrix = DenseMatrix<Type, DynamicSize, DynamicSize>;
+}
+
+namespace Toolbox
+{
     class JacobiRotation
     {
     public:
@@ -2403,21 +2418,6 @@ namespace Toolbox
 
 namespace Toolbox
 {
-    template<class Type, size_t Size, bool TF = false>
-    using StaticVector = DenseVector<Type, Size, TF>;
-
-    template<class Type, bool TF = false>
-    using DynamicVector = DenseVector<Type, DynamicSize, TF>;
-
-    template<class Type, size_t Rows, size_t Cols>
-    using StaticMatrix = DenseMatrix<Type, Rows, Cols>;
-
-    template<class Type>
-    using DynamicMatrix = DenseMatrix<Type, DynamicSize, DynamicSize>;
-}
-
-namespace Toolbox
-{
     /* Based on https://www.geeksforgeeks.org/cholesky-decomposition-matrix-decomposition */
 
     template<size_t R, size_t C>
@@ -2466,19 +2466,4 @@ namespace Toolbox
             }
         }
     }
-}
-
-namespace Toolbox
-{
-    template<class Type, size_t Size, bool TF = false>
-    using StaticVector = DenseVector<Type, Size, TF>;
-
-    template<class Type, bool TF = false>
-    using DynamicVector = DenseVector<Type, DynamicSize, TF>;
-
-    template<class Type, size_t Rows, size_t Cols>
-    using StaticMatrix = DenseMatrix<Type, Rows, Cols>;
-
-    template<class Type>
-    using DynamicMatrix = DenseMatrix<Type, DynamicSize, DynamicSize>;
 }
