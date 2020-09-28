@@ -7,7 +7,7 @@
 #include <thread>
 
 
-namespace Toolbox
+namespace TB
 {
     struct ProfileResult
     {
