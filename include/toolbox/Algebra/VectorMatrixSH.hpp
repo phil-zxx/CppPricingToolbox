@@ -822,57 +822,6 @@ namespace TB
 
 namespace TB
 {
-    /* ========== apply_unary ========== */
-    template<class OP, class LHS>
-    decltype(auto) apply_unary(const LHS& lhs, size_t idx)
-    {
-        constexpr OP operation;
-
-        return operation(lhs[idx]);
-    }
-
-    template<class OP, class LHS>
-    decltype(auto) apply_unary(const LHS& lhs, size_t rowIdx, size_t colIdx)
-    {
-        constexpr OP operation;
-
-        return operation(lhs(rowIdx, colIdx));
-    }
-
-    /* ========== apply_binary ========== */
-    template<class OP, class LHS, class RHS>
-    decltype(auto) apply_binary(const LHS& lhs, const RHS& rhs, size_t idx)
-    {
-        constexpr OP operation;
-
-        if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
-            return operation(lhs[idx], rhs[idx]);
-        else if constexpr (is_matrix_v<LHS> && !is_matrix_v<RHS>)
-            return operation(lhs[idx], rhs);
-        else if constexpr (!is_matrix_v<LHS> && is_matrix_v<RHS>)
-            return operation(lhs, rhs[idx]);
-
-        static_assert(at_least_one_is_matrix_v<LHS, RHS>, "Need at least one input to be a matrix");
-    }
-
-    template<class OP, class LHS, class RHS>
-    decltype(auto) apply_binary(const LHS& lhs, const RHS& rhs, size_t rowIdx, size_t colIdx)
-    {
-        constexpr OP operation;
-
-        if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
-            return operation(lhs(rowIdx, colIdx), rhs(rowIdx, colIdx));
-        else if constexpr (is_matrix_v<LHS> && !is_matrix_v<RHS>)
-            return operation(lhs(rowIdx, colIdx), rhs);
-        else if constexpr (!is_matrix_v<LHS> && is_matrix_v<RHS>)
-            return operation(lhs, rhs(rowIdx, colIdx));
-
-        static_assert(at_least_one_is_matrix_v<LHS, RHS>, "Need at least one input to be a matrix");
-    }
-}
-
-namespace TB
-{
     /*
         ElementType_t<T> will recursively unravel T::ElementType::...::ElementType
         in order to get to the root ElementType. In other words:
@@ -933,81 +882,129 @@ namespace TB
         using ElementType = OpResultType_t<OP, LHS, RHS>;
 
         constexpr explicit MatrixExpr(const LHS& arg)
-            : m_lhs(arg), m_rhs(nullptr)
+            : m_lhs(arg), m_rhs(nullptr), m_alignment(0), m_shape(arg.shape())
         {
             static_assert(is_unary_expression_v, "Operator is not unary, need to provide two inputs");
         }
 
         constexpr explicit MatrixExpr(const LHS& lhs, const RHS& rhs)
-            : m_lhs(lhs), m_rhs(rhs)
+            : m_lhs(lhs), m_rhs(rhs), m_alignment(0), m_shape(0, 0)
         {
             if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
             {
-                TB_ENSURE(lhs.shape() == rhs.shape(), "Matrix shapes do not match (" << lhs.shape() << " and " << rhs.shape() << ")");
+                if (lhs.shape() == rhs.shape())
+                {
+                    m_alignment = 'S';
+                    m_shape     = lhs.shape();
+                }
+                else if (lhs.rowCount() == rhs.rowCount() && lhs.colCount() == 1)
+                {
+                    m_alignment = 'r';
+                    m_shape     = rhs.shape();
+                }
+                else if (lhs.rowCount() == rhs.rowCount() && rhs.colCount() == 1)
+                {
+                    m_alignment = 'R';
+                    m_shape     = lhs.shape();
+                }
+                else if (lhs.colCount() == rhs.colCount() && lhs.rowCount() == 1)
+                {
+                    m_alignment = 'c';
+                    m_shape     = rhs.shape();
+                }
+                else if (lhs.colCount() == rhs.colCount() && rhs.rowCount() == 1)
+                {
+                    m_alignment = 'C';
+                    m_shape     = lhs.shape();
+                }
+                TB_ENSURE(m_alignment != 0, "Matrix shapes do not match (" << lhs.shape() << " and " << rhs.shape() << ")");
             }
+            else if constexpr (is_matrix_v<LHS> && !is_matrix_v<RHS>)
+                m_shape = lhs.shape();
+            else if constexpr (!is_matrix_v<LHS> && is_matrix_v<RHS>)
+                m_shape = rhs.shape();
 
             static_assert(!is_unary_expression_v, "Operator is not binary, need to provide one input only");
+            static_assert(at_least_one_is_matrix_v<LHS, RHS>, "At least one input must be a matrix");
         }
 
-        constexpr decltype(auto) operator[](size_t i) const
+        constexpr decltype(auto) operator[](size_t idx) const
         {
-            if constexpr(is_unary_expression_v)
-                return apply_unary<OP, LHS>(m_lhs, i);
+            if constexpr (is_unary_expression_v)
+                return m_op(m_lhs[idx]);
             else
-                return apply_binary<OP, LHS, RHS>(m_lhs, m_rhs, i);
+            {
+                if constexpr (!is_matrix_v<LHS> && is_matrix_v<RHS>)
+                    return m_op(m_lhs, m_rhs[idx]);
+                else if constexpr (is_matrix_v<LHS> && !is_matrix_v<RHS>)
+                    return m_op(m_lhs[idx], m_rhs);
+                else if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
+                {
+                    switch (m_alignment)
+                    {
+                    case 'S': return m_op(m_lhs[idx],                m_rhs[idx]);
+                    case 'r': return m_op(m_lhs[idx / m_shape.cols], m_rhs[idx]);
+                    case 'R': return m_op(m_lhs[idx],                m_rhs[idx / m_shape.cols]);
+                    case 'c': return m_op(m_lhs[idx % m_shape.cols], m_rhs[idx]);
+                    case 'C': return m_op(m_lhs[idx],                m_rhs[idx % m_shape.cols]);
+                    default: TB_THROW("Should never end up here");
+                    }
+                }
+            }
         }
 
         constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx) const
         {
             if constexpr (is_unary_expression_v)
-                return apply_unary<OP, LHS>(m_lhs, rowIdx, colIdx);
+                return m_op(m_lhs(rowIdx, colIdx));
             else
-                return apply_binary<OP, LHS, RHS>(m_lhs, m_rhs, rowIdx, colIdx);
+            {
+                if constexpr (!is_matrix_v<LHS> && is_matrix_v<RHS>)
+                    return m_op(m_lhs, m_rhs(rowIdx, colIdx));
+                else if constexpr (is_matrix_v<LHS> && !is_matrix_v<RHS>)
+                    return m_op(m_lhs(rowIdx, colIdx), m_rhs);
+                else if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
+                {
+                    switch (m_alignment)
+                    {
+                    case 'S': return m_op(m_lhs(rowIdx, colIdx), m_rhs(rowIdx, colIdx));
+                    case 'r': return m_op(m_lhs(rowIdx,      0), m_rhs(rowIdx, colIdx));
+                    case 'R': return m_op(m_lhs(rowIdx, colIdx), m_rhs(rowIdx,      0));
+                    case 'c': return m_op(m_lhs(0,      colIdx), m_rhs(rowIdx, colIdx));
+                    case 'C': return m_op(m_lhs(rowIdx, colIdx), m_rhs(0,      colIdx));
+                    default: TB_THROW("Should never end up here");
+                    }
+                }
+
+            }
         }
 
         constexpr size_t size() const
         {
-            if constexpr (is_matrix_v<LHS>)
-                return m_lhs.size();
-            else if constexpr (is_matrix_v<RHS>)
-                return m_rhs.size();
-
-            static_assert(at_least_one_is_matrix_v<LHS, RHS>, "At least one input must be a matrix");
+            return m_shape.rows * m_shape.cols;
         }
 
-        constexpr const MatrixShape& shape() const
+        constexpr MatrixShape shape() const
         {
-            if constexpr (is_matrix_v<LHS>)
-                return m_lhs.shape();
-            else if constexpr (is_matrix_v<RHS>)
-                return m_rhs.shape();
-
-            static_assert(at_least_one_is_matrix_v<LHS, RHS>, "At least one input must be a matrix");
+            return m_shape;
         }
 
         constexpr size_t rowCount() const
         {
-            if constexpr (is_matrix_v<LHS>)
-                return m_lhs.rowCount();
-            else if constexpr (is_matrix_v<RHS>)
-                return m_rhs.rowCount();
-
-            static_assert(at_least_one_is_matrix_v<LHS, RHS>, "At least one input must be a matrix");
+            return m_shape.rows;
         }
 
         constexpr size_t colCount() const
         {
-            if constexpr (is_matrix_v<LHS>)
-                return m_lhs.colCount();
-            else if constexpr (is_matrix_v<RHS>)
-                return m_rhs.colCount();
-
-            static_assert(at_least_one_is_matrix_v<LHS, RHS>, "At least one input must be a matrix");
+            return m_shape.cols;
         }
 
     private:
         OT_LHS m_lhs;
         OT_RHS m_rhs;
+        char m_alignment;
+        MatrixShape m_shape;
+        static constexpr OP m_op;
     };
 
     template <class OP, class MT>
@@ -1121,7 +1118,7 @@ namespace TB
     {
         if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
         {
-            if (lhs.rowCount() != rhs.rowCount() || lhs.colCount() != rhs.colCount())
+            if (lhs.shape() != rhs.shape())
                 return false;
         }
 
@@ -1261,7 +1258,7 @@ namespace TB
         template<class TypeIn>
         constexpr auto operator()(TypeIn arg) const noexcept
         {
-            if constexpr(std::is_same_v<TypeOut, void>)
+            if constexpr (std::is_same_v<TypeOut, void>)
                 return arg;
             else
                 return static_cast<TypeOut>(arg);

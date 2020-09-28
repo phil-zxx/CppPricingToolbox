@@ -23,6 +23,7 @@ if __name__ == '__main__':
             for pattern, msg in [['if(', 'Need space between IF and bracket'],
                                  ['if constexpr(', 'Need space between IF constexpr and bracket'],
                                  ['while(', 'Need space between WHILE and bracket'],
+                                 ['switch(', 'Need space between SWITCH and bracket'],
                                  ['){', 'Need space between ) and {']]:
                 if pattern in content:
                     for i, line in enumerate(content.split('\n')):
