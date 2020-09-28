@@ -2,6 +2,7 @@
 
 #include <toolbox/Algebra/Expressions/MatrixExpr.hpp>
 #include <toolbox/Algebra/Expressions/MatrixExprTrans.hpp>
+#include <toolbox/Algebra/Expressions/MatrixExprReshape.hpp>
 #include <toolbox/Algebra/Operations/AlgebraicOperations.hpp>
 
 
@@ -11,6 +12,12 @@ namespace Toolbox
     constexpr decltype(auto) trans(const MT& arg)
     {
         return MatrixExprTrans<MT>(arg);
+    }
+
+    template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
+    constexpr decltype(auto) reshape(const MT& arg, const size_t& rowCount, const size_t& colCount)
+    {
+        return MatrixExprReshape<MT>(arg, rowCount, colCount);
     }
 
     template<class T, class MT, class = std::enable_if_t<is_matrix_v<MT>>>

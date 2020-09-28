@@ -1,28 +1,31 @@
 #pragma once
 
-#include <toolbox/Algebra/Types/Matrix.hpp>
+#include <toolbox/Core/Error.hpp>
 
 
 namespace Toolbox
 {
     template <class MT>
-    class MatrixExprTrans : public Matrix<MatrixExprTrans<MT>>, Expression
+    class MatrixExprReshape : public Matrix<MatrixExprReshape<MT>>, Expression
     {
     public:
         using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, const MT&>;
         using ElementType = typename MT::ElementType;
 
-        constexpr explicit MatrixExprTrans(const MT& mat)
-            : m_mat(mat), m_rowCount(m_mat.colCount()), m_colCount(m_mat.rowCount()) { }
+        constexpr explicit MatrixExprReshape(const MT& mat, const size_t& rowCount, const size_t& colCount)
+            : m_mat(mat), m_rowCount(rowCount), m_colCount(colCount)
+        {
+            TB_ENSURE(mat.size() == rowCount * colCount, "Need matrix size (" << mat.size() << ") to be equal to product of row & col count (" << rowCount << " * " << colCount << ")");
+        }
 
         constexpr decltype(auto) operator[](size_t i) const
         {
-            return m_mat[(i % m_colCount) * m_rowCount + (i / m_colCount)];
+            return m_mat[i];
         }
 
         constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx) const
         {
-            return m_mat(colIdx, rowIdx);  // (rowIdx, colIdx) are swapped to (colIdx, rowIdx) as this is transposed
+            return m_mat[rowIdx * m_colCount + colIdx];
         }
 
         constexpr size_t size() const
@@ -32,7 +35,7 @@ namespace Toolbox
 
         constexpr MatrixShape shape() const
         {
-            return m_mat.shape().transposed();
+            return MatrixShape(m_rowCount, m_colCount);
         }
 
         constexpr size_t rowCount() const
