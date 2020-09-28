@@ -11,7 +11,7 @@ namespace TB
         template<class TypeIn>
         constexpr auto operator()(TypeIn arg) const noexcept
         {
-            if constexpr(std::is_same_v<TypeOut, void>)
+            if constexpr (std::is_same_v<TypeOut, void>)
                 return arg;
             else
                 return static_cast<TypeOut>(arg);

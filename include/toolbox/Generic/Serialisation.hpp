@@ -289,7 +289,7 @@ namespace TB
                 inFile.close();
 
                 ba.m_bytes.reserve(vecChar.size());
-                std::transform(vecChar.begin(), vecChar.end(), std::back_inserter(ba.m_bytes), [](const char c){ return std::byte(c); });
+                std::transform(vecChar.begin(), vecChar.end(), std::back_inserter(ba.m_bytes), [](const char c) { return std::byte(c); });
                 ba.m_writePos = ba.m_bytes.size();
                 ba.m_readPos  = 0;
                 return ba;

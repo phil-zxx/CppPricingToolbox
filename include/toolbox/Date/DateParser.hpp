@@ -42,7 +42,7 @@ namespace TB
         DateParser::fromDateStrToYearMonthDay(str.substr(0, i), year, month, day);
 
         // Parse time part of the input string, if one was provided
-        if(i != str.size())
+        if (i != str.size())
             DateParser::fromTimeStrToHourMinSec(str.substr(i + 1), hour, min, sec);
     }
 

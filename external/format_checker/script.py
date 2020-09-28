@@ -16,8 +16,18 @@ if __name__ == '__main__':
             while ' \n' in content:
                 content = content.replace(' \n', '\n')
 
-        if file_name[-3:] == 'hpp' and content[0:13] != '#pragma once\n':
-            print('ERROR: No "#pragma once" present:', file_name)
+        if file_name[-3:] == 'hpp':
+            if content[0:13] != '#pragma once\n':
+                print('ERROR: No "#pragma once" present:', file_name)
+
+            for pattern, msg in [['if(', 'Need space between IF and bracket'],
+                                 ['if constexpr(', 'Need space between IF constexpr and bracket'],
+                                 ['while(', 'Need space between WHILE and bracket'],
+                                 ['){', 'Need space between ) and {']]:
+                if pattern in content:
+                    for i, line in enumerate(content.split('\n')):
+                        if pattern in line:
+                            print('ERROR:  '+msg+': '+file_name+'  (line '+str(i+1)+')')
 
         if write_new_file:
             with open(file_name, 'w') as f:

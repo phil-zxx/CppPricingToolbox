@@ -90,7 +90,7 @@ namespace TB
     inline void Profiler::sleepForNanoSeconds(const uint64_t& nanos)
     {
         const uint64_t endTime = getNanos() + nanos;
-        while(getNanos() < endTime) { }
+        while (getNanos() < endTime) {}
     }
 
     inline uint64_t Profiler::getTotalTime() const
