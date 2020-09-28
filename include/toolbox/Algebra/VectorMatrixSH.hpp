@@ -8,7 +8,7 @@
 #include <vector>
 #include <limits>
 
-namespace Toolbox
+namespace TB
 {
     template<class MT>
     struct Matrix
@@ -54,7 +54,7 @@ namespace Toolbox
     };
 }
 
-namespace Toolbox
+namespace TB
 {
     /* ========== remove_cv_ref ========== */
     template<class T>
@@ -125,7 +125,7 @@ namespace Toolbox
     constexpr T if_v = std::conditional_t<Test, std::integral_constant<T, val1>, std::integral_constant<T, val2>>::value;
 }
 
-namespace Toolbox
+namespace TB
 {
     struct ErrorOS
     {
@@ -161,12 +161,12 @@ namespace Toolbox
 
 #define TB_ENSURE(condition, message) \
     if (!(condition)) { \
-        throw std::runtime_error(Toolbox::ErrorOS() << "Error: " << __func__ << ":\n  " << __FILE__ << "(" << __LINE__ << "): \n" << message); \
+        throw std::runtime_error(TB::ErrorOS() << "Error: " << __func__ << ":\n  " << __FILE__ << "(" << __LINE__ << "): \n" << message); \
      } else
 
 #define TB_THROW(message) TB_ENSURE(false, message)
 
-namespace Toolbox
+namespace TB
 {
     struct MatrixShape
     {
@@ -197,7 +197,7 @@ namespace Toolbox
     };
 }
 
-namespace Toolbox
+namespace TB
 {
     constexpr size_t DynamicSize = static_cast<size_t>(-1);
 
@@ -540,7 +540,7 @@ namespace Toolbox
     };
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class Type, size_t Size, bool TF>
     class DenseVector : public DenseMatrix<Type, if_v<Size == DynamicSize, size_t, Size, TF ? 1 : Size>, if_v<Size == DynamicSize, size_t, Size, TF ? Size : 1>>
@@ -585,7 +585,7 @@ namespace Toolbox
     };
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class Type>
     class CustomMatrix : public Matrix<CustomMatrix<Type>>
@@ -758,7 +758,7 @@ namespace Toolbox
     };
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class Type>
     class IdentityMatrix : public Matrix<IdentityMatrix<Type>>
@@ -820,7 +820,7 @@ namespace Toolbox
     };
 }
 
-namespace Toolbox
+namespace TB
 {
     /* ========== apply_unary ========== */
     template<class OP, class LHS>
@@ -871,7 +871,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     /*
         ElementType_t<T> will recursively unravel T::ElementType::...::ElementType
@@ -901,7 +901,7 @@ namespace Toolbox
     using ElementType_t = typename ElementTypeImpl<T>::type;
 }
 
-namespace Toolbox
+namespace TB
 {
     /* ========== OpResultType ========== */
     template<class OP, class LHS, class RHS>
@@ -920,7 +920,7 @@ namespace Toolbox
     using OpResultType_t = typename OpResultType<OP, LHS, RHS>::type;
 }
 
-namespace Toolbox
+namespace TB
 {
     template <class OP, class LHS, class RHS>
     class MatrixExpr : public Matrix<MatrixExpr<OP, LHS, RHS>>, Expression
@@ -943,8 +943,7 @@ namespace Toolbox
         {
             if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
             {
-                if (lhs.shape() != rhs.shape())
-                    throw("Matrix shapes do not match");
+                TB_ENSURE(lhs.shape() == rhs.shape(), "Matrix shapes do not match (" << lhs.shape() << " and " << rhs.shape() << ")");
             }
 
             static_assert(!is_unary_expression_v, "Operator is not binary, need to provide one input only");
@@ -1018,7 +1017,7 @@ namespace Toolbox
     using MatrixExprBinary = MatrixExpr<OP, MT1, MT2>;
 }
 
-namespace Toolbox
+namespace TB
 {
     struct OperationAdd
     {
@@ -1066,7 +1065,7 @@ namespace Toolbox
     };
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class LHS, class RHS, class = std::enable_if_t<at_least_one_is_matrix_v<LHS, RHS>>>
     decltype(auto) operator+(const LHS& lhs, const RHS& rhs)
@@ -1099,7 +1098,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     namespace detail
     {
@@ -1155,7 +1154,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     template <class MT>
     class MatrixExprTrans : public Matrix<MatrixExprTrans<MT>>, Expression
@@ -1203,7 +1202,58 @@ namespace Toolbox
     };
 }
 
-namespace Toolbox
+namespace TB
+{
+    template <class MT>
+    class MatrixExprReshape : public Matrix<MatrixExprReshape<MT>>, Expression
+    {
+    public:
+        using OT_MT       = std::conditional_t<is_expression_v<MT>, const MT, const MT&>;
+        using ElementType = typename MT::ElementType;
+
+        constexpr explicit MatrixExprReshape(const MT& mat, const size_t& rowCount, const size_t& colCount)
+            : m_mat(mat), m_rowCount(rowCount), m_colCount(colCount)
+        {
+            TB_ENSURE(mat.size() == rowCount * colCount, "Need matrix size (" << mat.size() << ") to be equal to product of row & col count (" << rowCount << " * " << colCount << ")");
+        }
+
+        constexpr decltype(auto) operator[](size_t i) const
+        {
+            return m_mat[i];
+        }
+
+        constexpr decltype(auto) operator()(size_t rowIdx, size_t colIdx) const
+        {
+            return m_mat[rowIdx * m_colCount + colIdx];
+        }
+
+        constexpr size_t size() const
+        {
+            return m_mat.size();
+        }
+
+        constexpr MatrixShape shape() const
+        {
+            return MatrixShape(m_rowCount, m_colCount);
+        }
+
+        constexpr size_t rowCount() const
+        {
+            return m_rowCount;
+        }
+
+        constexpr size_t colCount() const
+        {
+            return m_colCount;
+        }
+
+    private:
+        OT_MT m_mat;
+        const size_t m_rowCount, m_colCount;
+    };
+}
+
+namespace TB
 {
     template<class TypeOut = void>
     struct OperationId
@@ -1264,12 +1314,18 @@ namespace Toolbox
     };
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) trans(const MT& arg)
     {
         return MatrixExprTrans<MT>(arg);
+    }
+
+    template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
+    constexpr decltype(auto) reshape(const MT& arg, const size_t& rowCount, const size_t& colCount)
+    {
+        return MatrixExprReshape<MT>(arg, rowCount, colCount);
     }
 
     template<class T, class MT, class = std::enable_if_t<is_matrix_v<MT>>>
@@ -1309,7 +1365,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class T>
     T TB_min(const T a, const T b)
@@ -1342,7 +1398,7 @@ namespace Toolbox
     constexpr double TB_ZERO    = std::numeric_limits<double>::min();
 }
 
-namespace Toolbox
+namespace TB
 {
     template <class MT, bool TF>
     class MatrixExprDiagView : public Matrix<MatrixExprDiagView<MT, TF>>, Expression
@@ -1439,7 +1495,7 @@ namespace Toolbox
     };
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) diagonal(const MT& arg)
@@ -1466,7 +1522,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     template <class MT, bool TF>
     class MatrixExprRowColView : public Matrix<MatrixExprRowColView<MT, TF>>, Expression
@@ -1641,7 +1697,7 @@ namespace Toolbox
     template <class MT> using MatrixExprColView = MatrixExprRowColView<MT, true>;
 }
 
-namespace Toolbox
+namespace TB
 {
     /* ===== Row Views (i) ===== */
 
@@ -1728,7 +1784,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     template <class MT>
     class MatrixExprSubmatrixView : public Matrix<MatrixExprSubmatrixView<MT>>, Expression
@@ -1809,7 +1865,7 @@ namespace Toolbox
     };
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) submatrix(const MT& arg, const size_t& rowIdx, const size_t& colIdx, const size_t& rowSize, const size_t& colSize)
@@ -1824,7 +1880,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     template <class OP, class LHS, class RHS, class = std::enable_if_t<is_matrix_v<LHS> && is_matrix_v<RHS>>>
     struct SumExprBinary
@@ -1854,7 +1910,7 @@ namespace Toolbox
     using SumExprBinary_t = SumExprBinary<OP, VT1, VT2>;
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class MT1, class MT2, class = std::enable_if_t<is_matrix_v<MT1> && is_matrix_v<MT2>>>
     decltype(auto) dot(const MT1& lhs, const MT2& rhs)
@@ -1871,7 +1927,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) isSquare(const MT& arg)
@@ -1899,7 +1955,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) minEl(const MT& arg)
@@ -1969,16 +2025,16 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
-    decltype(auto) norm2(const MT& arg)
+    double norm2(const MT& arg)
     {
         return std::sqrt(dot(arg, arg));
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
-    decltype(auto) norm(const MT& arg, const double& order)
+    double norm(const MT& arg, const double& order)
     {
         if (order == TB_INF_NEG)
         {
@@ -1994,7 +2050,7 @@ namespace Toolbox
         }
         else
         {
-            typename MT::ElementType absSum = 0;
+            double absSum = 0;
             for (size_t i = 0, size = arg.size(); i < size; ++i)
                 absSum += std::pow(std::abs(arg[i]), order);
 
@@ -2003,7 +2059,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class MT1, class MT2, class = std::enable_if_t<is_matrix_v<MT1> && is_matrix_v<MT2>>>
     decltype(auto) mult(const MT1& lhs, const MT2& rhs)
@@ -2053,7 +2109,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     auto sum(const MT& arg)
@@ -2086,7 +2142,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class MT, class = std::enable_if_t<is_mutable_matrix_v<MT>>>
     void swapRows(MT& arg, const size_t& rowIdx1, const size_t& rowIdx2)
@@ -2121,7 +2177,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     template<class Type, size_t Size, bool TF = false>
     using StaticVector = DenseVector<Type, Size, TF>;
@@ -2136,7 +2192,59 @@ namespace Toolbox
     using DynamicMatrix = DenseMatrix<Type, DynamicSize, DynamicSize>;
 }
 
-namespace Toolbox
+namespace TB
+{
+    /* Based on https://www.geeksforgeeks.org/cholesky-decomposition-matrix-decomposition */
+
+    template<size_t R, size_t C>
+    class CholeskyDecomp
+    {
+    public:
+        DenseMatrix<double, R, C> lowerTriangular;
+
+        explicit CholeskyDecomp(const DenseMatrix<double, R, C>& matrix);
+    };
+
+    // Inline Definitions
+
+    template<size_t R, size_t C>
+    inline CholeskyDecomp<R, C>::CholeskyDecomp(const DenseMatrix<double, R, C>& matrix)
+        : lowerTriangular(matrix.shape())
+    {
+        TB_ENSURE(matrix.size() > 0,   "Input matrix in CholeskyDecomp cannot be empty");
+        TB_ENSURE(isSymmetric(matrix), "Only square symmetric matrices are allowed in CholeskyDecomp");
+
+        const size_t n = matrix.rowCount();
+
+        // Decomposing a matrix into Lower Triangular
+        for (size_t i = 0; i < n; ++i)
+        {
+            for (size_t j = 0; j <= i; ++j)
+            {
+                double sum = 0;
+
+                if (i == j)  // Summation for diagonals
+                {
+                    for (size_t k = 0; k < j; k++)
+                        sum += lowerTriangular(j, k) * lowerTriangular(j, k);
+                    lowerTriangular(j, j) = std::sqrt(matrix(j, j) - sum);
+                }
+                else
+                {
+                    // Evaluating L(i, j) using L(j, j)
+                    for (size_t k = 0; k < j; ++k)
+                        sum += lowerTriangular(i, k) * lowerTriangular(j, k);
+
+                    TB_ENSURE(std::abs(lowerTriangular(j, j)) > 0, "Input matrix in CholeskyDecomp cannot be processed (possibly singular)");
+
+                    lowerTriangular(i, j) = (matrix(i, j) - sum) / lowerTriangular(j, j);
+                }
+            }
+        }
+    }
+}
+
+namespace TB
 {
     class JacobiRotation
     {
@@ -2223,7 +2331,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     /* Based on https://gitlab.com/libeigen/eigen/-/blob/master/Eigen/src/SVD/JacobiSVD.h */
 
@@ -2371,7 +2479,7 @@ namespace Toolbox
     }
 }
 
-namespace Toolbox
+namespace TB
 {
     /* Based on https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf */
 
@@ -2411,58 +2519,6 @@ namespace Toolbox
                 rows(matrixR, j)    -= mult(tau * w, mult(trans(w), submatrix(matrixR, j, 0, rowCount - j, colCount)));
                 columns(matrixQ, j) -= mult(mult(submatrix(matrixQ, 0, j, rowCount, colCount - j), w), trans(tau * w));
 
-            }
-        }
-    }
-}
-
-namespace Toolbox
-{
-    /* Based on https://www.geeksforgeeks.org/cholesky-decomposition-matrix-decomposition */
-
-    template<size_t R, size_t C>
-    class CholeskyDecomp
-    {
-    public:
-        DenseMatrix<double, R, C> lowerTriangular;
-
-        explicit CholeskyDecomp(const DenseMatrix<double, R, C>& matrix);
-    };
-
-    // Inline Definitions
-
-    template<size_t R, size_t C>
-    inline CholeskyDecomp<R, C>::CholeskyDecomp(const DenseMatrix<double, R, C>& matrix)
-        : lowerTriangular(matrix.shape())
-    {
-        TB_ENSURE(matrix.size() > 0,   "Input matrix in CholeskyDecomp cannot be empty");
-        TB_ENSURE(isSymmetric(matrix), "Only square symmetric matrices are allowed in CholeskyDecomp");
-
-        const size_t n = matrix.rowCount();
-
-        // Decomposing a matrix into Lower Triangular
-        for (size_t i = 0; i < n; ++i)
-        {
-            for (size_t j = 0; j <= i; ++j)
-            {
-                double sum = 0;
-
-                if (i == j)  // Summation for diagonals
-                {
-                    for (size_t k = 0; k < j; k++)
-                        sum += lowerTriangular(j, k) * lowerTriangular(j, k);
-                    lowerTriangular(j, j) = std::sqrt(matrix(j, j) - sum);
-                }
-                else
-                {
-                    // Evaluating L(i, j) using L(j, j)
-                    for (size_t k = 0; k < j; ++k)
-                        sum += lowerTriangular(i, k) * lowerTriangular(j, k);
-
-                    TB_ENSURE(std::abs(lowerTriangular(j, j)) > 0, "Input matrix in CholeskyDecomp cannot be processed (possibly singular)");
-
-                    lowerTriangular(i, j) = (matrix(i, j) - sum) / lowerTriangular(j, j);
-                }
             }
         }
     }
