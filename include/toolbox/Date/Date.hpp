@@ -7,7 +7,7 @@
 #include <iomanip>
 
 
-namespace Toolbox
+namespace TB
 {
     class Date
     {

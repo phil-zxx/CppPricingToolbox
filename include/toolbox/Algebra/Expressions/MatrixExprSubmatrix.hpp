@@ -3,7 +3,7 @@
 #include <toolbox/Core/Error.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     template <class MT>
     class MatrixExprSubmatrixView : public Matrix<MatrixExprSubmatrixView<MT>>, Expression

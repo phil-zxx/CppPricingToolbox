@@ -3,7 +3,7 @@
 #include <toolbox/Algebra/Typetraits/ElementType.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     /* ========== OpResultType ========== */
     template<class OP, class LHS, class RHS>

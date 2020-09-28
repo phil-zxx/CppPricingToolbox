@@ -2,7 +2,7 @@
 #include <filesystem>
 #include <toolbox/Generic/Serialisation.hpp>
 
-using namespace Toolbox;
+using namespace TB;
 
 
 TEST_CASE("UnitTest_Serialisation_Base")

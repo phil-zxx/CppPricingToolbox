@@ -4,7 +4,7 @@
 #include <string>
 
 
-namespace Toolbox
+namespace TB
 {
     struct ErrorOS
     {
@@ -40,7 +40,7 @@ namespace Toolbox
 
 #define TB_ENSURE(condition, message) \
     if (!(condition)) { \
-        throw std::runtime_error(Toolbox::ErrorOS() << "Error: " << __func__ << ":\n  " << __FILE__ << "(" << __LINE__ << "): \n" << message); \
+        throw std::runtime_error(TB::ErrorOS() << "Error: " << __func__ << ":\n  " << __FILE__ << "(" << __LINE__ << "): \n" << message); \
      } else
 
 #define TB_THROW(message) TB_ENSURE(false, message)

@@ -20,7 +20,7 @@
 #include <toolbox/Algebra/Functions/SumProd.hpp>
 #include <toolbox/Algebra/Functions/SwapRowsCols.hpp>
 
-namespace Toolbox
+namespace TB
 {
     template<class Type, size_t Size, bool TF = false>
     using StaticVector = DenseVector<Type, Size, TF>;

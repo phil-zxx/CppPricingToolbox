@@ -1,7 +1,7 @@
 #include <doctest/doctest.h>
 #include <toolbox/Date/Tenor.hpp>
 
-using namespace Toolbox;
+using namespace TB;
 
 
 TEST_CASE("UnitTest_Tenor")

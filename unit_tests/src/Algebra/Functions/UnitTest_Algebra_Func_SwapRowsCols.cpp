@@ -2,7 +2,7 @@
 #include <toolbox/Algebra/VectorMatrix.hpp>
 #include <iostream>
 
-using namespace Toolbox;
+using namespace TB;
 
 
 TEST_CASE("UnitTest_Algebra_Func_SwapRows")

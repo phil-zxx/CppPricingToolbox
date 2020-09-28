@@ -1,7 +1,7 @@
 #include <doctest/doctest.h>
 #include <toolbox/Core/Decimal.hpp>
 
-using namespace Toolbox;
+using namespace TB;
 
 
 TEST_CASE("UnitTest_Decimal")

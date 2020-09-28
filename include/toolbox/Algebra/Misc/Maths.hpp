@@ -3,7 +3,7 @@
 #include <limits>
 
 
-namespace Toolbox
+namespace TB
 {
     template<class T>
     T TB_min(const T a, const T b)

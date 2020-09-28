@@ -1,7 +1,7 @@
 #include <doctest/doctest.h>
 #include <toolbox/Generic/CircularBuffer.hpp>
 
-using namespace Toolbox;
+using namespace TB;
 
 
 constexpr CircularBuffer<int, 4> create_buffer()

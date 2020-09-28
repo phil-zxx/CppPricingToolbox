@@ -2,7 +2,7 @@
 #include <toolbox/Core/ApproxValue.hpp>
 #include <sstream>
 
-using namespace Toolbox;
+using namespace TB;
 
 
 TEST_CASE("UnitTest_ApproxValue")

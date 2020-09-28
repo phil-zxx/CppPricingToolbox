@@ -3,7 +3,7 @@
 #include <cmath>
 
 
-namespace Toolbox
+namespace TB
 {
     template<class TypeOut = void>
     struct OperationId

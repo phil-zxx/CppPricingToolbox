@@ -6,7 +6,7 @@
 #include <vector>
 
 
-namespace Toolbox
+namespace TB
 {
     template<class Type, size_t Size, bool TF>
     class DenseVector : public DenseMatrix<Type, if_v<Size == DynamicSize, size_t, Size, TF ? 1 : Size>, if_v<Size == DynamicSize, size_t, Size, TF ? Size : 1>>

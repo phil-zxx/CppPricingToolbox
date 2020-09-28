@@ -4,7 +4,7 @@
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     decltype(auto) minEl(const MT& arg)

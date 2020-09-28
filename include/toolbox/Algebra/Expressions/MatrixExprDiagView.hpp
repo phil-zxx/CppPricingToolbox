@@ -4,7 +4,7 @@
 #include <toolbox/Algebra/Misc/Maths.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     template <class MT, bool TF>
     class MatrixExprDiagView : public Matrix<MatrixExprDiagView<MT, TF>>, Expression

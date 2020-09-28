@@ -2,7 +2,7 @@
 #include <toolbox/Algebra/VectorMatrix.hpp>
 #include <toolbox/Algebra/LAPACK/QRDecomp.hpp>
 
-using namespace Toolbox;
+using namespace TB;
 
 TEST_CASE("UnitTest_Algebra_LAPACK_QRDecomp1x1")
 {

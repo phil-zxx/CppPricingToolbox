@@ -4,7 +4,7 @@
 #include <toolbox/Core/Error.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     /* Based on https://www.cs.cornell.edu/~bindel/class/cs6210-f09/lec18.pdf */
 

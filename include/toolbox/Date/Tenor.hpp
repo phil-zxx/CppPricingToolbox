@@ -5,7 +5,7 @@
 #include <vector>
 
 
-namespace Toolbox
+namespace TB
 {
     enum class TenorUnit { __UNDEFINED__, D, B, W, M, Y };
 

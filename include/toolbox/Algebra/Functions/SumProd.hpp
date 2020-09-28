@@ -3,7 +3,7 @@
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     auto sum(const MT& arg)

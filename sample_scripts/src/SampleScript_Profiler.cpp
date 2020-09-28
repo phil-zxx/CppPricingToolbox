@@ -1,6 +1,6 @@
 #include <toolbox/Debug/Profiler.hpp>
 
-using namespace Toolbox;
+using namespace TB;
 
 
 int main()

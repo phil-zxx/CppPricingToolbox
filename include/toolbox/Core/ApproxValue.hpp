@@ -5,7 +5,7 @@
 #include <iomanip>
 
 
-namespace Toolbox
+namespace TB
 {
     struct ApproxValue
     {

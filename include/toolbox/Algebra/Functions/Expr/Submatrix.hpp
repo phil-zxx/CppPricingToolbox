@@ -3,7 +3,7 @@
 #include <toolbox/Algebra/Expressions/MatrixExprSubmatrix.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
     constexpr decltype(auto) submatrix(const MT& arg, const size_t& rowIdx, const size_t& colIdx, const size_t& rowSize, const size_t& colSize)

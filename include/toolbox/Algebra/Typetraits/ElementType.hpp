@@ -3,7 +3,7 @@
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     /*
         ElementType_t<T> will recursively unravel T::ElementType::...::ElementType

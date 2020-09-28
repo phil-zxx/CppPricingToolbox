@@ -1,7 +1,7 @@
 #include <doctest/doctest.h>
 #include <toolbox/Algebra/VectorMatrix.hpp>
 
-using namespace Toolbox;
+using namespace TB;
 
 
 TEST_CASE("UnitTest_Algebra_Basics_CastToStd")

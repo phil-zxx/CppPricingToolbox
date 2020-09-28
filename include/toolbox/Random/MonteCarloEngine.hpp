@@ -6,7 +6,7 @@
 #include <future>
 
 
-namespace Toolbox
+namespace TB
 {
     template<class Distr, class Engine>
     class MonteCarloEngine

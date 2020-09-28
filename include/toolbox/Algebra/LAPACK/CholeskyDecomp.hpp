@@ -4,7 +4,7 @@
 #include <toolbox/Core/Error.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     /* Based on https://www.geeksforgeeks.org/cholesky-decomposition-matrix-decomposition */
 

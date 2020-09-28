@@ -8,7 +8,7 @@
 #include <cmath>
 
 
-namespace Toolbox
+namespace TB
 {
     class Profiler
     {

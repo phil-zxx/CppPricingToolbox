@@ -3,7 +3,7 @@
 #include <toolbox/Algebra/VectorMatrix.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     class JacobiRotation
     {

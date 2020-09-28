@@ -5,7 +5,7 @@
 #include <cstdint>
 
 
-namespace Toolbox
+namespace TB
 {
     class DateTime : public Date
     {

@@ -3,7 +3,7 @@
 #include <toolbox/Algebra/Expressions/MatrixExprRowColView.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     /* ===== Row Views (i) ===== */
 

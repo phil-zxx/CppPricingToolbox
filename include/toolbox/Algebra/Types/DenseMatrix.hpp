@@ -5,7 +5,7 @@
 #include <toolbox/Core/Error.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     constexpr size_t DynamicSize = static_cast<size_t>(-1);
 

@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace Toolbox
+namespace TB
 {
     /* ========== dummy false type ========== */
     template<class... Args>

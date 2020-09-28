@@ -7,7 +7,7 @@
 #include <sstream>
 
 
-namespace Toolbox
+namespace TB
 {
     template<size_t n> constexpr int64_t pow10    = 10 * pow10<n - 1>;
     template<>         constexpr int64_t pow10<0> =  1;

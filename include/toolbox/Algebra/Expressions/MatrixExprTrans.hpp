@@ -3,7 +3,7 @@
 #include <toolbox/Algebra/Types/Matrix.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     template <class MT>
     class MatrixExprTrans : public Matrix<MatrixExprTrans<MT>>, Expression

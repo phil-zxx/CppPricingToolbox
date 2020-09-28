@@ -3,7 +3,7 @@
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     namespace detail
     {

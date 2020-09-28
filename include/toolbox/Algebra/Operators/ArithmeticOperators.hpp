@@ -4,7 +4,7 @@
 #include <toolbox/Algebra/Operations/ArithmeticOperations.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     template<class LHS, class RHS, class = std::enable_if_t<at_least_one_is_matrix_v<LHS, RHS>>>
     decltype(auto) operator+(const LHS& lhs, const RHS& rhs)

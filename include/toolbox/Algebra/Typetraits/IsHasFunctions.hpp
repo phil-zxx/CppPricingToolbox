@@ -4,7 +4,7 @@
 #include <type_traits>
 
 
-namespace Toolbox
+namespace TB
 {
     /* ========== remove_cv_ref ========== */
     template<class T>

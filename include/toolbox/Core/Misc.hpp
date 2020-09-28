@@ -3,7 +3,7 @@
 #include <string_view>
 
 
-namespace Toolbox
+namespace TB
 {
     class Misc
     {

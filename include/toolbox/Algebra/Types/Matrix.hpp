@@ -5,7 +5,7 @@
 #include <cmath>
 
 
-namespace Toolbox
+namespace TB
 {
     template<class MT>
     struct Matrix

@@ -6,7 +6,7 @@
 #include <iostream>
 
 
-namespace Toolbox
+namespace TB
 {
     template<class Distr, class Engine = std::mt19937>
     class RandomVariableGenerator

@@ -17,7 +17,7 @@
 #include <algorithm>
 
 
-namespace Toolbox
+namespace TB
 {
     struct SampleData
     {

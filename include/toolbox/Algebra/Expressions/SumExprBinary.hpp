@@ -4,7 +4,7 @@
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     template <class OP, class LHS, class RHS, class = std::enable_if_t<is_matrix_v<LHS> && is_matrix_v<RHS>>>
     struct SumExprBinary

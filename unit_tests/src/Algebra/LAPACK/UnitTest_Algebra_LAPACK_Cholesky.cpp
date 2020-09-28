@@ -2,7 +2,7 @@
 #include <toolbox/Algebra/VectorMatrix.hpp>
 #include <toolbox/Algebra/LAPACK/CholeskyDecomp.hpp>
 
-using namespace Toolbox;
+using namespace TB;
 
 TEST_CASE("UnitTest_Algebra_LAPACK_Cholesky1x1")
 {

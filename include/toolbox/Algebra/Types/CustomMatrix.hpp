@@ -5,7 +5,7 @@
 #include <toolbox/Core/Error.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     template<class Type>
     class CustomMatrix : public Matrix<CustomMatrix<Type>>

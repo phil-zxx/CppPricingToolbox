@@ -4,7 +4,7 @@
 #include <toolbox/Algebra/Typetraits/OpResultType.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     template <class OP, class LHS, class RHS>
     class MatrixExpr : public Matrix<MatrixExpr<OP, LHS, RHS>>, Expression

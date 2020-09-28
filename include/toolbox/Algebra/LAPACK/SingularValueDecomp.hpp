@@ -4,7 +4,7 @@
 #include <toolbox/Algebra/LAPACK/JacobiRotation.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     /* Based on https://gitlab.com/libeigen/eigen/-/blob/master/Eigen/src/SVD/JacobiSVD.h */
 

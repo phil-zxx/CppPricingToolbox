@@ -4,7 +4,7 @@
 #include <toolbox/Random/MonteCarloEngine.hpp>
 
 
-using namespace Toolbox;
+using namespace TB;
 
 
 TEST_CASE("UnitTest_Random_RV_Generator")

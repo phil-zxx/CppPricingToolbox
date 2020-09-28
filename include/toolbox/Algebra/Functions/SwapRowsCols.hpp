@@ -4,7 +4,7 @@
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     template<class MT, class = std::enable_if_t<is_mutable_matrix_v<MT>>>
     void swapRows(MT& arg, const size_t& rowIdx1, const size_t& rowIdx2)

@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 
-namespace Toolbox
+namespace TB
 {
     template<bool WithIndexFlag = false, class... Ts>
     class Zip

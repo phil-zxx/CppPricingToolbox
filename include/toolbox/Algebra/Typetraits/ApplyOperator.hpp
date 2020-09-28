@@ -3,7 +3,7 @@
 #include <toolbox/Algebra/Typetraits/IsHasFunctions.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     /* ========== apply_unary ========== */
     template<class OP, class LHS>

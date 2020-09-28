@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace Toolbox
+namespace TB
 {
     struct OperationAdd
     {

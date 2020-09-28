@@ -3,7 +3,7 @@
 #include <toolbox/Core/Error.hpp>
 
 
-namespace Toolbox
+namespace TB
 {
     struct MatrixShape
     {
