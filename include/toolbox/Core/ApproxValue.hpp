@@ -9,7 +9,7 @@ namespace Toolbox
 {
     struct ApproxValue
     {
-        constexpr ApproxValue(double value, double eps = 1.e-15)
+        constexpr ApproxValue(double value, double eps = 1.e-13)
             : m_value(value), m_eps(eps) { }
 
         bool operator==(const double& other) const

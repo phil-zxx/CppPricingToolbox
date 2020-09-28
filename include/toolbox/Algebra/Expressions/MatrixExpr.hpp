@@ -27,8 +27,7 @@ namespace Toolbox
         {
             if constexpr (is_matrix_v<LHS> && is_matrix_v<RHS>)
             {
-                if (lhs.shape() != rhs.shape())
-                    throw("Matrix shapes do not match");
+                TB_ENSURE(lhs.shape() == rhs.shape(), "Matrix shapes do not match (" << lhs.shape() << " and " << rhs.shape() << ")");
             }
 
             static_assert(!is_unary_expression_v, "Operator is not binary, need to provide one input only");

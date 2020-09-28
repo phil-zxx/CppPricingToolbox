@@ -10,13 +10,13 @@
 namespace Toolbox
 {
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
-    decltype(auto) norm2(const MT& arg)
+    double norm2(const MT& arg)
     {
         return std::sqrt(dot(arg, arg));
     }
 
     template<class MT, class = std::enable_if_t<is_matrix_v<MT>>>
-    decltype(auto) norm(const MT& arg, const double& order)
+    double norm(const MT& arg, const double& order)
     {
         if (order == TB_INF_NEG)
         {
@@ -32,7 +32,7 @@ namespace Toolbox
         }
         else
         {
-            typename MT::ElementType absSum = 0;
+            double absSum = 0;
             for (size_t i = 0, size = arg.size(); i < size; ++i)
                 absSum += std::pow(std::abs(arg[i]), order);
 
