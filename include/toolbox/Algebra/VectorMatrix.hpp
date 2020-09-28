@@ -20,11 +20,6 @@
 #include <toolbox/Algebra/Functions/SumProd.hpp>
 #include <toolbox/Algebra/Functions/SwapRowsCols.hpp>
 
-#include <toolbox/Algebra/LAPACK/CholeskyDecomp.hpp>
-#include <toolbox/Algebra/LAPACK/SingularValueDecomp.hpp>
-#include <toolbox/Algebra/LAPACK/QRDecomp.hpp>
-
-
 namespace Toolbox
 {
     template<class Type, size_t Size, bool TF = false>
@@ -39,3 +34,7 @@ namespace Toolbox
     template<class Type>
     using DynamicMatrix = DenseMatrix<Type, DynamicSize, DynamicSize>;
 }
+
+#include <toolbox/Algebra/LAPACK/CholeskyDecomp.hpp>
+#include <toolbox/Algebra/LAPACK/SingularValueDecomp.hpp>
+#include <toolbox/Algebra/LAPACK/QRDecomp.hpp>
