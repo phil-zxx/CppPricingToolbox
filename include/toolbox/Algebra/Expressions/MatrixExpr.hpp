@@ -138,7 +138,7 @@ namespace TB
         OT_RHS m_rhs;
         char m_alignment;
         MatrixShape m_shape;
-        static constexpr OP m_op;
+        static constexpr OP m_op = {};
     };
 
     template <class OP, class MT>
