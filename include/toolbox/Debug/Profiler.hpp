@@ -19,6 +19,7 @@ namespace TB
         void lapStart();
         void lap();
         void printStats(const bool& withDistribution = false);
+        void printAvgTime();
 
         static void sleepForSeconds(const double& seconds);
         static void sleepForNanoSeconds(const uint64_t& nanos);
@@ -82,6 +83,14 @@ namespace TB
         std::cout << this->toString(withDistribution) << std::endl;
     }
 
+    inline void Profiler::printAvgTime()
+    {
+        if (m_trialsTotal == 0)
+            this->lap();
+
+        std::cout << "Mean = " << nanosToPrettyString(m_timeTotal / (1 > m_trialsTotal ? 1 : m_trialsTotal)) << std::endl;
+    }
+
     inline void Profiler::sleepForSeconds(const double& seconds)
     {
         sleepForNanoSeconds(static_cast<uint64_t>(seconds * 1'000'000'000));
@@ -111,7 +120,6 @@ namespace TB
         for (size_t i = bottom; i < m_buckets.size(); ++i)
             if (m_buckets[i].trials > 0)
                 top = i;
-
 
         os << "Profiling Results:\n" <<
             "\tMin        = " << nanosToPrettyString(m_minTime) << std::endl <<
